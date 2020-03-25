@@ -33,7 +33,6 @@ class InsertionSort[T](val input: List[T])(implicit ev1: T => Ordered[T]) {
         case head :: tail => if (element2Insert <= head) element2Insert :: sortedList else {
           head :: addElement2TheCorrectPosition(tail, element2Insert)
         }
-        case head :: nil => if (element2Insert <= head) List(element2Insert, head) else List(head, element2Insert)
         case List() => List(element2Insert)
       }
     }
