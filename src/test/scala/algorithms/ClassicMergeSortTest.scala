@@ -8,7 +8,7 @@
 
 package algorithms
 
-class InsertionSortTest extends org.scalatest.funsuite.AnyFunSuite {
+class ClassicMergeSortTest extends org.scalatest.funsuite.AnyFunSuite {
   test("sort a list of many integers including duplicates") {
     assert(ClassicMergeSort(List(9, 10, 1, 3, 18, 7, 1, -1, 0, 0, 11)) === List(-1, 0, 0, 1, 1, 3, 7, 9, 10, 11, 18))
   }
