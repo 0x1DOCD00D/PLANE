@@ -29,11 +29,11 @@ trait StoreData {
 
   //this method takes the parameters of the types that are the subtypes of
   //the abstract types that define the upper bounds
-  def StoreIt(objects: Objects, medium: StorageMedium, format: DataFormat) =
+  def StoreIt(objects: Objects, medium: StorageMedium, format: DataFormat):Unit =
     println(s"Storing $objects on $medium in the format $format")
 
   //this method takes the parameters whose types are defined by the type variables/aliases
-  def StoreItTyped(objects: WhatObjects2Store, medium: Where2Store, format: WhatFormat) =
+  def StoreItTyped(objects: WhatObjects2Store, medium: Where2Store, format: WhatFormat):Unit =
     println(s"Storing $objects on $medium in the format $format")
 }
 
@@ -42,7 +42,7 @@ trait StoreData {
 trait StoreData_Generic[WhatObjects2Store <: Objects, Where2Store <: StorageMedium, WhatFormat <: DataFormat] {
   //not much difference in the definition of this method from the one in the trait
   //where types aliases are used
-  def StoreItTyped(objects: WhatObjects2Store, medium: StorageMedium, format: WhatFormat) =
+  def StoreItTyped(objects: WhatObjects2Store, medium: StorageMedium, format: WhatFormat):Unit =
     println(s"Storing $objects on $medium in the format $format")
 
 }
@@ -74,5 +74,5 @@ object TypesVsGenerics extends App {
   jObjectStore_Generic.StoreItTyped(JavaObject(), MagneticTape(), JavaSerializationFormat())
   //this expression is not allowed by the type checker since the type CppObject is not
   //a subtype of the type JavaObject.
-//  jObjectStore.StoreItTyped(CppObject(), MagneticTape(), JavaSerializationFormat())
+//  jObjectStore.StoreItTyped(CppObject(), DesignPatterns.MagneticTape(), JavaSerializationFormat())
 }
