@@ -7,6 +7,7 @@
  */
 
 package DesignPatterns
+import org.apache.commons.codec.digest.DigestUtils
 
 //We use a different approach to inject the functionality of storing data on devices
 //into the object of the (sub)type UniversityPersonnel
@@ -20,29 +21,49 @@ object SelfType {
     //this method uses the methods of the class UniversityPersonnel
     //even though the method data2Store is abstract and the method
     //savePersonnelType is redefined in the derived classes
-    def store:String = {
+    def store: String = {
       savePersonnelType
       println(s"$data2Store")
       data2Store
     }
   }
 
+  //this trait computes the checksum of the stored data
+  trait Checksum {
+    this: UniversityPersonnel =>
+    def store: String = {
+      DigestUtils.md2Hex(data2Store)
+    }
+  }
+
   abstract class UniversityPersonnel {
     protected val UID: BigInt
-    protected def data2Store:String
+
+    protected def data2Store: String
 
     //When this method is called on the object of the type Professor
     //it prints out DesignPatterns.SelfType$Professor
-    protected [this] def savePersonnelType: Unit = println(this.getClass.getName)
+    protected[this] def savePersonnelType: Unit = println(this.getClass.getName)
   }
 
-  class Student(override val UID: BigInt) extends UniversityPersonnel with StorageDevice{
+  class Student(override val UID: BigInt) extends UniversityPersonnel with StorageDevice {
     override protected def data2Store: String = UID.toByteArray.toList.toString
-    override def savePersonnelType: Unit = println("We love CS students!")
+
+    override protected def savePersonnelType: Unit = println("We love CS students!")
   }
 
-  class Professor(override val UID: BigInt) extends UniversityPersonnel with StorageDevice {
+  //Error:(53, 9) class Professor inherits conflicting members:
+  //  def store: String (defined in trait StorageDevice) and
+  //  def store: String (defined in trait Checksum)
+  //  (note: this can be resolved by declaring an `override` in class Professor.)
+  //  class Professor(override val UID: BigInt) extends UniversityPersonnel with StorageDevice with Checksum {
+  class Professor(override val UID: BigInt) extends UniversityPersonnel with StorageDevice with Checksum {
     override protected def data2Store: String = "Professor UIC: " + UID.toByteArray.toList.toString
+
+    override def store: String = {
+      println("Professor's Checksum: " + super[Checksum].store)
+      super[Checksum].store
+    }
   }
 
 }
