@@ -11,7 +11,9 @@
 package DesignPatterns
 
 class LazyPattern {
+  //this instance variable will not be evaluated until explicitly invoked
   lazy val lazycontent = 1 to 100 foreach (println)
+  //however, this instance variable will be automatically evaluated as part of instance creation
   val content = 1 to 10 foreach (println)
 }
 
