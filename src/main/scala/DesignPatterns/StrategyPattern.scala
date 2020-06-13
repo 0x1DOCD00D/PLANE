@@ -11,6 +11,8 @@
 package DesignPatterns
 
 class StrategyPattern[T, S] {
+  //the behavior is called Machinery. It performs some action which is embodied
+  // in the function strategy. THis is how this behavior is performed
   def Machinery[T, S](strategy: T => S)(i: T): S = {
     val res = strategy(i)
     println(res)
