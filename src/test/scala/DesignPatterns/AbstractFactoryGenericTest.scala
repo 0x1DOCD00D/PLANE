@@ -14,7 +14,7 @@ import DesignPatterns.AbstractFactoryGeneric.Porsche
 import org.scalatest.funsuite.AnyFunSuite
 
 class AbstractFactoryGenericTest extends AnyFunSuite {
-  test("request a car made by Chevy") {
+  test("request a car made by Porsche") {
     AbstractFactoryGeneric(classOf[Porsche]) match {
       case Some(car) => assert(car.getClass.toString == "class DesignPatterns.AbstractFactoryGeneric$Porsche")
       case None => assert(false)
