@@ -45,7 +45,7 @@ object ClassicNatExample {
   //  class `2` extends Nat
   //we cannot just define all nats here by enumeration
 
-  class SuccessorOf[Number <: Nat] extends Nat
+  class SuccessorOf[NUM <: Nat] extends Nat
 
   type `1` = SuccessorOf[`0`]
   type `2` = SuccessorOf[`1`]
@@ -80,7 +80,8 @@ object ClassicNatExample {
   //from the implicit object of predecessors whose successors are `4` and `5`. This implicit object is lessThen: <[LeftNumber, RightNumber] where LeftNumber is `3` and RightNumber is `4` and
   //this object can in turn be produced by this implicit inductionStep as the <[SuccessorOf[`2`], SuccessorOf[`3`]] where  lessThen: <[LeftNumber, RightNumber] where LeftNumber is `1` and RightNumber is `2`.
   //Continuing this logic we have the resulting object <[`0`, `1`] and we are done!
-  implicit def inductionStep[LeftNumber <: Nat, RightNumber <: Nat](implicit lessThen: <[LeftNumber, RightNumber]): <[SuccessorOf[LeftNumber], SuccessorOf[RightNumber]] = new <[SuccessorOf[LeftNumber], SuccessorOf[RightNumber]] {}
+
+  @unchecked implicit def inductionStep[LeftNumber <: Nat, RightNumber <: Nat](implicit lessThen: <[LeftNumber, RightNumber]): <[SuccessorOf[LeftNumber], SuccessorOf[RightNumber]] = new <[SuccessorOf[LeftNumber], SuccessorOf[RightNumber]] {}
 
   val compare_4_with_5: <[`4`, `5`] = implicitly[<[`4`, `5`]]
 }

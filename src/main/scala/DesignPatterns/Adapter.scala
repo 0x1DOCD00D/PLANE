@@ -17,7 +17,7 @@ object AdapterPattern extends App {
   //however, the class Adaptee does not provide these methods and other clients keep
   //invoking the method SomeCoreMethod
   class Adaptee {
-    def SomeCoreMethod(msg: String) = println(msg)
+    def SomeCoreMethod(msg: String): Unit = println(msg)
   }
 
   //this is one way to present an adapter as a trait that obtains access
@@ -37,9 +37,9 @@ object AdapterPattern extends App {
 
   //the other way to use an adapter is to use it as a new interface
   trait AdapterAbstract {
-    def NewMethod1
+    def NewMethod1: Unit
 
-    def NewMethod2
+    def NewMethod2: Unit
   }
 
   //whereby a class implements this new interface and uses the class Adaptee internally

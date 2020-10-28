@@ -11,7 +11,7 @@ package DesignPatterns
 //this trait describes the abstract behavior of an abstract storage device that stores a list of bytes
 //to implement concrete storage, it should extend this trait to enforce the contract on the behavior
 trait StorageDevice {
-  def store(data:List[Byte])
+  def store(data: List[Byte]): Unit
 }
 
 //to implement a concrete storage device, we extend the trait and create

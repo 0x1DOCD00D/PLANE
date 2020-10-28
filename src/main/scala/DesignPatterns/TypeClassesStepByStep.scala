@@ -28,9 +28,7 @@ object TypeClassesStepByStep extends App {
   //  we introduce an implicit parameter, ev for evidence that there is an instance of the needed type in the scope
   //  that can be used
   implicit class WhateverItsNameIs[T](input: T) {
-    def printItNow(implicit ev: SomeTypeWeDefine[T]) = new SomeTypeWeDefine[T] {
-      override def printItNow1(input: T): String = input.toString
-    }.printItNow1(input)
+    def printItNow(implicit ev: SomeTypeWeDefine[T]) = ev.printItNow1(input)
   }
 
   //  implicit def printIt = new SomeTypeWeDefine[Int] {

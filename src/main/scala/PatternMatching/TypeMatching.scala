@@ -24,18 +24,22 @@ object TypeMatching {
 
   def apply(arg: SuperType): SuperType = arg match {
     case x: SuperType => println("SuperType"); x
+/*
     case x: Subtype1 => println("subtype1"); x
     case x: Subtype2 => println("subtype2"); x
     case x: Subtype11 => println("subtype11"); x
     case x: Subtype21 => println("subtype21"); x
+*/
   }
 
   def apply1(arg: SuperType): SuperType = arg match {
     case x: Subtype11 => println("subtype11"); x
-    case x: Subtype1 => println("subtype1"); x
-    case x: Subtype21 => println("subtype21"); x
-    case x: Subtype2 => println("subtype2"); x
-    case x: SuperType => println("SuperType"); x
+    /*
+        case x: Subtype1 => println("subtype1"); x
+        case x: Subtype21 => println("subtype21"); x
+        case x: Subtype2 => println("subtype2"); x
+        case x: SuperType => println("SuperType"); x
+    */
   }
 
 }

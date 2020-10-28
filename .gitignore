@@ -12,6 +12,12 @@
 .idea/**/dictionaries
 .idea/**/shelf
 
+.idea/codeStyles
+.idea/copyright
+.idea/modules
+.idea/target
+
+*/ShellScripts/*
 # Generated files
 .idea/**/contentModel.xml
 

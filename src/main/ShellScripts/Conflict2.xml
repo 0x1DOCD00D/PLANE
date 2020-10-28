@@ -1,0 +1,48 @@
+<!--
+  ~ /*
+  ~  * Copyright (c) 2020 Mark Grechanik. All rights reserved.
+  ~  *
+  ~  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~  *
+  ~  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+  ~  */
+  -->
+
+<transports>
+
+    <transport compatibilityMode="False" id="UPPER_BUS_TRANSPORT" messagefactoryid="CAML_MESSAGE_FACTORY_MSG"
+               middlewareid="MDG_TCP_MIDDLEWARE">
+        <properties>
+            <
+            <
+            <
+            <
+            <
+            <
+            < HEAD
+            <property name="HOST">ip-10-17-129-163.dev.org.com</property>
+            =======
+            <property name="HOST">ip-10-17-133-90.dev.org.com</property>
+            >>>>>>> 05c561a606c15b7a5cc1a6e12305af7a642f4fcc
+            <property name="PORT">7213</property>
+        </properties>
+    </transport>
+
+    <transport compatibilityMode="False" id="LOWER_BUS_TRANSPORT" messagefactoryid="CH312_FACTORY"
+               middlewareid="MDG_TCP_MIDDLEWARE">
+        <properties>
+            <
+            <
+            <
+            <
+            <
+            <
+            < HEAD
+            <property name="HOST">ip-10-17-129-163.dev.org.com</property>
+            =======
+            <property name="HOST">ip-10-17-133-90.dev.org.com</property>
+            >>>>>>> 05c561a606c15b7a5cc1a6e12305af7a642f4fcc
+            <property name="PORT">7214</property>
+        </properties>
+    </transport>
+</transports>

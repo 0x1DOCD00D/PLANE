@@ -8,8 +8,6 @@
 
 package Implicits
 
-import scala.reflect.ClassManifest
-
 trait SomeGenericType[T] {
   def behavior(parm: T): T
 }

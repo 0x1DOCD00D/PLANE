@@ -10,7 +10,7 @@
 
 package DesignPatterns
 
-class StrategyPattern[T, S] {
+class StrategyPattern {
   //the behavior is called Machinery. It performs some action which is embodied
   // in the function strategy. THis is how this behavior is performed
   def Machinery[T, S](strategy: T => S)(i: T): S = {
@@ -29,5 +29,5 @@ class Strategy1 extends Strategy[Int, String] {
 }
 
 object StrategyPattern extends App {
-  new StrategyPattern[Int, String].Machinery((new Strategy1).convert)(10)
+  new StrategyPattern().Machinery((new Strategy1).convert)(10)
 }

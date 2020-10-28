@@ -16,14 +16,14 @@ package InterestingScalaFeatures
 trait PrinterConfiguration {
   val fonts: List[String]
 
-  def configure(printer: Int)
+  def configure(printer: Int): Unit
 }
 
 //this is a mixing trait that adds printing to some other functionalities
 //we want to send data to a printer defined by its ID and to configure the printer
 //but the method configure of the trait PrinterConfiguration is not defined
 trait Printing {
-  def print(printer: Int, data: String)
+  def print(printer: Int, data: String): Unit
 }
 
 trait PrintingWithAccess2Configure {
