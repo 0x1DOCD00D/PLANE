@@ -31,6 +31,8 @@ libraryDependencies ++= Seq("org.scalactic" %% "scalactic" % "3.1.1",
   // https://mvnrepository.com/artifact/org.scalatest/scalatest
   "org.scalatest" %% "scalatest" % "3.2.0" % "test",
   //  "org.mozilla" % "rhino" % "1.7.13"
+  // https://mvnrepository.com/artifact/org.jsoup/jsoup
+  "org.jsoup" % "jsoup" % "1.13.1",
   "org.scala-lang.modules" %% "scala-xml" % "1.3.0")
 
 resolvers += Resolver.sbtPluginRepo("releases")

@@ -63,15 +63,15 @@ object ChainImplicits extends App {
    * implicit def convert2N+1FromN[XX](i:XX)(implicit xx: XX=>IntermediateClass_N):IntermediateClass_N+1 = new IntermediateClass_N+1
   */
 
-  class C4
+  class C4[T]
 
-  implicit def convert2C4FromC3[XX](i: XX)(implicit xx: XX => C3): C4 = new C4
+  implicit def convert2C4FromC3[XX](i: XX)(implicit xx: XX => C3): C4[XX] = new C4[XX]
 
-  val result4: C4 = 3
+  val result4: C4[_] = 3
 
   class C5
 
-  implicit def convert2C5FromC4[XX](i: XX)(implicit xx: XX => C4): C5 = new C5
+  implicit def convert2C5FromC4[XX](i: XX)(implicit xx: XX => C4[XX]): C5 = new C5
 
   val result5: C5 = 3
 

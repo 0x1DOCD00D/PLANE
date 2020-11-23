@@ -8,6 +8,12 @@
 
 package Variance
 
+import Variance.HierarchyOfScholars.Scholar
+
 object Variances {
 
+  trait RulesOfConduct[T]
+
+  val rulesScholar = new RulesOfConduct[Scholar] {}
+  println(rulesScholar)
 }
