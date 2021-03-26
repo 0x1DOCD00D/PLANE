@@ -8,27 +8,14 @@
  *
  */
 
-package DesignPatterns
+package Language
 
-import DesignPatterns.PimpMyLibrary.Student
-
-//we define a companion class
-class PimpMyLibrary {
-  type Sometype = Student
-}
-
-object PimpMyLibrary extends App {
-
-  //https://docs.scala-lang.org/sips/value-classes.html
-
-  implicit class SomeClass(val o: PimpMyLibrary#Sometype) extends AnyVal {
-    def SomeMethod = println(s"Called for $o")
+object MapImplementation extends App {
+  def mapIt[T, S](container: List[T])(f: T => S): List[S] = {
+    for (element <- container) yield {
+      f(element)
+    }
   }
 
-  class Student
-
-  val student = new Student
-
-  student.SomeMethod
-
+  println(mapIt[String, Int](List("drmark", "howdy", "nice course"))((i: String) => i.length))
 }

@@ -27,8 +27,6 @@ class InsertionSortWithFoldLeft[T](val input: List[T])(implicit ev1: T => Ordere
 
     input.foldLeft(List[T]())((sortedList, element) => addElement2TheCorrectPosition(sortedList, element))
   }
-
-
 }
 
 object InsertionSortWithFoldLeft {

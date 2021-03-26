@@ -17,7 +17,6 @@ import simulacrum.{op, typeclass}
 //Many examples come from http://eed3si9n.com/herding-cats
 
 object TutorialCats extends App {
-
   case class X(p: Int)
 
   case class Y(p: Double)

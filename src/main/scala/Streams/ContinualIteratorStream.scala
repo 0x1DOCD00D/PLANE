@@ -1,6 +1,6 @@
 /*
  *
- *  * Copyright (c) 2020 Mark Grechanik. All rights reserved.
+ *  * Copyright (c) 2021 Mark Grechanik. All rights reserved.
  *  *
  *  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  *  *
@@ -8,27 +8,23 @@
  *
  */
 
-package DesignPatterns
+package Streams
 
-import DesignPatterns.PimpMyLibrary.Student
+object LazyListRetrievalElements {
+  var index = -1
 
-//we define a companion class
-class PimpMyLibrary {
-  type Sometype = Student
+  def apply(lst: LazyList[Int]): Int = {
+    index += 1
+    lst(index)
+  }
 }
 
-object PimpMyLibrary extends App {
-
-  //https://docs.scala-lang.org/sips/value-classes.html
-
-  implicit class SomeClass(val o: PimpMyLibrary#Sometype) extends AnyVal {
-    def SomeMethod = println(s"Called for $o")
+object ContinualIteratorStream extends App {
+  def streamNaturalNumbers(startFrom: Int): LazyList[Int] = {
+    startFrom #:: streamNaturalNumbers(startFrom + 1)
   }
 
-  class Student
-
-  val student = new Student
-
-  student.SomeMethod
-
+  val list = streamNaturalNumbers(0)
+  val iterateIt = Iterator.continually(LazyListRetrievalElements(list))
+  iterateIt.take(10).foreach(println)
 }

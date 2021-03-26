@@ -8,27 +8,13 @@
  *
  */
 
-package DesignPatterns
+package scala3Features
 
-import DesignPatterns.PimpMyLibrary.Student
-
-//we define a companion class
-class PimpMyLibrary {
-  type Sometype = Student
-}
-
-object PimpMyLibrary extends App {
-
-  //https://docs.scala-lang.org/sips/value-classes.html
-
-  implicit class SomeClass(val o: PimpMyLibrary#Sometype) extends AnyVal {
-    def SomeMethod = println(s"Called for $o")
-  }
-
-  class Student
-
-  val student = new Student
-
-  student.SomeMethod
-
+object AllKindsOfTypes {
+  /*
+    def unionTypes(input: Int | String ) = input match {
+      case x:Int => println("Int")
+      case y:String => println("String")
+    }
+  */
 }

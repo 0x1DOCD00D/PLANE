@@ -26,12 +26,12 @@ trait Printing {
   def print(printer: Int, data: String): Unit
 }
 
-trait PrintingWithAccess2Configure {
+trait PrintingWithAccess2Configure extends Printing {
   //we tell the compiler that the trait PrintingWithAccess2Configure can access the methods
   //of the trait PrinterConfiguration. But the method configure is not defined, hence this trait
   //can be mixed only with the concrete implementation of this method.
   self: PrinterConfiguration =>
-  def print(printer: Int, data: String) = {
+  override def print(printer: Int, data: String) = {
     configure(printer)
     //send data here
     println(data)

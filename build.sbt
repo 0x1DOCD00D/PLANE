@@ -2,7 +2,8 @@ name := "PLANE"
 
 version := "0.1"
 
-scalaVersion := "2.13.1"
+scalaVersion := "2.13.4"
+//scalaVersion := "3.0.0-M3"
 
 scalacOptions ++= Seq(
   "-language:postfixOps",
@@ -10,11 +11,13 @@ scalacOptions ++= Seq(
   "-feature",
   "-unchecked",
   "-deprecation",
+  //  "-P:continuations:enable",
   //  "-Xlint",
   "-Xfatal-warnings"
 )
 
-libraryDependencies ++= Seq("org.scalactic" %% "scalactic" % "3.1.1",
+libraryDependencies ++= Seq(
+  "org.scalactic" %% "scalactic" % "3.1.1",
   "org.scalatest" %% "scalatest" % "3.1.1" % "test",
   // https://mvnrepository.com/artifact/commons-codec/commons-codec
   "commons-codec" % "commons-codec" % "1.14",
@@ -33,7 +36,8 @@ libraryDependencies ++= Seq("org.scalactic" %% "scalactic" % "3.1.1",
   //  "org.mozilla" % "rhino" % "1.7.13"
   // https://mvnrepository.com/artifact/org.jsoup/jsoup
   "org.jsoup" % "jsoup" % "1.13.1",
-  "org.scala-lang.modules" %% "scala-xml" % "1.3.0")
+  "org.scala-lang.modules" %% "scala-xml" % "1.3.0"
+)
 
 resolvers += Resolver.sbtPluginRepo("releases")
 
