@@ -19,7 +19,7 @@ object DependentTypes extends App {
   object PrimitiveODT {
     def apply(implicit ev: PrimitiveDT) = ev
 
-    implicit def ImplicitPrimitiveDT[A] = new PrimitiveDT {
+    implicit def ImplicitPrimitiveDT[A]: PrimitiveDT = new PrimitiveDT {
       override type T = A
     }
   }

@@ -19,6 +19,7 @@ object Functor4ArrayList {
   }
 
 
+/*
   implicit object JAL_a_Functor extends Functor[ArrayList] {
     def map[X, Y](f: X => Y) = (xs: ArrayList[X]) => {
       val ys = new ArrayList[Y]
@@ -27,7 +28,7 @@ object Functor4ArrayList {
     }
   }
 
-  implicit def fops[F[_] : Functor, A](fa: F[A]) = new {
+  implicit def fops[F[_] : Functor, A](fa: F[A]): Functor[ArrayList] = new {
     val witness = implicitly[Functor[F]]
 
     final def map[B](f: A => B): F[B] = witness.map(f)(fa)
@@ -35,9 +36,10 @@ object Functor4ArrayList {
 
 
   val testList = new ArrayList(java.util.Arrays.asList("this", "is", "a", "test"))
-  val transformed = testList.map(_.toUpperCase)
+  val transformed = testList.map(s => s.asInstanceOf[String].toUpperCase)
 
   def main(args: Array[String]): Unit = {
     println(transformed)
   }
+*/
 }

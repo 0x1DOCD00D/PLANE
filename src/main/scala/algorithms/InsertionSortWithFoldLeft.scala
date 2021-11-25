@@ -8,7 +8,9 @@
 
 package algorithms
 
-class InsertionSortWithFoldLeft[T](val input: List[T])(implicit ev1: T => Ordered[T]) {
+import math.Ordering.Implicits.infixOrderingOps
+
+class InsertionSortWithFoldLeft[T](val input: List[T])(implicit ev1: Ordering[T]) {
   /*
     In the functional solution, we break the unsorted list using the head::tail pattern. Also, we introduce
     a sorted list that we also decompose using the same pattern to insert a new element from the unsorted list

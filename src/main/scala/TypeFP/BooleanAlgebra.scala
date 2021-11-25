@@ -10,8 +10,6 @@
 
 package TypeFP
 
-import shapeless.test.illTyped
-
 object BooleanAlgebra extends App {
 
   sealed trait BooleanType {
@@ -30,12 +28,12 @@ object BooleanAlgebra extends App {
     override type ~ = BooleanTrue
   }
 
-  type \/[A <: BooleanType, B <: BooleanType] = A#`||`[B]
+//  type \/[A <: BooleanType, B <: BooleanType] = A#`||`[B]
 
   //  implicitly[T](implicit e: T): T = e
   //  abstract class =:=[From, To] extends (From <:< To)
   val res = implicitly[BooleanTrue =:= BooleanTrue]
   println(res.getClass.toString())
 
-  illTyped("implicitly[BooleanTrue =:= BooleanFalse]")
+  //  illTyped("implicitly[BooleanTrue =:= BooleanFalse]")
 }

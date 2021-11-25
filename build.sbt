@@ -1,58 +1,68 @@
-name := "PLANE"
+ThisBuild / organization := "com.lsc"
+ThisBuild / version := {
+  val orig = (ThisBuild / version).value
+  if (orig.endsWith("-SNAPSHOT")) "1.0.A-SNAPSHOT"
+  else orig
+}
+ThisBuild / scalaVersion := "3.0.2"
 
-version := "0.1"
+val logbackVersion = "1.3.0-alpha10"
+val sfl4sVersion = "2.0.0-alpha5"
+val typesafeConfigVersion = "1.4.1"
+val apacheCommonIOVersion = "2.11.0"
+val scalacticVersion = "3.2.9"
+val nscalatimeVersion = "2.30.0"
+val apacheCommonMathVersion = "3.6.1"
+val asmVersion = "9.2"
+val guavaVersion = "30.1.1-jre"
+val akkaVersion = "2.6.13"
+val catsVersion = "2.6.1"
+val snakeYamlVersion = "1.29"
+val scalaZVersion = "7.4.0-M8"
+val jsoupVersion = "1.14.3"
+val codecVersion = "1.15"
+val xmlVersion = "2.0.1"
 
-scalaVersion := "2.13.4"
-//scalaVersion := "3.0.0-M3"
-
-scalacOptions ++= Seq(
-  "-language:postfixOps",
-  "-language:implicitConversions",
-  "-feature",
-  "-unchecked",
-  "-deprecation",
-  //  "-P:continuations:enable",
-  //  "-Xlint",
-  "-Xfatal-warnings"
-)
-
-libraryDependencies ++= Seq(
-  "org.scalactic" %% "scalactic" % "3.1.1",
-  "org.scalatest" %% "scalatest" % "3.1.1" % "test",
-  // https://mvnrepository.com/artifact/commons-codec/commons-codec
-  "commons-codec" % "commons-codec" % "1.14",
-  "com.github.nscala-time" %% "nscala-time" % "2.24.0",
-  // https://mvnrepository.com/artifact/org.scalaz/scalaz-core
-  "org.scalaz" %% "scalaz-core" % "7.4.0-M2",
-  "com.chuusai" %% "shapeless" % "2.3.3",
-  "org.typelevel" %% "cats-core" % "2.0.0",
-  "org.typelevel" %% "cats-free" % "2.0.0",
-  "org.typelevel" %% "simulacrum" % "1.0.0",
-  // https://mvnrepository.com/artifact/org.ow2.asm/asm-debug-all
-  "org.ow2.asm" % "asm-debug-all" % "5.2",
-  "org.scalactic" %% "scalactic" % "3.2.0",
-  // https://mvnrepository.com/artifact/org.scalatest/scalatest
-  "org.scalatest" %% "scalatest" % "3.2.0" % "test",
-  //  "org.mozilla" % "rhino" % "1.7.13"
-  // https://mvnrepository.com/artifact/org.jsoup/jsoup
-  "org.jsoup" % "jsoup" % "1.13.1",
-  "org.scala-lang.modules" %% "scala-xml" % "1.3.0"
-)
-
+resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots").withAllowInsecureProtocol(true)
+resolvers += ("Apache repo" at "https://repository.apache.org/").withAllowInsecureProtocol(true)
 resolvers += Resolver.sbtPluginRepo("releases")
 
-
-val catsVersion = "1.0.1"
-val catsCore = "org.typelevel" %% "cats-core" % catsVersion
-
-lazy val root = (project in file(".")).
-  settings(
-    scalacOptions ++= Seq(
-      "-deprecation",
-      "-Ymacro-annotations",
-      "-encoding", "UTF-8",
-      "-feature",
-      "-Xcheckinit",
-      "-language:_"
-    )
+//noinspection SpellCheckingInspection
+lazy val root = (project in file("."))
+  .settings(
+    name := "PLANE",
+    scalacOptions := Seq("-explain", "-Yexplain-lowlevel", "-Xfatal-warnings", "-unchecked", "-deprecation", "-feature", "-language:implicitConversions"),
+    scalacOptions += "-language:experimental.macros",
+    description := "Simulation Templatized Agent-based Generation Engine",
+    Test / parallelExecution := false,
+    libraryDependencies ++= Seq(
+      ("com.typesafe.akka" %% "akka-actor-typed" % akkaVersion).cross(CrossVersion.for3Use2_13),
+      ("com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test).cross(CrossVersion.for3Use2_13),
+      "ch.qos.logback" % "logback-core" % logbackVersion,
+      "ch.qos.logback" % "logback-classic" % logbackVersion,
+      "org.slf4j" % "slf4j-api" % sfl4sVersion,
+      "com.typesafe" % "config" % typesafeConfigVersion,
+      "commons-io" % "commons-io" % apacheCommonIOVersion,
+      "org.apache.commons" % "commons-math3" % apacheCommonMathVersion,
+      "org.apache.commons" % "commons-rng-simple" % "1.3",
+      "org.typelevel" %% "cats-core" % catsVersion,
+      "com.github.nscala-time" %% "nscala-time" % nscalatimeVersion,
+      "org.scalactic" %% "scalactic" % scalacticVersion,
+      "org.scalatest" %% "scalatest" % scalacticVersion % Test,
+      "org.scalatest" %% "scalatest-featurespec" % scalacticVersion % Test,
+      "org.scalaz" %% "scalaz-core" % scalaZVersion,
+      "org.ow2.asm" % "asm" % asmVersion,
+      "org.ow2.asm" % "asm-commons" % asmVersion,
+      "org.ow2.asm" % "asm-util" % asmVersion,
+      "com.google.guava" % "guava" % guavaVersion,
+      "com.typesafe" % "config" % typesafeConfigVersion,
+      "org.jsoup" % "jsoup" % jsoupVersion,
+      "commons-codec" % "commons-codec" % codecVersion,
+      "org.scala-lang.modules" %% "scala-xml" % xmlVersion,
+      "org.yaml" % "snakeyaml" % snakeYamlVersion,
+    ),
+    homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
+    licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),
+    scriptedBufferLog := false,
+    publishMavenStyle := false,
   )

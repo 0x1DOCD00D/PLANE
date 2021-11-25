@@ -8,6 +8,8 @@
 
 package algorithms
 
+import scala.math.Ordering.Implicits.infixOrderingOps
+
 /*
   Implemented the functional programming version of the classic merge sort algorithm. The input is split in half, approximately,
   and then each half is sorted recursively until the base cases are reached. Then the sublists are merged.
@@ -15,7 +17,7 @@ package algorithms
   by recursively calling the function merge with prepending the head of one of the lists.
  */
 class ClassicMergeSort {
-  def sort[T](input: List[T])(implicit ev1: T => Ordered[T]): List[T] = {
+  def sort[T](input: List[T])(implicit ev1: Ordering[T]): List[T] = {
     def merge(left: List[T], right: List[T]): List[T] = {
       left match {
         case List() => right

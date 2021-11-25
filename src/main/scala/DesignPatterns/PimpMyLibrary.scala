@@ -10,11 +10,9 @@
 
 package DesignPatterns
 
-import DesignPatterns.PimpMyLibrary.Student
-
 //we define a companion class
 class PimpMyLibrary {
-  type Sometype = Student
+  type Sometype = DesignPatterns.PimpMyLibrary.Student
 }
 
 object PimpMyLibrary extends App {

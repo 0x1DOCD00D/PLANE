@@ -8,8 +8,10 @@
 
 package algorithms
 
+import math.Ordering.Implicits.infixOrderingOps
+
 object SelectionSort {
-  def apply[T](input: List[T])(implicit ev1: T => Ordered[T]): List[T] = {
+  def apply[T](input: List[T])(implicit ev1: Ordering[T]): List[T] = {
     if (input.length <= 1) input
     else {
       val twoLists = input.partition(_ <= input.min)

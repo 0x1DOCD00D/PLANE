@@ -9,7 +9,7 @@
 package Implicits
 
 object ImplicitContext extends App {
-  implicit val ec = SomeExecutionContext
+//  implicit val ec = SomeExecutionContext
 
 //  def doSomething2Integer
 }

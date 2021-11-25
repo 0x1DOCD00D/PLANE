@@ -19,6 +19,7 @@ object OtherNatExample {
   sealed trait ZeroNat extends Nat {
     type plus[Other <: Nat] = Other
   }
+/*
 
   sealed trait NotZeroNat[Prev <: Nat] extends Nat {
     type plus[Other <: Nat] = NotZeroNat[Prev#plus[Other]]
@@ -47,6 +48,7 @@ object OtherNatExample {
     override type Size = NotZeroNat[OtherList#Size]
     type map[F[Nat] <: Nat] = F[Value] :: OtherList#map[F]
   }
+*/
 
   /*
     type NatList1 = Nat1 :: Nat2 :: Nat3 :: Nat4

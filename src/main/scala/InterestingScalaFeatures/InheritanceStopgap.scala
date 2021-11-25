@@ -34,11 +34,13 @@ object InheritanceStopgap extends App {
     def aim = point
   }
 
+/*
   trait LaserGunModel {
     this: GlockModel =>
     def click = squeezeTrigger
 
     def loadLaser = true //cannot use loadBullets the inheritance stops here
   }
+*/
 
 }

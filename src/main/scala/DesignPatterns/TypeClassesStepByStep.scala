@@ -35,7 +35,7 @@ object TypeClassesStepByStep extends App {
   //    override def printItNow1(input: Int): String = input.toString
   //  }
   //  or we can use some other implicit
-  implicit val someEvidenceOfInstantiatedType = new SomeTypeWeDefine[Int] {
+  implicit val someEvidenceOfInstantiatedType: SomeTypeWeDefine[Int] = new SomeTypeWeDefine[Int] {
     override def printItNow1(input: Int): String = input.toString
   }
 

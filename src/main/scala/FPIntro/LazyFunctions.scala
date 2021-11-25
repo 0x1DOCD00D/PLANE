@@ -10,7 +10,7 @@
 
 package FPIntro
 
-object LazyFunctions {
+object LazyFunctions extends App {
   val log: (String) => Unit = s => ()
   val logLazy: (=> String) => Unit = s => (s)
 
@@ -22,8 +22,4 @@ object LazyFunctions {
   log(msgProducer("Message 1"))
 
   logLazy(msgProducer("Message 2"))
-
-  def main(args: Array[String]): Unit = {
-
-  }
 }

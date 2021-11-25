@@ -10,11 +10,15 @@
 
 package TypesAndGenerics
 
-object TimeExecutions {
-  def apply[R](block: => R): R = {
+object TimeExecutions:
+  def apply[R](block: => R): (R, Long) = {
     val t0 = System.currentTimeMillis()
     val result = block // call-by-name
     val t1 = System.currentTimeMillis()
-    result
+    (result, t1 - t0)
   }
-}
+
+  @main def runIt = println(TimeExecutions {
+    Thread.sleep(2000)
+    "Mark G"
+  })

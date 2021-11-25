@@ -18,7 +18,7 @@ object ContextBounds extends App {
   }
 
   //the implicit value is created in this scope
-  implicit val v = 23 <~ "Converted value: "
+  implicit val v: String = 23 <~ "Converted value: "
 
   //implicitly[T](implicit e: T): T = e
   //implicitly[String](implicit e: String is located, it is v): T = v is returned

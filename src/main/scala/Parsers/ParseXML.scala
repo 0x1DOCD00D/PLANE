@@ -14,7 +14,7 @@ import java.nio.file.{Files, Paths}
 
 import scala.xml.{PrettyPrinter, XML}
 
-object ParseXML extends App {
+object ParseXML extends App :
   System.setProperty("entityExpansionLimit", String.valueOf(Integer.MAX_VALUE))
   //  val xml = XML.loadFile("/home/drmark/Downloads/dblp.xml")
   val xml = Files.readAllBytes(Paths.get("/home/drmark/Downloads/dblp.xml"))
@@ -22,4 +22,3 @@ object ParseXML extends App {
   //  val publication = XML.loadString("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<!DOCTYPE dblp SYSTEM \""+getClass.getClassLoader.getResource("/home/drmark/Downloads/dblp.dtd").toURI.toString+"\">" + xml)
   val publication = XML.loadString(xml.toString)
   val pp = new PrettyPrinter(24, 4)
-}

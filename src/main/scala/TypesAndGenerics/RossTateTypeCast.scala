@@ -27,7 +27,7 @@ object RossTateTypeCast extends App {
 
   //  println(toL(p)("somestring").getClass.toString)
   //  println(toL(p)("somestring"):Nothing)
-  println(toL(null)("somestring").asInstanceOf[Nothing])
+  //  println(toL(null)("somestring").asInstanceOf[Nothing])
   println(toL(p)("somestring").asInstanceOf[Nothing])
 
   def cast[T, U](x: T): U = toL(p)(x)

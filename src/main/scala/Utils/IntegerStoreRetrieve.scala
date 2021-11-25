@@ -54,12 +54,12 @@ object IntegerStoreRetrieve {
     var i = 0
     var v = 0
     var read = 0
-    do {
+    while ((read & 0x80) != 0) {
       read = src.get
       v |= (read & 0x7F) << i
       i += 7
       require(i <= 35)
-    } while ((read & 0x80) != 0)
+    }
     v
   }
 
@@ -76,12 +76,12 @@ object IntegerStoreRetrieve {
     var i = 0
     var v = 0L
     var read = 0L
-    do {
+    while ((read & 0x80L) != 0) {
       read = src.get
       v |= (read & 0x7F) << i
       i += 7
       require(i <= 70)
-    } while ((read & 0x80L) != 0)
+    }
     v
   }
 }
