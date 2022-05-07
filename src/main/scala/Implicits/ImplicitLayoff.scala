@@ -38,10 +38,9 @@ object ImplicitLayoff extends App {
 
   //  Then we provide a function that instantiates the trait for a manager who makes a decision about firing a contractor as part of the layoff
   //  We use the hashcode of the manager object to make a random decision returning a contractor object if s/he is fired and None otherwise
-  val managersFireContractors: HRDecision[Manager, Contractor] = new HRDecision[Manager, Contractor] {
-    override def fireSomeEmployee(manager: Manager): Option[Contractor] = if (new Random(manager.hashCode).nextBoolean()) Some(new Contractor)
-    else None
-  }
+  //val managersFireContractors: HRDecision[Manager, Contractor] = new HRDecision[Manager, Contractor] {
+  val managersFireContractors: HRDecision[Manager, Contractor] = (manager: Manager) => if (new Random(manager.hashCode).nextBoolean()) Option(new Contractor)
+  else None
 
   //  The method layoff is where external employees are fired and the list of the fired employees is returned
   //  We create a comprehension iterator where the the function fireThem is invoked to produce a fired employee object
@@ -60,14 +59,14 @@ object ImplicitLayoff extends App {
   println(layoff(new Manager, 3)(managersFireContractors).length)
 
   //  We can reduce the number of parameters whose values we should pass by using implicits
-  implicit val managersFireContractorsImplicit: HRDecision[Manager, Contractor] = new HRDecision[Manager, Contractor] {
-    override def fireSomeEmployee(manager: Manager): Option[Contractor] = if (new Random(manager.hashCode).nextBoolean()) Some(new Contractor)
+  given managersFireContractorsImplicit: HRDecision[Manager, Contractor] with {
+    override def fireSomeEmployee(manager: Manager): Option[Contractor] = if (new Random(manager.hashCode).nextBoolean()) Option(new Contractor)
     else None
   }
 
   //  This is an almost exact replica of the method above except the argument fireThem is declared implicit
   //  it means that the evidence must be found automatically in the searcheable scopes
-  def layoffImplicit[T <: FullTimeEmployee, S <: ExternalEmployee](m: T, fireNEmployees: Int)(implicit fireThem: HRDecision[T, S]): List[S] = {
+  def layoffImplicit[T <: FullTimeEmployee, S <: ExternalEmployee](m: T, fireNEmployees: Int)(using fireThem: HRDecision[T, S]): List[S] = {
     var contractors: ListBuffer[S] = ListBuffer()
     for (n <- 0 until fireNEmployees) {
       fireThem.fireSomeEmployee(m) match {

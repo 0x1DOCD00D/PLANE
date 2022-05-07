@@ -4,7 +4,7 @@ ThisBuild / version := {
   if (orig.endsWith("-SNAPSHOT")) "1.0.A-SNAPSHOT"
   else orig
 }
-ThisBuild / scalaVersion := "3.0.2"
+ThisBuild / scalaVersion := "3.1.1"
 
 val logbackVersion = "1.3.0-alpha10"
 val sfl4sVersion = "2.0.0-alpha5"
@@ -16,7 +16,8 @@ val apacheCommonMathVersion = "3.6.1"
 val asmVersion = "9.2"
 val guavaVersion = "30.1.1-jre"
 val akkaVersion = "2.6.13"
-val catsVersion = "2.6.1"
+val catsVersion = "2.7.0"
+val catsEffectVersion = "3.4-389-3862cf0"
 val snakeYamlVersion = "1.29"
 val scalaZVersion = "7.4.0-M8"
 val jsoupVersion = "1.14.3"
@@ -31,9 +32,9 @@ resolvers += Resolver.sbtPluginRepo("releases")
 lazy val root = (project in file("."))
   .settings(
     name := "PLANE",
-    scalacOptions := Seq("-explain", "-Yexplain-lowlevel", "-Xfatal-warnings", "-unchecked", "-deprecation", "-feature", "-language:implicitConversions"),
+    scalacOptions := Seq("-explain", "-Yexplain-lowlevel", "-Xfatal-warnings", "-unchecked", "-deprecation", "-feature", "-language:implicitConversions" ),
     scalacOptions += "-language:experimental.macros",
-    description := "Simulation Templatized Agent-based Generation Engine",
+    description := "Programming Language ANalyses Experimentation",
     Test / parallelExecution := false,
     libraryDependencies ++= Seq(
       ("com.typesafe.akka" %% "akka-actor-typed" % akkaVersion).cross(CrossVersion.for3Use2_13),
@@ -46,6 +47,8 @@ lazy val root = (project in file("."))
       "org.apache.commons" % "commons-math3" % apacheCommonMathVersion,
       "org.apache.commons" % "commons-rng-simple" % "1.3",
       "org.typelevel" %% "cats-core" % catsVersion,
+      "org.typelevel" %% "cats-laws" % catsVersion % Test,
+      "org.typelevel" %% "cats-effect" % catsEffectVersion,
       "com.github.nscala-time" %% "nscala-time" % nscalatimeVersion,
       "org.scalactic" %% "scalactic" % scalacticVersion,
       "org.scalatest" %% "scalatest" % scalacticVersion % Test,

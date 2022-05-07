@@ -16,7 +16,7 @@ object ChainImplicits extends App {
   //  since the int 5 is wrapped into an instance of the class C1 as its parameter and then
   //  the method x is called with parameter 3
   implicit class C1(val i: Int) {
-    def x(j: Int): Int = i * j
+    infix def x(j: Int): Int = i * j
   }
 
   val result = 5 x 3
@@ -66,6 +66,7 @@ object ChainImplicits extends App {
   class C4[T]
 
   implicit def convert2C4FromC3[XX](i: XX)(implicit xx: XX => C3): C4[XX] = new C4[XX]
+//  given convert2C4FromC3[XX](i: XX)(using xx: XX => C3): C4[XX] with new C4[XX]
 
   val result4: C4[_] = 3
 

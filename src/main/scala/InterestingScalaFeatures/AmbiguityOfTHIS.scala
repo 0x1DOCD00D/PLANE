@@ -25,32 +25,29 @@ object AmbiguityOfTHIS extends App {
   //I want to extend this function with the composition functionality
   trait MyFunctionComposition[-T, +S] extends MyFunction[T, S] {
     //explained below
-    private val self = this
+//    private val self = this
+    mainTrait =>
 
     override def apply(p: T): S
 
     def compose[V](nextFunction: MyFunctionComposition[S, V]): MyFunction[T, V] = {
-      new MyFunction[T, V] {
-        override def apply(p: T): V = {
-          //Type mismatch.
-          //Required: S
-          //Found: V
-          //dem it!
-          //val result = nextFunction.apply(this.apply(p))
-          //we need to use the variable this that references the outer instance
-          //but it is shadowed by the variable this in the inner instance
-          //let us introduce a new variable called self
-          val result = nextFunction.apply(self.apply(p))
-          result
-        }
+      (p: T) => {
+        //Type mismatch.
+        //Required: S
+        //Found: V
+        //dem it!
+        //val result = nextFunction.apply(this.apply(p))
+        //we need to use the variable this that references the outer instance
+        //but it is shadowed by the variable this in the inner instance
+        //let us introduce a new variable called self
+        val result = nextFunction.apply(mainTrait.apply(p))
+        result
       }
     }
   }
 
   new MyFunctionComposition[Float, Int] {
     override def apply(p: Float): Int = p.toInt
-  }.compose[String](new MyFunctionComposition[Int, String] {
-    override def apply(p: Int): String = p.toString
-  }).apply(3.25f).foreach(println)
-
+  }.compose[String]((p: Int) => p.toString).apply(3.25f).foreach(println)
+  //    //  }.compose[String](new MyFunctionComposition[Int, String] {
 }
