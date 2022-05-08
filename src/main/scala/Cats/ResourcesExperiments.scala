@@ -46,6 +46,7 @@ object ResourcesExperiments extends IOApp :
     })
   }
 
+  def getResult(i:Int):ReturnResult4Resources = if i >= 0 then DataSizeFromFileContent(i) else ErrorMsg("oops!")
   def obtainContentLength(inputPath: String): IO[ReturnResult4Resources] =
     import cats.implicits.catsSyntaxEither
     import cats.syntax.all.catsSyntaxEither
@@ -58,7 +59,8 @@ object ResourcesExperiments extends IOApp :
       }.attempt
        .map(_.leftMap(Cats.ResourcesExperiments.FileRuntimeError.apply))
       ioLen <- processFileContent(result)
-    } yield DataSizeFromFileContent(ioLen)
+      output = getResult(ioLen)
+    } yield output
 
   override def run(args: List[String]): IO[ExitCode] =
     val program = for {
