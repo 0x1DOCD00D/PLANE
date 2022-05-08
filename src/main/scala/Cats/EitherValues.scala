@@ -6,6 +6,11 @@ import cats.syntax.all.*
 import cats.effect.*
 import cats.syntax.either.*
 import cats.effect.unsafe.implicits.global
+import Aid4Debugging.*
+import cats.effect.kernel.Outcome.{Canceled, Errored, Succeeded}
+
+import java.io.File
+import scala.io.Source
 
 case object ParserNotFoundError
 case class ParserErrorMessage(code:Int, msg:String)
