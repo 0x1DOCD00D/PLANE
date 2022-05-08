@@ -3,6 +3,8 @@ package Cats
 import cats.effect.IO
 
 object Aid4Debugging:
+  def putStrLn[T](value: T): IO[Unit] = IO(println(value.toString))
+
   def log[T](message: String, instance: T): T =
     println(message + ": " + instance.toString)
     instance
