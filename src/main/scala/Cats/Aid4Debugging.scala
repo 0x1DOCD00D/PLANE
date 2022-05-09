@@ -7,6 +7,8 @@ object Aid4Debugging:
 
   def printStackContent: IO[Unit] = IO(Thread.currentThread().getStackTrace.foreach(println))
 
+  def printStackContentEagerly: Unit = Thread.currentThread().getStackTrace.foreach(println)
+
   def log[T](message: String, instance: T): T =
     println(message + ": " + instance.toString)
     instance
