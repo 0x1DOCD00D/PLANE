@@ -9,7 +9,7 @@ object FactorialIO extends IOApp:
     Thread.currentThread().getStackTrace.foreach(println)
     if n <= 0 then 1 else n * fact(n - 1)
 
-  def factIO(n: Int): IO[Int] = if n <= 0 then IO.delay(1) else
+  def factIO(n: Int): IO[BigInt] = if n <= 0 then IO.delay(1) else
     for {
       N <- IO.delay(n)
       `N-1` <- factIO(n - 1)
@@ -17,9 +17,9 @@ object FactorialIO extends IOApp:
     } yield `N-1` * N
 
   override def run(args: List[String]): IO[ExitCode] =
-    fact(5)
+   // fact(100000)
     val program = for {
-      fib <- factIO(5).start.showThreadAndData
+      fib <- factIO(100000).start.showThreadAndData
       result <- fib.join
       output <- putStrLn(result)
       _ = log("fact", result)
