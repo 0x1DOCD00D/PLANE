@@ -6,7 +6,7 @@ import Aid4Debugging.*
 object FactorialIO extends IOApp:
 
   def fact(n: Int): Int =
-    printStackContentEagerly
+    printStackContentEagerly()
     if n <= 0 then 1 else n * fact(n - 1)
 
   def factIO(n: Int): IO[BigInt] = if n <= 0 then IO.delay(1) else

@@ -17,4 +17,4 @@ object CleaningTheMessFromErrors extends IOApp:
 
     program match
       case Left(msg) => IO.println(msg).as(ExitCode.Error)
-      case Right(guess) => IO.println(s"Correct number $guess").as(ExitCode.Success)
+      case Right(guess) => IO.println(s"Correct number ${guess*2}").as(ExitCode.Success)

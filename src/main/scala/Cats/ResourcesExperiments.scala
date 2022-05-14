@@ -40,10 +40,7 @@ object ResourcesExperiments extends IOApp :
     IO.blocking {
       println(s"closing file: ${file.toString}")
       file.close()
-    }.handleErrorWith(err => {
-      println(err.toString)
-      IO.unit
-    })
+    }
   }
 
   def getResult(i:Int):ReturnResult4Resources = if i >= 0 then DataSizeFromFileContent(i) else ErrorMsg("oops!")
