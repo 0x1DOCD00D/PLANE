@@ -10,15 +10,20 @@
 
 package Cats
 
-/*
-import cats.Show
-import cats.implicits._
+import cats.implicits.*
+import cats.instances.*
+import cats.syntax.*
+import cats.{Eq, Show}
 
-import simulacrum.{op, typeclass}
-*/
 //Many examples come from http://eed3si9n.com/herding-cats
 
 object TutorialCats extends App {
+  println(1.some === Option(1))
+  println(1.some === None)
+  println(1.some =!= None)
+  println("howdy".some =!= None)
+//  println(1.some =!= "howdy".some)
+
   case class X(p: Int)
 
   case class Y(p: Double)
