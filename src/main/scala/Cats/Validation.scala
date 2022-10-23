@@ -10,7 +10,7 @@ import cats.syntax.validated.*
 object Validation:
   @main def runvalid(): Unit =
     val legitValue: ValidatedNel[List[String], Int] = 1.validNel[List[String]]
-    val anErrorMessage: ValidatedNel[String, Int] = "It is an error message".invalidNel[Int]
+    val anErrorMessage: ValidatedNel[String, Int] = "It is an error message".invalidNel
     val aMixedList = List(1.validNel, 2.validNel, "e1".invalidNel, 3.validNel, "e2".invalidNel, 7.validNel)
     println(legitValue)
     println(anErrorMessage)
