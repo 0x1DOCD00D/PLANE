@@ -17,7 +17,7 @@ package Implicits
 * These intermediate types, however, are connected via some type resolution relation, we can call it NextType.
 * */
 
-object ChainImplicitWithInduction {
+object ChainImplicitWithInduction extends App {
 
   /*
     * class BaseClass(val i: Int) - it wraps the value of the base type, int

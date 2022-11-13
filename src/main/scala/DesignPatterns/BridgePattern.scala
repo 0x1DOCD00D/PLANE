@@ -27,8 +27,8 @@ object BridgePattern {
   //we have a type hierarchy that models something and it uses the abstraction and its
   //implementations above
   abstract class Model {
-    //this: SomeGeneralAbstraction =>
-    def DoIt: Boolean
+    this: SomeGeneralAbstraction =>
+    def DoIt: Boolean = behavior
   }
 
   class RefinedModel1 extends Model with ConcreteChild1 {

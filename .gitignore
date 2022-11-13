@@ -98,6 +98,7 @@ fabric.properties
 *.class
 *.log
 lib/
+project/target/**
 project/target/config-classes/$520a9b8e712bfab2b771.cache
 project/target/config-classes/$8b430eb09bfe15fd2996.cache
 project/target/config-classes/$9b54ffdc6e092481e25c.cache
