@@ -14,12 +14,25 @@ object TypeClassActionOnType:
   trait Wrapper4ActionOnType[T, S]:
     def actOnT(v:T): S
 
+  case class SomeWrapper(v:Int)
+
   object actOnInt extends Wrapper4ActionOnType[Int, String]:
     override def actOnT(v: Int): String = s"[${v.toString}]"
 
-  extension (v:Int)
-    def applyAction = actOnInt.actOnT(v)
+  object actOnSomeWrapper extends Wrapper4ActionOnType[SomeWrapper, String] :
+    override def actOnT(v: SomeWrapper): String = s"[${v.toString}]"
 
-  @main def runTypeClassAction =
+  implicit object actOnIntImpl extends Wrapper4ActionOnType[Int, String] :
+    override def actOnT(v: Int): String = s"[${v.toString}]"
+
+  implicit object actOnSomeWrapperImpl extends Wrapper4ActionOnType[SomeWrapper, String] :
+    override def actOnT(v: SomeWrapper): String = s"[${v.toString}]"
+
+  extension[T,S] (v:T)(using e: Wrapper4ActionOnType[T, S])
+    def applyAction = e.actOnT(v)
+
+
+  @main def runTypeClassAction(): Unit =
     println(actOnInt.actOnT(5))
     println(5.applyAction)
+    println(SomeWrapper(1).applyAction)
