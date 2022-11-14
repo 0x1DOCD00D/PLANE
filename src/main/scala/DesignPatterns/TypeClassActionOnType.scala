@@ -11,6 +11,15 @@ package DesignPatterns
  */
 
 object TypeClassActionOnType:
+  /*
+  * Say we want to add a method called applyAction to some type and this method will perform some action on this type.
+  * To so that we can define an extension[T,S](v:T) with def applyAction:S so that we can call 3.applyAction.
+  * However, to define the method appluAction we need to implement some behavior that acts on the input variable, v.
+  * This behavior must be parameterized by the type variable, T and it should be implemented for each used value of T.
+  * For this behavior we create the trait Wrapper4ActionOnType and its abstract method def actOnT(v:T): S.
+  * Next, we create objects that extend this trait by substituting concrete types and make these objects implicit.
+  * Finally, we add the second parameter to the extension to pass implicitly an instance of the implemented object.
+  * */
   trait Wrapper4ActionOnType[T, S]:
     def actOnT(v:T): S
 
@@ -29,7 +38,7 @@ object TypeClassActionOnType:
     override def actOnT(v: SomeWrapper): String = s"[${v.toString}]"
 
   extension[T,S] (v:T)(using e: Wrapper4ActionOnType[T, S])
-    def applyAction = e.actOnT(v)
+    def applyAction:S = e.actOnT(v)
 
 
   @main def runTypeClassAction(): Unit =
