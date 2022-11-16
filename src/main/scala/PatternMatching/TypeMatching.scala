@@ -8,7 +8,7 @@
 
 package PatternMatching
 
-import PatternMatching.TypeMatching.Subtype11
+import PatternMatching.TypeMatching.{Subtype1, Subtype11}
 
 object TypeMatching {
 
@@ -34,16 +34,15 @@ object TypeMatching {
 
   def apply1(arg: SuperType): SuperType = arg match {
     case x: Subtype11 => println("subtype11"); x
-    /*
-        case x: Subtype1 => println("subtype1"); x
-        case x: Subtype21 => println("subtype21"); x
-        case x: Subtype2 => println("subtype2"); x
-        case x: SuperType => println("SuperType"); x
-    */
+    case x: Subtype1 => println("subtype1"); x
+    case x: Subtype21 => println("subtype21"); x
+    case x: Subtype2 => println("subtype2"); x
+    case x: SuperType => println("SuperType"); x
   }
 
 }
 
 object RunIt extends App {
   TypeMatching.apply1(new Subtype11 {})
+  TypeMatching.apply1(new Subtype1 {})
 }
