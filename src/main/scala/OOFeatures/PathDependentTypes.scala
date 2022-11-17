@@ -21,13 +21,17 @@ object PathDependentTypes:
   trait ParameterizedStorage[StoredDataType] extends StorageOfValuesOfTheType:
     override type SomeTypeAlias = StoredDataType
 
-
+/*
+* We want to create a method that returns the type of a data item that is stored in the storage class.
+* The type of the data placed in the storage storage can be adjusted using the type alias.
+* The parameter to the method retrieveLastStoredObject
+* */
   trait StorageOfInts extends ParameterizedStorage[Int]
   trait StorageOfString extends ParameterizedStorage[String]
 
   def retrieveLastStoredObject(someStorageObject: StorageOfValuesOfTheType): StorageOfValuesOfTheType#SomeTypeAlias = someStorageObject.storeData.last
 
-  @main def runPathDependentTypes: Unit =
+  @main def runPathDependentTypes(): Unit =
     val storage = new StorageOfString {}
     storage.storeData += "Mark"
     storage.storeData += "Tina"
