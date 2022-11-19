@@ -49,7 +49,7 @@ object ContextBoundTutorial extends App {
   println(scream(Human(false), Human(false))(wokeness))
 
   //  As usual, let's make the mandatory Woke parameter implicit
-  implicit val wokenessImplicit: Woke[Human] = new Woke[Human] {
+  given Woke[Human] with {
     override def triggered(p1: Human, p2: Human): Option[Safespace[Human]] = if ((p1.snowflake || p2.snowflake) && (!p1.snowflake || !p2.snowflake)) {
       if (p1.snowflake) Some(Safespace(p1))
       else Some(Safespace(p2))
