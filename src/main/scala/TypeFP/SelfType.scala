@@ -26,8 +26,8 @@ object SelfType:
     self: T =>
     val l: ListBuffer[self.type] = ListBuffer()
   }
-  @main def runMainSelfType(): Unit =
-    println(new A[B]().l.getClass)
+  @main def runMainSelfType(): Unit = println(new B)
+//    println(new A[B]().l.getClass)
 //    Found:    TypeFP.SelfType.B
     //Required: Nothing
 //    println(new A[B]().l += new B)
