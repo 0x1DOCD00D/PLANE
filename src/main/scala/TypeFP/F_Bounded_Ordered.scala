@@ -1,5 +1,7 @@
 package TypeFP
 
+import com.sun.tools.javac.code.TypeTag
+
 /*
  *
  *  Copyright (c) 2021. Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
@@ -105,12 +107,12 @@ object F_Bounded_Ordered:
 
   @main def runMainFunc(): Unit =
     new OrangeContainer().compare(new AppleContainer)//we should not be able to do it
-//    new PearContainer().compare(new AppleContainer) //this is rejected, but the next line is ok
-    new PearContainer().compare(new OrangeContainer)
-//    we should compare a container object with another one only if their types are the same
-// but this solution enables us only to ensure that we pass the storage parameter
+      new PearContainer().compare(new OrangeContainer)
+    //    we should compare a container object with another one only if their types are the same
+    // but this solution enables us only to ensure that we pass the storage parameter
     new MyStorage4Oranges().compare(new MyStorage4Apples)
 
+  //    new PearContainer().compare(new AppleContainer) //this is rejected, but the next line is ok
+//  new MyContainer().compare(new MyContainer)
     new PackageOfApples().compare(new PackageOfApples)
-    println(F_Bounded_Ordered.getClass.getName)
 
