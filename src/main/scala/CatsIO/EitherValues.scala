@@ -1,4 +1,4 @@
-package Cats
+package CatsIO
 
 import cats.Applicative
 import cats.data.EitherT

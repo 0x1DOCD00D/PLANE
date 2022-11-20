@@ -1,4 +1,4 @@
-package Cats
+package CatsIO
 
 import cats.MonadError
 import cats.instances.either.*

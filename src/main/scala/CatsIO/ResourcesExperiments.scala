@@ -1,4 +1,4 @@
-package Cats
+package CatsIO
 
 import cats.effect.kernel.Outcome.{Canceled, Errored, Succeeded}
 import cats.effect.{ExitCode, IO, IOApp, Resource, Sync}
@@ -54,7 +54,7 @@ object ResourcesExperiments extends IOApp :
           ContentFromFile(file.toList.mkString)
         }
       }.attempt
-       .map(_.leftMap(Cats.ResourcesExperiments.FileRuntimeError.apply))
+       .map(_.leftMap(CatsIO.ResourcesExperiments.FileRuntimeError.apply))
       ioLen <- processFileContent(result)
       output = getResult(ioLen)
     } yield output

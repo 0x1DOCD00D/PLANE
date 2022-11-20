@@ -1,4 +1,4 @@
-package Cats
+package CatsIO
 
 import scala.io.StdIn
 

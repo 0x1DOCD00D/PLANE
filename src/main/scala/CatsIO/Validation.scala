@@ -1,4 +1,4 @@
-package Cats
+package CatsIO
 
 import cats.Semigroup
 import cats.data.Validated.{Invalid, Valid}

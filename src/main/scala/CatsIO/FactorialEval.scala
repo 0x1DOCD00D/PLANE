@@ -1,6 +1,6 @@
-package Cats
+package CatsIO
 
-import Cats.Aid4Debugging.printStackContentEagerly
+import CatsIO.Aid4Debugging.printStackContentEagerly
 import cats.Eval
 import cats.effect.{ExitCode, IO, IOApp}
 

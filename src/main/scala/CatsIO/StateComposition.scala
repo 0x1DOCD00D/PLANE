@@ -1,4 +1,4 @@
-package Cats
+package CatsIO
 
 import cats.data.State
 import cats.effect.{ExitCode, IO, IOApp}

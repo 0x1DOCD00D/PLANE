@@ -1,4 +1,4 @@
-package Cats
+package CatsIO
 
 import cats.effect.{ExitCode, IO, IOApp}
 import Aid4Debugging.*

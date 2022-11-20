@@ -1,4 +1,4 @@
-package Cats
+package CatsIO
 
 import cats.effect._
 import cats.effect.unsafe.implicits.global
