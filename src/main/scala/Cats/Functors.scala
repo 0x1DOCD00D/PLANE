@@ -1,6 +1,6 @@
 package Cats
 
-import com.github.nscala_time.time.Imports.DateTime
+import com.github.nscala_time.time.Imports.{DateTime, Interval}
 
 /*
  *
@@ -39,5 +39,10 @@ object Functors :
   @main def runMainFunctors(): Unit =
     import com.github.nscala_time.time.Implicits.richDateTime
     import com.github.nscala_time.time.Implicits.richInt
-    val newJR = JobRecord(1, DateTime.now(), DateTime.now()+(1.hours + 60.minutes + 12.seconds), 2).map(_+1)
+    import com.github.nscala_time.time.Imports.richReadableInstant
+    val processStart: DateTime = DateTime.now()
+    val processEnd: DateTime = processStart + (1.hours + 10.minutes + 5.seconds)
+    val elapsed: Interval = processStart to processEnd
+    val newJR = JobRecord(1, processStart, processEnd, 2).map(_+1)
     println(newJR)
+    println(elapsed)
