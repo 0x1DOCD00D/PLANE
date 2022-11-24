@@ -1,7 +1,5 @@
 package Cats
 
-import com.github.nscala_time.time.Imports.{DateTime, Interval}
-
 /*
  *
  *  Copyright (c) 2021. Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
@@ -28,6 +26,7 @@ import com.github.nscala_time.time.Imports.{DateTime, Interval}
 * https://en.wikipedia.org/wiki/Category_theory
 * */
 object Functors :
+  import com.github.nscala_time.time.Imports.{DateTime, Interval}
   import cats.Functor
   import cats.syntax.all.toFunctorOps
 
