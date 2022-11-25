@@ -38,7 +38,8 @@ object WriterMonad:
   @main def runMain_WriterMonad$(): Unit =
     println(op1(10))
     val res:Writer[List[String], Double] = for {
-      i <- Writer[List[String], Int](List("Input is given!"), 100)
+      j <- 100.writer(List("Prestep just for fun"))
+      i <- Writer[List[String], Int](List("Input is given!"), j)
       x <- op1(i)
       y <- op2(x.toString)
     } yield y
