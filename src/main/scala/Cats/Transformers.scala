@@ -26,7 +26,7 @@ object Transformers:
   import cats.instances.future.*
   import scala.concurrent.Await
   import scala.concurrent.ExecutionContext.Implicits.global
-  import scala.concurrent.duration._
+  import scala.concurrent.duration.*
   import cats.data.Writer
 
   type Logged[A] = Writer[List[String], A]
