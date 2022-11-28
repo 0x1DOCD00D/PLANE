@@ -25,6 +25,7 @@ val codecVersion = "1.15"
 val xmlVersion = "2.0.1"
 val scalaReflectVersion = "2.13.8"
 val scalaCompilerVersion = "2.13.8"
+val https4sVersion = "1.0.0-M37"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots").withAllowInsecureProtocol(true)
 resolvers += ("Apache repo" at "https://repository.apache.org/").withAllowInsecureProtocol(true)
@@ -66,7 +67,9 @@ lazy val root = (project in file("."))
       "org.scala-lang.modules" %% "scala-xml" % xmlVersion,
       "org.yaml" % "snakeyaml" % snakeYamlVersion,
       "org.scala-lang" % "scala-reflect" % scalaReflectVersion,
-      "org.scala-lang" % "scala-compiler" % scalaCompilerVersion
+      "org.scala-lang" % "scala-compiler" % scalaCompilerVersion,
+      "org.http4s" %% "http4s-core" % https4sVersion,
+      "org.http4s" %% "http4s-dsl" % https4sVersion,
     ),
     homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
     licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),
