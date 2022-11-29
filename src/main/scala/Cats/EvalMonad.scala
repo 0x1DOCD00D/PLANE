@@ -1,6 +1,6 @@
 package Cats
 
-import cats.Eval
+import cats.{Eval, Foldable}
 
 import scala.language.postfixOps
 
@@ -58,6 +58,10 @@ object EvalMonad:
       x
     )
     println(res.value)
+
+//    def foldRight[A, B](fa: F[A], lb: Eval[B])(f: (A, Eval[B]) => Eval[B]): Eval[B]
+//    val withFoldable: Eval[Int => Int] = Foldable[List].foldRight(lstOfFunczMil, Eval.now((i:Int)=>i))((f, acc)=>acc.flatMap(g=>Eval.later((i:Int)=>g(f(i))))) //acc.map(x=>Eval.defer(f.andThen(x))))
+//    println(withFoldable.value(0))
 
 //    compose two functions or a function with itself
     val compevals = composeEvals(feval,feval)
