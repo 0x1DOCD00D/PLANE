@@ -69,6 +69,3 @@ object Semigroupals:
     val errStr1: ErrorOrList[Int] = Left(List("error 1"))
     val errStr2: ErrorOrList[Int] = Left(List("error 2"))
     println((errStr1, errStr2).parTupled)
-
-
-
