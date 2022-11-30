@@ -135,7 +135,6 @@ project/target/streams/compile/scalacOptions/
 project/target/streams/compile/unmanagedClasspath/_global/streams/out
 project/target/streams/runtime/internalDependencyClasspath/_global/streams/out
 project/target/streams/runtime/unmanagedClasspath/_global/streams/out
-src/main/java/
 target/.history3
 target/global-logging/
 target/scala-3.0/
