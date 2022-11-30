@@ -130,11 +130,7 @@ project/target/config-classes/$65c512daaa141d91232b.cache
 project/target/config-classes/$96b1ded6431b66786803.cache
 project/target/config-classes/$9981c2c2472908a8c2a7.cache
 project/target/config-classes/$f6e92350901bae0c3d38.cache
-project/target/streams/compile/internalDependencyClasspath/_global/streams/out
-project/target/streams/compile/scalacOptions/
-project/target/streams/compile/unmanagedClasspath/_global/streams/out
-project/target/streams/runtime/internalDependencyClasspath/_global/streams/out
-project/target/streams/runtime/unmanagedClasspath/_global/streams/out
+project/target/streams/
 target/.history3
 target/global-logging/
 target/scala-3.0/
