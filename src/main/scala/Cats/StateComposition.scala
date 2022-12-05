@@ -1,10 +1,10 @@
-package CatsIO
+package Cats
 
+import cats.Monad
 import cats.data.State
 import cats.effect.{ExitCode, IO, IOApp}
-import cats.Monad
-import cats.instances.option.*
 import cats.instances.list.*
+import cats.instances.option.*
 
 object StateComposition extends IOApp:
   trait CodeProcessorState

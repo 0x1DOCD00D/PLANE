@@ -1,4 +1,4 @@
-package CatsIO
+package Cats
 
 import cats.data.Reader
 
