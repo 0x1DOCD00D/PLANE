@@ -16,8 +16,8 @@ val apacheCommonMathVersion = "3.6.1"
 val asmVersion = "9.2"
 val guavaVersion = "30.1.1-jre"
 val akkaVersion = "2.6.13"
-val catsVersion = "2.7.0"
-val catsEffectVersion = "3.4-389-3862cf0"
+val catsVersion = "2.8.0"
+val catsEffectVersion = "3.3.14"
 val snakeYamlVersion = "1.29"
 val scalaZVersion = "7.4.0-M8"
 val jsoupVersion = "1.14.3"
@@ -25,7 +25,7 @@ val codecVersion = "1.15"
 val xmlVersion = "2.0.1"
 val scalaReflectVersion = "2.13.8"
 val scalaCompilerVersion = "2.13.8"
-val https4sVersion = "1.0.0-M37"
+val https4sVersion = "0.23.6"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots").withAllowInsecureProtocol(true)
 resolvers += ("Apache repo" at "https://repository.apache.org/").withAllowInsecureProtocol(true)
@@ -68,8 +68,10 @@ lazy val root = (project in file("."))
       "org.yaml" % "snakeyaml" % snakeYamlVersion,
       "org.scala-lang" % "scala-reflect" % scalaReflectVersion,
       "org.scala-lang" % "scala-compiler" % scalaCompilerVersion,
-      "org.http4s" %% "http4s-core" % https4sVersion,
-      "org.http4s" %% "http4s-dsl" % https4sVersion,
+      "org.http4s"      %% "http4s-ember-server" % https4sVersion,
+      "org.http4s"      %% "http4s-ember-client" % https4sVersion,
+      "org.http4s"      %% "http4s-circe"        % https4sVersion,
+      "org.http4s"      %% "http4s-dsl"          % https4sVersion,
     ),
     homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
     licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),
