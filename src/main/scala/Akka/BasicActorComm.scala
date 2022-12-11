@@ -13,19 +13,20 @@ import akka.actor.{Actor, ActorSystem, Props, ActorRef}
 object BasicActorComm:
   val actorSystem: ActorSystem = ActorSystem("actOnIt1")
 
-  case class InformStudentAboutProfessor(professor: ActorRef)
+  case class InformStudentAboutProfessor(professor: ActorRef, otherStudent: ActorRef)
 
   class Professor(name: String) extends Actor:
     override def receive: Receive =
       case question: String =>
-        println(s"[question: ] $question from ${sender().toString()}")
-        sender() ! "There is never enough space for anything!"
+        println(s"[${context.self} received question: ] $question from ${sender().toString()}")
+        sender() ! "There are never enough time and space for anything!"
       case _ => println("[Professor received unknown message]")
 
   class Student(name: String) extends Actor:
     override def receive: Receive =
-      case InformStudentAboutProfessor(prof) => prof ! "What is the meaning of the Universe?"
-      case answer: String => println (s"[answer from: ] ${sender().toString()} - $answer")
+      case InformStudentAboutProfessor(prof, stdRef) => prof ! "What is the meaning of the Universe?"
+          stdRef forward(InformStudentAboutProfessor(prof, self))
+      case answer: String => println (s"[${context.self} received an answer from: ${sender().toString()}] - $answer")
       case _ => println("[Student received unknown message]")
 
   object Student:
@@ -38,8 +39,9 @@ object BasicActorComm:
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Akka/BasicActorComm.scala created at time 9:38 AM")
     println(actorSystem.name + " is created at " + actorSystem.startTime)
     val professor = actorSystem.actorOf(Professor("Mark"))
-    val student = actorSystem.actorOf(Student("Bumblebee"))
-    student ! 1//should print out [Student received unknown message]
-    student ! InformStudentAboutProfessor(professor)
+    val studentA = actorSystem.actorOf(Student("Oy"))
+    val studentB = actorSystem.actorOf(Student("Wey"))
+    studentA ! 1//should print out [Student received unknown message]
+    studentA ! InformStudentAboutProfessor(professor, studentB)
     Thread.sleep(5000)
     actorSystem.terminate()
