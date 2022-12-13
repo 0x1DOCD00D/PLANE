@@ -8,7 +8,8 @@
 
 package Akka
 
-import akka.actor.{Actor, ActorSystem, Props, ActorRef}
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
+import akka.event.Logging
 
 object StateMachineWithActors:
   case class Proceed(appRunner: ActorRef)
@@ -23,47 +24,49 @@ object StateMachineWithActors:
   enum States:
     case READY2RUN, RUNNING
 
-  class AppRunner extends Actor:
+  class AppRunner extends Actor with ActorLogging:
     override def receive: Receive =
       case RunApp(appName) =>
         context.become(runningApp(appName, States.READY2RUN))
-        println(s"[app runner:] received a request to run the app $appName")
+        log.info("[app runner] received a request to run the app {}", appName)
+        sender() ! Scheduled(appName+"wrongapp")
         sender() ! Scheduled(appName)
       case unknown => sender() ! Response(s"unknown message [$unknown] is discarded")
     def runningApp(appName: String, state: States): Receive =
-      case Status(an) => if appName == an then println(s"the status of $appName is $state") else println("unknown application $an")
+      case Status(an) => if appName == an then log.info("the status of {} is {}", appName, state) else log.error("unknown application $an")
       case GoAheadAndRunTheApp(an) =>
         if appName == an then
-          println(s"[app runner:] running the app $an")
+          log.info("[app runner] running the app {}", an)
           sender() ! Response(appName)
           context.become(runningApp(appName, States.RUNNING))
         else sender() ! Response("unknown application $an")
       case StopTheApp(an) =>
         if appName == an then
           context.become(receive)
-          println(s"[app runner:] shutting down the app $an")
+          log.info("[app runner] shutting down the app {}", an)
         else sender() ! Response("unknown application $an")
 
 
   object AppRunner:
     def apply(): Props = Props(new AppRunner())
 
-  class Client extends Actor:
+  class Client extends Actor with ActorLogging:
     val appName:String = "digger"
     override def receive: Receive =
       case Proceed(ar) => ar ! RunApp(appName)
       case Scheduled(an) =>
-        if an != appName then println(s"[error:] $an")
+        if an != appName then log.error(s"[client] tried to scheduled a wrong app named {}", an)
         else
-          println(s"[client:] the app $appName is scheduled to run")
+          log.info("[client] the {} is scheduled to run", appName)
           Thread.sleep(3000)
-          println(s"[client:] reminding the app runner to run the app $appName")
+          log.info("[client] reminding the app runner to run the app {}", appName)
           sender() ! GoAheadAndRunTheApp(appName)
-      case Response(an) => println(s"[client:] received response $an from the app runner")
-        if an != appName then println(s"[error:] $an") else sender() ! StopTheApp(appName)
+      case Response(an) => log.info(s"[client:] received response $an from the app runner")
+        if an != appName then log.error(s"[client] is informed about an incorrect app reference $an") else sender() ! StopTheApp(appName)
 
   object Client:
     def apply(): Props = Props(new Client())
+
   @main def runStateMachineWithActors(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Akka/StateMachineWithActors.scala created at time 11:52 AM")
     val actorSystem: ActorSystem = ActorSystem("stateMachineWithActors")
