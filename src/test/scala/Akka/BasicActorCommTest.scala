@@ -9,14 +9,15 @@
 package Akka
 import Akka.BasicActorComm.{PrimitiveActor, Professor, Student}
 import akka.actor.{ActorSystem, Props}
-import akka.testkit.{ImplicitSender, TestKit, TestProbe}
+import akka.testkit.{EventFilter, ImplicitSender, TestKit, TestProbe}
+import com.typesafe.config.ConfigFactory
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.{AnyWordSpec, AnyWordSpecLike}
 
 import scala.concurrent.duration.*
 
-class BasicActorCommTest extends TestKit(ActorSystem("TestUniversity"))
+class BasicActorCommTest extends TestKit(ActorSystem("TestUniversity", ConfigFactory.load().getConfig("logMsgInterceptorParams")))
   with ImplicitSender
   with AnyWordSpecLike
   with Matchers
@@ -33,10 +34,12 @@ class BasicActorCommTest extends TestKit(ActorSystem("TestUniversity"))
     }
 
     "verify a response from a Professor by expecting an error message" in {
-      val professor = system.actorOf(Professor("DrMark"))
-      professor ! WrongType
-      val reply = expectMsgType[String]
-      assert(reply == "Professor received unknown message WrongType")
+      within(5.second) {
+        val professor = system.actorOf(Professor("DrMark"))
+        professor ! WrongType
+        val reply = expectMsgType[String]
+        assert(reply == "Professor received unknown message WrongType")
+      }
     }
 
     "verify a no response from a primitive actor" in {
@@ -51,6 +54,13 @@ class BasicActorCommTest extends TestKit(ActorSystem("TestUniversity"))
       val professor = TestProbe("drmark")
       student1 ! InformStudentAboutProfessor(professor.ref, student2)
       professor.expectMsg("What is the meaning of the Universe?")
+    }
+
+    "intercept log entries" in {
+      EventFilter.error(message="Student received unknown message", occurrences = 1) intercept {
+        val student = system.actorOf(Student("Schlemiel"))
+        student ! 1
+      }
     }
 
   }

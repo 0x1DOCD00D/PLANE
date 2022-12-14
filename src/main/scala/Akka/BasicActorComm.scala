@@ -26,12 +26,12 @@ object BasicActorComm:
         log.error("Professor received message {}",msg.toString )
         sender() ! "Professor received unknown message " + msg.toString
 
-  class Student(name: String) extends Actor:
+  class Student(name: String) extends Actor with ActorLogging:
     override def receive: Receive =
       case InformStudentAboutProfessor(prof, stdRef) => prof ! "What is the meaning of the Universe?"
           stdRef forward InformStudentAboutProfessor(prof, self)
-      case answer: String => println (s"[${context.self} received an answer from: ${sender().toString()}] - $answer")
-      case _ => println("[Student received unknown message]")
+      case answer: String => log.debug (s"[${context.self} received an answer from: ${sender().toString()}] - $answer")
+      case _ => log.error("Student received unknown message")
 
   object Student:
     def apply(studentName: String):Props = Props(new Student(studentName))
