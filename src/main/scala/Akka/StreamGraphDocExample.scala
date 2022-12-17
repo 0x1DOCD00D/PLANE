@@ -1,0 +1,5 @@
+package Akka
+
+object StreamGraphDocExample {
+
+}

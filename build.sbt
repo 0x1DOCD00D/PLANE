@@ -16,6 +16,7 @@ val apacheCommonMathVersion = "3.6.1"
 val asmVersion = "9.2"
 val guavaVersion = "30.1.1-jre"
 val akkaVersion = "2.7.0"
+val akkaHttpVersion = "10.5.0-M1"
 val catsVersion = "2.8.0"
 val catsEffectVersion = "3.3.14"
 val snakeYamlVersion = "1.29"
@@ -45,6 +46,7 @@ lazy val root = (project in file("."))
       "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
       "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test,
       "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+      "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
       "ch.qos.logback" % "logback-core" % logbackVersion,
       "ch.qos.logback" % "logback-classic" % logbackVersion,
       "org.slf4j" % "slf4j-api" % sfl4sVersion,
