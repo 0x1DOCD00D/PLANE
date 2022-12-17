@@ -56,7 +56,6 @@ object DiffusingComputation:
     val actorSystem: ActorSystem = ActorSystem("DiffusingComputation")
     val rootNode = actorSystem.actorOf(TreeNode(None), "root")
     rootNode ! CreateDiffCompTree(0, 3)
-    Thread.sleep(10000)
     rootNode ! Workload(1000.0d)
     Thread.sleep(30000)
     actorSystem.terminate()

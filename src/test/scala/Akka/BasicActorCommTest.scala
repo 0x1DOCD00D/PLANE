@@ -43,7 +43,7 @@ class BasicActorCommTest extends TestKit(ActorSystem("TestUniversity", ConfigFac
     }
 
     "verify a no response from a primitive actor" in {
-      val pa = system.actorOf(Props[PrimitiveActor])
+      val pa = system.actorOf(Props[PrimitiveActor]())
       pa ! WrongType
       expectNoMessage(5.seconds)
     }
