@@ -10,14 +10,14 @@ package MultiProcessor;
 
 public class SimpleThreadCount {
     volatile int count = 0;
-    int maxCount = 100000;
+    int maxCount = 100;
     public void runCount(int threads) {
         Thread [] arrayOfThreads = new Thread[threads];
         for(int i = 0; i < threads; i++) {
             arrayOfThreads[i] = new Thread(() -> {
                 for(int j = 0; j < maxCount/threads; j++) {
                     count++;
-                    System.out.println("[" + Thread.currentThread().getName() + "] - " +count);
+                    System.out.println("[" + Thread.currentThread().getId() + "] - " +count);
                 }
             });
             arrayOfThreads[i].start();
