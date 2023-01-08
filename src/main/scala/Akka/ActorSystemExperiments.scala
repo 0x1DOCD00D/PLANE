@@ -20,6 +20,7 @@ object ActorSystemExperiments:
   class MyActor extends Actor with ActorLogging:
     override def receive: Receive =
       case msg: String if msg == "DONE" => log.info(s"Shutting down the system after receiving: $msg")
+                                            Thread.sleep(5000)
                                             context.system.terminate()
       case msg: String => log.info(s"Received message: $msg")
       case _ => log.info("Received unknown message")
@@ -27,6 +28,7 @@ object ActorSystemExperiments:
   object MyActor:
     def apply(): Props = Props(new MyActor)
   @main def runActorSystemExperiments(args: String*): Unit =
+    import akka.pattern.ask
     val system = ActorSystem("ActorSystemExperiments")
     system.log.info("Actor system created")
     given ExecutionContext = system.dispatcher
@@ -37,7 +39,8 @@ object ActorSystemExperiments:
        given Timeout = Timeout(5.seconds)
        system.log.info("Coordinated shutdown task started")
        Future {
-          Done
+         (myActor ? 10).mapTo[Unit]
+         Done
         }
     }
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Akka/ActorSystemExperiments.scala created at time 1:49 PM")
