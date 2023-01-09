@@ -31,6 +31,7 @@ object ActorSystemExperiments:
     import akka.pattern.ask
     val system = ActorSystem("ActorSystemExperiments")
     system.log.info("Actor system created")
+//    system.settings.config.getConfig("akka").entrySet().forEach(entry => system.log.info(s"Config entry: ${entry.getKey} -> ${entry.getValue.unwrapped()}"))
     given ExecutionContext = system.dispatcher
     val myActor: ActorRef = system.actorOf(MyActor(), "MyActor")
     //coordinated shutdown
