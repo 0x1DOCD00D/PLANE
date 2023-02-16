@@ -14,7 +14,13 @@ import scala.jdk.CollectionConverters.*
 import scala.util.Random
 
 object UniformProbGenerator:
-  def apply(): LazyList[Double] = generateUniformProbabilities()
+  private var offset = 0
+  private val probList: LazyList[Double] = generateUniformProbabilities()
+  def apply(szOfValues: Int): Iterator[Double] =
+    val lst = probList.slice(offset, offset + szOfValues)
+    offset += szOfValues
+    lst.iterator
+
   private def generateUniformProbabilities(range: Double = 100.0d): LazyList[Double] = (scala.util.Random.nextInt(range.toInt).toDouble / range) #:: generateUniformProbabilities(range)
 
 class GapModel(val statesTotal: Int, val initStates: Int, val maxBranchingFactor: Int, val maxDepth: Int, val maxProperties: Int, val propValueRange:Int, val actionRange: Int):
@@ -72,8 +78,7 @@ class GapModel(val statesTotal: Int, val initStates: Int, val maxBranchingFactor
     )
   private def generateProbs4AllNodes(): (Array[GuiObject], Iterator[Double]) =
     val allNodes: Array[GuiObject] = stateMachine.nodes().asScala.toArray
-    val probGenerator:LazyList[Double] = UniformProbGenerator()
-    (allNodes, probGenerator.take(allNodes.length*allNodes.length).iterator)
+    (allNodes, UniformProbGenerator(allNodes.length*allNodes.length))
 
 //  using this method we create a connected graph where there are no standalone unconnected nodes
   private def linkOrphanedNodesAndInitStates(allNodes: Array[GuiObject]): Unit =
@@ -85,7 +90,7 @@ class GapModel(val statesTotal: Int, val initStates: Int, val maxBranchingFactor
     )
 
   private def addInitStates(allNodes: Array[GuiObject]): Array[GuiObject] =
-    (0 to initStates-1).map(id=>
+    (0 until initStates).map(id=>
         val newInitNode:GuiObject = GuiObject(id, scala.util.Random.nextInt(maxBranchingFactor), scala.util.Random.nextInt(maxProperties))
         stateMachine.addNode(newInitNode)
         val connected: Array[GuiObject] = allNodes.filter(node => stateMachine.outDegree(node) > 0)
@@ -109,6 +114,11 @@ class GapModel(val statesTotal: Int, val initStates: Int, val maxBranchingFactor
     GapGraph(stateMachine, addInitStates(allNodes))
   end generateModel
 
+  def perturbModel(model: GapGraph, perturbationCoefficient: Double): GapGraph =
+    require(perturbationCoefficient > 0 && perturbationCoefficient <= 1, "The perturbation coefficient must be between 0 and 1")
+//    model.sm
+    null
+  end perturbModel
 
 
 object GraphGenerator:
