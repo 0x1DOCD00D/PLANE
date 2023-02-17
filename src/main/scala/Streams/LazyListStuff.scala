@@ -13,10 +13,11 @@ object LazyListStuff:
   private var offset = 0
   private def loop(v: Int): LazyList[Int] = v #:: loop(v + 1)
 
-  def next(n: Int): List[Int] =
+  def next(n: Int = 1): List[Int] =
     val result: List[Int] = lazylist1.slice(offset, offset + n).toList
     offset += n
     result
+
 
   @main def runLazyListStuff(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Streams/LazyListStuff.scala created at time 1:48 PM")
