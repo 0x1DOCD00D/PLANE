@@ -114,10 +114,26 @@ class GapModel(val statesTotal: Int, val initStates: Int, val maxBranchingFactor
     GapGraph(stateMachine, addInitStates(allNodes))
   end generateModel
 
+//  five types of perturbations: node removed, edge removed, edge is modified, new node is added with edges, new edge is added to some existing node
   def perturbModel(model: GapGraph, perturbationCoefficient: Double): GapGraph =
     require(perturbationCoefficient > 0 && perturbationCoefficient <= 1, "The perturbation coefficient must be between 0 and 1")
-//    model.sm
-    null
+    val modelClone = model.copy()
+    val (allNodes, probIterator) = generateProbs4AllNodes()
+
+    def removeNode(node: GuiObject): Unit =
+      modelClone.sm.removeNode(node)
+      ()
+
+
+    allNodes.foreach(node =>
+      allNodes.foreach(other =>
+        if node != other then
+          if probIterator.next() < perturbationCoefficient then
+            modelClone.sm.removeEdge(node, other)
+        else ()
+      )
+    )
+    modelClone
   end perturbModel
 
 
