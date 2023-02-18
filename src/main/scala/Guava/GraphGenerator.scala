@@ -80,8 +80,6 @@ class GapModel(val statesTotal: Int, val maxBranchingFactor: Int, val maxDepth: 
             case Some(action) => action.cost
             case None => noEdgeCost
         else noEdgeCost
-        val vc = distanceMap(v)
-        val uc = distanceMap(u)
         if edgeCost.isNaN then false
         else
           if distanceMap(v) > distanceMap(u) + edgeCost then
