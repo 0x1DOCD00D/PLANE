@@ -65,7 +65,43 @@ class GapModel(val statesTotal: Int, val maxBranchingFactor: Int, val maxDepth: 
 
       val (reachableNodes:Set[GuiObject], loops:Int) = dfs(sm.successors(initState).asScala.toList, Set())
       val allNodes:Set[GuiObject] = sm.nodes().asScala.toSet
-      (allNodes -- reachableNodes, loops)
+      (allNodes -- reachableNodes -- Set(initState), loops)
+
+    def distances(): Map[GuiObject, Double] =
+      val distanceMap: scala.collection.mutable.Map[GuiObject, Double] = collection.mutable.Map() ++ sm.nodes().asScala.map(node=> node -> Double.PositiveInfinity).toMap
+      val zeroCost: Double = 0.0d
+      val noEdgeCost: Double = Double.NaN
+      distanceMap += (initState -> zeroCost)
+
+      def relax(u: GuiObject)(v: GuiObject): Boolean =
+        import scala.jdk.OptionConverters.*
+        val edgeCost = if sm.hasEdgeConnecting(u,v) then
+          sm.edgeValue(u, v).toScala match
+            case Some(action) => action.cost
+            case None => noEdgeCost
+        else noEdgeCost
+        val vc = distanceMap(v)
+        val uc = distanceMap(u)
+        if edgeCost.isNaN then false
+        else
+          if distanceMap(v) > distanceMap(u) + edgeCost then
+                distanceMap(v) = distanceMap(u) + edgeCost
+                true
+          else false
+      end relax
+
+      def explore(node: GuiObject): Unit =
+        require(node != null, "The GuiObject node must not be null")
+        val successors = sm.successors(node).asScala.toList
+        val relaxNode: GuiObject => Boolean = relax(node)
+        successors match
+          case Nil => ()
+          case hd :: tl => if relaxNode(hd) then explore(hd)
+                           tl.foreach(cn => if relaxNode(cn) then explore(cn) else ())
+      end explore
+
+      explore(initState)
+      distanceMap.toMap
 
   private val stateMachine: GuiStateMachine = ValueGraphBuilder.directed().build()
 
@@ -93,7 +129,7 @@ class GapModel(val statesTotal: Int, val maxBranchingFactor: Int, val maxDepth: 
       scala.util.Random.nextInt(if fCount > 0 then fCount else 1),
       scala.util.Random.nextInt(if tCount > 0 then tCount else 1),
       if scala.util.Random.nextInt(10) % 2 == 0 then None else Some(scala.util.Random.nextInt(propValueRange)),
-      UniformProbGenerator(1).head
+      UniformProbGenerator().head
     )
 
 //  using this method we create a connected graph where there are no standalone unconnected nodes
@@ -161,12 +197,8 @@ object GraphGenerator:
     println(graph.degrees)
     println(graph.maxOutDegree())
     val (nodes, loops) = graph.unreachableNodes()
+    println(s"Unreachable nodes: ${nodes.toList.length}")
     nodes.foreach(println)
     println(s"Loops: $loops")
     println(graph.adjacencyMatrix.map(_.mkString(",")).mkString("\n"))
-/*
-    val graph:MutableValueGraph[GuiTree, String] = new GapStateMachine {}.generateStateMachine()
-    graph.nodes().forEach(println)
-    graph.edges().forEach( println)
-    println(graph.edgeValue(GuiTree(4), GuiTree(1)).get)
-*/
+    graph.distances().toSeq.sortBy(_._2).foreach(println)
