@@ -10,8 +10,10 @@ package Guava
 
 import com.google.common.graph.*
 
+import scala.collection.immutable.TreeSeqMap.OrderBy
+import scala.collection.mutable
 import scala.jdk.CollectionConverters.*
-import scala.util.Random
+import scala.util.{Failure, Random, Success, Try}
 
 object UniformProbGenerator:
   private var offset:Int = 0
@@ -103,7 +105,8 @@ class GapModel(val statesTotal: Int, val maxBranchingFactor: Int, val maxDepth: 
 
   private val stateMachine: GuiStateMachine = ValueGraphBuilder.directed().build()
 
-  case class GuiObject(id: Int, children: Int, props: Int, currentDepth:Int = 1):
+  trait GapGraphComponent
+  case class GuiObject(id: Int, children: Int, props: Int, currentDepth:Int = 1) extends GapGraphComponent:
     val properties: List[Int] = List.fill(props)(scala.util.Random.nextInt(propValueRange))
     val childrenObjects: List[GuiObject] = if currentDepth <= maxDepth then
         List.tabulate(children)(cid=>GuiObject(cid, scala.util.Random.nextInt(maxBranchingFactor), scala.util.Random.nextInt(maxProperties), currentDepth+1))
@@ -111,7 +114,7 @@ class GapModel(val statesTotal: Int, val maxBranchingFactor: Int, val maxDepth: 
 
     def childrenCount: Int = children + childrenObjects.map(_.childrenCount).sum
 
-  case class Action(actionType: Int, fromId: Int, toId: Int, resultingValue: Option[Int], cost: Double)
+  case class Action(actionType: Int, fromId: Int, toId: Int, resultingValue: Option[Int], cost: Double) extends GapGraphComponent
 
   private def createNodes(): Unit =
     (1 to statesTotal).foreach(id=>
@@ -162,27 +165,90 @@ class GapModel(val statesTotal: Int, val maxBranchingFactor: Int, val maxDepth: 
     GapGraph(stateMachine, addInitState(allNodes,28))
   end generateModel
 
-//  five types of perturbations: node removed, edge removed, edge is modified, new node is added with edges, new edge is added to some existing node
-  def perturbModel(model: GapGraph, perturbationCoefficient: Double): GapGraph =
+  trait Modification
+  case class NodeRemoved(node: GuiObject) extends Modification
+  case class NodeAdded(node: GuiObject) extends Modification
+  case class EdgeRemoved(edge: Action) extends Modification
+  case class EdgeAdded(edge: Action) extends Modification
+
+  case class OriginalGapComponent(node: Option[GapGraphComponent])
+
+  type ModificationRecord = Map[OriginalGapComponent, Modification]
+//  six types of perturbations: node modified, node removed, edge removed, edge is modified, new node is added with edges, new edge is added to some existing node
+  def perturbModel(model: GapGraph, perturbationCoefficient: Double, distancePercentile: Double): (GapGraph, ModificationRecord) =
     require(perturbationCoefficient > 0 && perturbationCoefficient <= 1, "The perturbation coefficient must be between 0 and 1")
+    require(distancePercentile > 0 && distancePercentile <= 1, "The distance percentile must be between 0 and 1")
+    val distances: Map[GuiObject, Double] = model.distances().toSeq.sortBy(_._2).toMap
+    val (minDistance, maxDistance) = (distances.minBy(_._2)._2,distances.maxBy(_._2)._2)
     val modelClone = model.copy()
 
-    def removeNode(node: GuiObject): Unit =
-      modelClone.sm.removeNode(node)
-      ()
+    def verifyDistance(node: GuiObject): Boolean =
+      val range:Double = maxDistance - minDistance
+      require(range > 1E-20, "The range of distances must be greater than 0")
+      val percentile = (distances(node) - minDistance) / range
+      percentile >= distancePercentile
 
+    def chooseNodeRandomlyAtDistance(): GuiObject =
+      val nodesAtDistance: Array[GuiObject] = distances.filter(_._2 >= distancePercentile).keys.toArray
+      nodesAtDistance(scala.util.Random.nextInt(nodesAtDistance.length))
 
-/*
-    allNodes.foreach(node =>
-      allNodes.foreach(other =>
-        if node != other then
-          if probIterator.next() < perturbationCoefficient then
-            modelClone.sm.removeEdge(node, other)
-        else ()
+    def removeNode(node: GuiObject, modification: ModificationRecord):ModificationRecord = if modelClone.sm.removeNode(node) then
+      modification + (OriginalGapComponent(Some(node)) -> NodeRemoved(node)) else modification
+
+    def addNode(modification: ModificationRecord):ModificationRecord =
+      val newNode: GuiObject = GuiObject(modelClone.sm.nodes().asScala.map(_.id).max + 1, scala.util.Random.nextInt(maxBranchingFactor), scala.util.Random.nextInt(maxProperties))
+      val allNodes: Array[GuiObject] = modelClone.sm.nodes().asScala.toArray
+      val modz = allNodes.foldLeft(Map[OriginalGapComponent,Modification]())((acc, node) =>
+          if UniformProbGenerator().head < perturbationCoefficient && verifyDistance(node) then
+            val edge = createAction(node, newNode)
+            stateMachine.putEdgeValue(node, newNode, edge)
+            acc + (OriginalGapComponent(None) -> EdgeAdded(edge))
+          else acc
+        )
+      modification ++ modz + (OriginalGapComponent(None) -> NodeAdded(newNode))
+
+    def modifyNode(modification: ModificationRecord): ModificationRecord =
+      import scala.jdk.OptionConverters.*
+      val allNodes: Array[GuiObject] = modelClone.sm.nodes().asScala.toArray
+      val victim:GuiObject = allNodes(scala.util.Random.nextInt(allNodes.length))
+      val newNode: GuiObject = GuiObject(victim.id, scala.util.Random.nextInt(maxBranchingFactor), scala.util.Random.nextInt(maxProperties))
+      val pred = modelClone.sm.predecessors(victim).asScala
+      val succ = modelClone.sm.successors(victim).asScala
+      modelClone.sm.addNode(newNode)
+      pred.foreach(node=>
+        modelClone.sm.edgeValue(node, victim).toScala match
+        case Some(edge) =>
+          modelClone.sm.removeEdge(node, victim)
+          modelClone.sm.putEdgeValue(node, newNode, edge)
+          ()
+        case None => ()
       )
-    )
-*/
-    modelClone
+      succ.foreach(node =>
+        modelClone.sm.edgeValue(victim, node).toScala match
+          case Some(edge) =>
+            modelClone.sm.removeEdge( victim, node)
+            modelClone.sm.putEdgeValue( newNode, node, edge)
+            ()
+          case None => ()
+      )
+      modification + (OriginalGapComponent(Some(victim))->NodeRemoved(victim)) +  (OriginalGapComponent(Some(victim)) -> NodeAdded(newNode))
+
+
+    def removeEdge(node: GuiObject, other:GuiObject, modification: ModificationRecord):ModificationRecord =
+      val edge = modelClone.sm.removeEdge(node, other)
+      if edge == null then modification else
+        modification + (OriginalGapComponent(Some(edge)) -> EdgeRemoved(edge))
+
+    def modifyEdge(node: GuiObject, other: GuiObject, modification: ModificationRecord):ModificationRecord =
+      val edge = modelClone.sm.removeEdge(node, other)
+      if edge == null then modification else
+        val newEdge: Action = edge.copy(resultingValue = Some(scala.util.Random.nextInt(propValueRange)), cost = UniformProbGenerator().head)
+        Try(modelClone.sm.putEdgeValue(node, other, newEdge)) match
+          case Success(_) => modification + (OriginalGapComponent(Some(edge)) -> EdgeAdded(newEdge)) + (OriginalGapComponent(Some(edge)) -> EdgeRemoved(edge))
+          case Failure(_) => modification + (OriginalGapComponent(Some(edge)) -> EdgeRemoved(edge))
+
+    null
+//    (modelClone, removedEntities.toSet)
   end perturbModel
 
 
