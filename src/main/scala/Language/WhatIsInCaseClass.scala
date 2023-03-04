@@ -9,8 +9,32 @@
 package Language
 
 object WhatIsInCaseClass extends App {
-  import scala.reflect.runtime.{currentMirror, universe as ru}
   import scala.reflect.runtime.universe.*
+  import scala.reflect.runtime.{currentMirror, universe as ru}
+
+  def ccToMap(cc: Product) = {
+    val f = cc.getClass.getDeclaredFields
+    println(cc.getClass.getName)
+    f.map(f => {
+      f.setAccessible(true)
+      println(s"Parameter: ${f.getName}, ${f.getAnnotatedType.getType.getTypeName}, ${f.get(cc)}")
+      (f.getName, f.get(cc))
+    }
+    ).toMap
+  }
+
+  def getTypeTag[T: TypeTag] = typeTag[T].tpe.members.filter(_.isTerm).map(_.asTerm).filter(_.isVal).map(f => (f.name, f.info)).toList
+
+  def getFields[T: TypeTag](cc: T) = cc.getClass.getDeclaredFields.map(f => (f.getName, f.getClass.getName)).toList
+
+  case class ParameterObject(stringType: String, optionType: Option[String])
+
+  //  println(getTypeTag[ParameterObject])
+
+  case class Person(name: String, age: ParameterObject)
+
+  ccToMap(Person("John", ParameterObject("string", Some("option"))))
+/*
 
   def getTypeTag[T: ru.TypeTag] = ru.typeTag[T].tpe.members.filter(_.isTerm).map(_.asTerm).filter(_.isVal).map(f=>(f.name, f.info)).toList
   def getFields[T: ru.TypeTag](cc:T) = cc.getClass.getDeclaredFields.map(f=>(f.getName,f.getClass.getName)).toList
@@ -22,4 +46,5 @@ object WhatIsInCaseClass extends App {
   case class Person(name: String, age: Int)
   println(getTypeTag[Person])
   println(getFields[Person](Person("John", 30)))
+*/
 }
