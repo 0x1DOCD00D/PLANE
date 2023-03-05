@@ -38,7 +38,7 @@ object ActorSystemExperiments:
     system.registerOnTermination(() => println("Actor system terminated"))
     CoordinatedShutdown(system).addTask(CoordinatedShutdown.PhaseBeforeServiceUnbind, "someTaskName") { () =>
        given Timeout = Timeout(5.seconds)
-       system.log.info("Coordinated shutdown task started")
+       println("Coordinated shutdown task started")
        Future {
          (myActor ? 10).mapTo[Unit]
          Done

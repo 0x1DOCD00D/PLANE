@@ -78,6 +78,7 @@ lazy val root = (project in file("."))
       "org.http4s"      %% "http4s-ember-client" % https4sVersion,
       "org.http4s"      %% "http4s-circe"        % https4sVersion,
       "org.http4s"      %% "http4s-dsl"          % https4sVersion,
+      "com.typesafe.akka" %% "akka-remote" % akkaVersion
     ),
     homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
     licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),
