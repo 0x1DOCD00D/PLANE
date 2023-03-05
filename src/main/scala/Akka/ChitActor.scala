@@ -9,6 +9,7 @@
 package Akka
 
 import akka.actor.{Actor, ActorLogging, PoisonPill, Props}
+import ChitChatMessages.*
 
 class ChitActor extends Actor with ActorLogging {
   override def receive: Receive = {

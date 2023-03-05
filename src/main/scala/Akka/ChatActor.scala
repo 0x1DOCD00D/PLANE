@@ -9,7 +9,7 @@
 package Akka
 
 import akka.actor.{Actor, ActorLogging, PoisonPill, Props}
-
+import ChitChatMessages.*
 class ChatActor extends Actor with ActorLogging {
   override def receive: Receive = {
     case m if m.isInstanceOf[StartChitChat.type ]  => log.info(s"Chat received $m from ${sender()}")

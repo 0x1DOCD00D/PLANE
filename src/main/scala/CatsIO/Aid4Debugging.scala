@@ -24,6 +24,6 @@ object Aid4Debugging:
       })
       for {
       someValue <- io
-      t = (Thread.currentThread().getName, Thread.currentThread().getId)
+      t = (Thread.currentThread().getName, Thread.currentThread().threadId())
       _ = println(s"Thread [${t._1}, ${t._2}] ${someValue.toString}")
     } yield someValue

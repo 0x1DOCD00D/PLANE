@@ -17,6 +17,7 @@ import com.typesafe.config.ConfigFactory
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.{Duration, TimeUnit, *}
 import scala.concurrent.{Await, ExecutionContext, Future}
+import ChitChatMessages.*
 
 object RemoteActorExperiment1 extends App {
   println("remote")
