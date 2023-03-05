@@ -21,6 +21,7 @@ import ChitChatMessages.*
 
 object RemoteActorExperiment1 extends App {
   println("remote")
+//  [akka://RemoteActorSystem@192.168.1.8:25521] with UID [6678455371721108346] MDC: {akkaAddress=akka://RemoteActorSystem@192.168.1.8:25521, akkaUid=6678455371721108346, sourceThread=main, akkaSource=ArteryTransport(akka://RemoteActorSystem), sourceActorSystem=RemoteActorSystem, akkaTimestamp=20:00:29.328UTC}
   val system = ActorSystem("RemoteActorSystem", ConfigFactory.load("remoteExperiment/remoteExpConfig1.conf").getConfig("remoteApp"))
 
   given ExecutionContext = system.dispatcher
@@ -28,6 +29,7 @@ object RemoteActorExperiment1 extends App {
   val chatActor = system.actorOf(ChatActor(), "chatActor")
   chatActor ! StartChitChat
   Thread.sleep(50000)
+  system.terminate()
 }
 
 object RemoteActorExperiment1_Local extends App {
