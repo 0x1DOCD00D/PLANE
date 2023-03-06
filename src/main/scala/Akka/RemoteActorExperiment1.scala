@@ -17,7 +17,6 @@ import com.typesafe.config.ConfigFactory
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.{Duration, TimeUnit, *}
 import scala.concurrent.{Await, ExecutionContext, Future}
-import ChitChatMessages.*
 
 object RemoteActorExperiment1 extends App {
   println("remote")
@@ -56,7 +55,7 @@ object RemoteActorExperiment1_Local extends App {
   system.log.info(s"Actor system scheduler's maxFrequency is ${system.getScheduler.maxFrequency}")
 
   chitActor ! StartChitChat
-  Thread.sleep(1000)
+  Thread.sleep(100000)
   chitActor ! ChitMessage("Howdy, remote comrade!")
   chitActor ! StopChitChat
   Thread.sleep(1000)
