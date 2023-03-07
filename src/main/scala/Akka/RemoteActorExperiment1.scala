@@ -39,6 +39,7 @@ object RemoteActorExperiment1_Local extends App {
 
   val chitActor = system.actorOf(ChitActor(), "chitActor")
   val chatActor = system.actorOf(ChatActor(), "chatActor")
+  println(chatActor.path)
   system.registerOnTermination(() => println("Local actor system terminated"))
   CoordinatedShutdown(system).addTask(CoordinatedShutdown.PhaseActorSystemTerminate, "someTaskName") { () =>
     given Timeout = Timeout(30.seconds)
