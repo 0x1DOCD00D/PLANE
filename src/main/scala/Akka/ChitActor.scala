@@ -17,7 +17,6 @@ class ChitActor extends Actor with ActorLogging {
     selection ! Identify("DrMark")
     println("Identify yourself!")
   }
-
   override def receive: Receive = {
     case m if m.isInstanceOf[StartChitChat.type ]  => log.info(s"Received $m from ${sender()}")
     case m if m.isInstanceOf[StopChitChat.type ]  => log.info(s"Received $m from ${sender()}")
