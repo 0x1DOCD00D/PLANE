@@ -15,7 +15,8 @@ class ChitActor extends Actor with ActorLogging {
   //  [akka://RemoteActorSystem@192.168.1.8:25521] with UID [6678455371721108346] MDC: {akkaAddress=akka://RemoteActorSystem@192.168.1.8:25521, akkaUid=6678455371721108346, sourceThread=main, akkaSource=ArteryTransport(akka://RemoteActorSystem), sourceActorSystem=RemoteActorSystem, akkaTimestamp=20:00:29.328UTC}
   override def preStart(): Unit = {
 //    val selection = context.actorSelection("akka://RemoteActorSystem@sanfrancisco:25521/user/chatActor")
-    val selection = context.actorSelection("akka://RemoteActorSystem@192.168.1.8:25521/user/chatActor")
+//    val selection = context.actorSelection("akka://RemoteActorSystem@192.168.1.8:25521/user/chatActor")
+    val selection = context.actorSelection("akka://RemoteActorSystem@192.168.1.8:25521/remote/akka/LocalActorSystem@192.168.1.7:25520/user/chatActor")
     selection ! Identify("DrMark")
     println("Identify yourself!")
   }

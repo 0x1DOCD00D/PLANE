@@ -58,6 +58,7 @@ object RemoteActorExperiment1_Local extends App {
   system.log.info(s"Actor system scheduler's maxFrequency is ${system.getScheduler.maxFrequency}")
 
   chitActor ! StartChitChat
+  chatActor ! StartChitChat
   Thread.sleep(100000)
   chitActor ! ChitMessage("Howdy, remote comrade!")
   chitActor ! StopChitChat
