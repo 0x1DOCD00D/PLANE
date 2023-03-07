@@ -9,14 +9,16 @@
 package Akka
 
 import akka.Done
-import akka.actor.{ActorSystem, CoordinatedShutdown, PoisonPill, Props}
+import akka.actor.{ActorSystem, Address, AddressFromURIString, CoordinatedShutdown, Deploy, PoisonPill, Props}
 import akka.pattern.ask
+import akka.remote.RemoteScope
 import akka.util.Timeout
 import com.typesafe.config.ConfigFactory
 
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.{Duration, TimeUnit, *}
 import scala.concurrent.{Await, ExecutionContext, Future}
+
 import ChitChatMessages.*
 
 object RemoteActorExperiment1 extends App {
@@ -38,7 +40,12 @@ object RemoteActorExperiment1_Local extends App {
   given ExecutionContext = system.dispatcher
 
   val chitActor = system.actorOf(ChitActor(), "chitActor")
-  val chatActor = system.actorOf(ChatActor(), "chatActor")
+
+  val remoteSystemAddress: Address = AddressFromURIString("akka://RemoteActorSystem@192.168.1.8:25521")
+  val chatActor = system.actorOf(ChatActor().withDeploy(Deploy(scope = RemoteScope(remoteSystemAddress))))
+
+
+//  val chatActor = system.actorOf(ChatActor(), "chatActor")
   println(chatActor.path)
   system.registerOnTermination(() => println("Local actor system terminated"))
   CoordinatedShutdown(system).addTask(CoordinatedShutdown.PhaseActorSystemTerminate, "someTaskName") { () =>
