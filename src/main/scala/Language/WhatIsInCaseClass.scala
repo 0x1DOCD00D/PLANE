@@ -32,8 +32,12 @@ object WhatIsInCaseClass extends App {
   //  println(getTypeTag[ParameterObject])
 
   case class Person(name: String, age: ParameterObject)
+  case object SinglePerson
+  val name: String = "namename"
 
   ccToMap(Person("John", ParameterObject("string", Some("option"))))
+  ccToMap(SinglePerson)
+//  ccToMap(name.asInstanceOf[Product])
 /*
 
   def getTypeTag[T: ru.TypeTag] = ru.typeTag[T].tpe.members.filter(_.isTerm).map(_.asTerm).filter(_.isVal).map(f=>(f.name, f.info)).toList
