@@ -28,6 +28,7 @@ object GraphManipulations:
     val edge12 = Edge(0.12)
     val edge23 = Edge(0.23)
     val edge31 = Edge(0.31)
+    val edge311 = Edge(0.311)
 
     if !graph1.addNode(node1) then
       println(s"Node $node1 already exists")
@@ -43,10 +44,11 @@ object GraphManipulations:
     graph2.addNode(node3)
     graph2.putEdgeValue(node1, node2, edge12)
     graph2.putEdgeValue(node3, node1, edge31)
+//    graph2.putEdgeValue(node3, node1, edge311)
 
-    println(graph1)
-    println(graph2)
+    println(s"graph1: $graph1")
+    println(s"graph2: $graph2")
     graph2.removeNode(node3)
-    println(graph1)
-    println(graph2)
+    println(s"graph1: $graph1")
+    println(s"graph2: $graph2")
 
