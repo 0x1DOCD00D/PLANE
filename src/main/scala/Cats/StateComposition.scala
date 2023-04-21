@@ -58,31 +58,26 @@ object StateComposition extends IOApp:
   import cats.syntax.all.catsSyntaxMonad
 
 
-  def extractNextItem: State[List[Int], Int] = State { state =>
+  def extractNextItem(result: (List[String], Boolean)): State[List[Int], (List[String], Boolean)] = State { state =>
     println(s"state: $state")
-    if (state.isEmpty) (Nil, -1)
+    if (state.isEmpty) (Nil, (result._1,false))
     else
-      (state.tail, state.head)
+      (state.tail, (s"s_${state.head.toString}" :: result._1, true))
   }
-  def process(i: Int): Int =
+  def process(i: (List[String],Boolean)): (List[String], Boolean) =
     println(s"processing $i")
     i
 
-  def loop(cnt:Int, in: State[List[Int], Int]): State[List[Int], Int] =
-    val choice: State[List[Int], Int] = extractNextItem map process
-    choice flatMap { i =>
+  def loop(in: State[List[Int], (List[String],Boolean)]): State[List[Int], (List[String],Boolean)] =
+//    val choice: State[List[Int], Int] = extractNextItem map process
+    in map process flatMap { i =>
       println(s"i: $i")
-      if(i > 0)
-        loop(i+cnt, extractNextItem)
-      else
-        State { state =>
-          (List[Int](), cnt)
-        }
-
+      if (i._2) loop(extractNextItem(i))
+      else in
     }
 
   override def run(args: List[String]): IO[ExitCode] =
-    val rloop = loop(0,extractNextItem map process).run(List(1, 2, 3,4,5)).value
+    val rloop = loop(extractNextItem((List.empty,true))).run(List.tabulate(10)(i=>i)).value
     println(s"rloop: $rloop")
 
     val stateListOfInts = State[List[Int], Int] { state =>
