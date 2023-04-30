@@ -64,16 +64,16 @@ object StateComposition extends IOApp:
     else
       (state.tail, (s"s_${state.head.toString}" :: result._1, true))
   }
-  def process(i: (List[String],Boolean)): (List[String], Boolean) =
+  def process(i: (List[String],Boolean)): Option[(List[String], Boolean)] =
     println(s"processing $i")
-    i
+    if i._2 then Some(i) else None
 
   def loop(in: State[List[Int], (List[String],Boolean)]): State[List[Int], (List[String],Boolean)] =
 //    val choice: State[List[Int], Int] = extractNextItem map process
     in map process flatMap { i =>
       println(s"i: $i")
-      if (i._2) loop(extractNextItem(i))
-      else in
+      if i.isEmpty then in
+      else loop(extractNextItem(i.get))
     }
 
   override def run(args: List[String]): IO[ExitCode] =
