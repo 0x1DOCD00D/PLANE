@@ -4,7 +4,7 @@ ThisBuild / version := {
   if (orig.endsWith("-SNAPSHOT")) "1.0.A-SNAPSHOT"
   else orig
 }
-ThisBuild / scalaVersion := "3.1.1"
+ThisBuild / scalaVersion := "3.2.1"
 
 val logbackVersion = "1.3.0-alpha10"
 val typeSafeConfigVersion = "1.4.2"
@@ -29,6 +29,7 @@ val scalaReflectVersion = "2.13.8"
 val scalaCompilerVersion = "2.13.8"
 val https4sVersion = "0.23.6"
 val monocleVersion = "3.1.0"
+val scalaZversion = "7.3.8"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots").withAllowInsecureProtocol(true)
 resolvers += ("Apache repo" at "https://repository.apache.org/").withAllowInsecureProtocol(true)
@@ -84,6 +85,7 @@ lazy val root = (project in file("."))
       "com.typesafe.akka" %% "akka-remote" % akkaVersion,
       "dev.optics" %% "monocle-core" % monocleVersion,
       "dev.optics" %% "monocle-macro" % monocleVersion,
+      "org.scalaz" %% "scalaz-core" % scalaZversion
     ),
     homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
     licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),

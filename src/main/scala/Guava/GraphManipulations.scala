@@ -8,7 +8,7 @@
 
 package Guava
 
-import com.google.common.graph.{MutableValueGraph, ValueGraphBuilder}
+import com.google.common.graph.{Graphs, MutableValueGraph, ValueGraphBuilder}
 
 object GraphManipulations:
   case class GraphNode(id: Int):
@@ -25,6 +25,7 @@ object GraphManipulations:
     val node1 = GraphNode(1)
     val node2 = GraphNode(2)
     val node3 = GraphNode(3)
+    val node4 = GraphNode(4)
     val edge12 = Edge(0.12)
     val edge23 = Edge(0.23)
     val edge31 = Edge(0.31)
@@ -44,9 +45,15 @@ object GraphManipulations:
     graph2.putEdgeValue(node1, node2, edge12)
     graph2.putEdgeValue(node3, node1, edge31)
 
+    val newGraph2 = Graphs.copyOf(graph2)
     println(graph1)
     println(graph2)
+    println(newGraph2)
     graph2.removeNode(node3)
+
+    if !graph2.addNode(node4) then
+      println(s"Node $node4 already exists")
     println(graph1)
     println(graph2)
+    println(newGraph2)
 

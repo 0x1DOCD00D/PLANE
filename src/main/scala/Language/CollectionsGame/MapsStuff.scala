@@ -16,6 +16,7 @@ object MapsStuff:
 
   def updateMapCount(): Map[String, Int] =
     lstOfNames.foldLeft(someMap) { (map, name) =>
+      println(s"map = $map, name = $name")
       map + (name ->
         (
           Try(map(name)).getOrElse(0) + 1)
