@@ -7,29 +7,14 @@
  */
 
 package TypeFP
-//https://stackoverflow.com/questions/75227132/in-scala-3-how-to-replace-general-type-projection-that-has-been-dropped
 
-/*
-trait Entity:
-  type Key
+object TypeManipulations:
+  type -[A, B] = Map[A, B]
+  type /[A, B] = Map[A, B] // '/' has higher precedence than '-' as an operator
+  List[Int - Float / String]() // Class[/[-[A,B],C]]
+  List[Char / Int - String]() // Class[-[/[A,B],C]]
+  type ~>[A,B] = Map[A,B]
+  type ~~~>[A,B] = Tuple2[A,B]
+  val x = List[Int ~> (Int ~~~> Float)]() // Map[A,Pair[B,C]]
 
-type Dictionary[T <: Entity] = Map[T#Key, T]
-* */
-object TypeMatchProjection:
-  trait Entity:
-    type Key
-
-  object Entity:
-    type Aux[K] = Entity {type Key = K}
-
-  // match type
-  type EntityKey[T <: Entity] =
-    T match
-      case Entity.Aux[k] => k
-
-  type Dictionary[T <: Entity] = Map[EntityKey[T], T]
-  @main def runtype =
-    case class X(i:Int) extends Entity:
-      type Key = Int
-    val d: Dictionary[X] = Map(1 -> X(1))
-    println("TypeMatchProjection")
+  @main def runit = println("Hello, world!")

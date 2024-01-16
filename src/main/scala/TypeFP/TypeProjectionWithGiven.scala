@@ -7,29 +7,23 @@
  */
 
 package TypeFP
-//https://stackoverflow.com/questions/75227132/in-scala-3-how-to-replace-general-type-projection-that-has-been-dropped
 
-/*
-trait Entity:
-  type Key
+//https://stackoverflow.com/questions/75355407/scala-3-typed-tuple-zipping
 
-type Dictionary[T <: Entity] = Map[T#Key, T]
-* */
-object TypeMatchProjection:
+object TypeProjectionWithGiven:
   trait Entity:
     type Key
 
-  object Entity:
-    type Aux[K] = Entity {type Key = K}
+  // type class
+  trait EntityKey[T <: Entity]:
+    type Out
 
-  // match type
-  type EntityKey[T <: Entity] =
-    T match
-      case Entity.Aux[k] => k
+  object EntityKey:
+    type Aux[T <: Entity, Out0] = EntityKey[T] {type Out = Out0}
 
-  type Dictionary[T <: Entity] = Map[EntityKey[T], T]
-  @main def runtype =
-    case class X(i:Int) extends Entity:
-      type Key = Int
-    val d: Dictionary[X] = Map(1 -> X(1))
-    println("TypeMatchProjection")
+    given [K]: EntityKey.Aux[Entity {type Key = K}, K] = null
+
+  // replacing the type with a trait
+  trait Dictionary[T <: Entity](using val entityKey: EntityKey[T]):
+    type Dict = Map[entityKey.Out, T]
+  @main def runitTP = println("Type projection with given")
