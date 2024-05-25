@@ -21,6 +21,7 @@ object VarAssignments:
 
   class Res(i: I2) extends Dynamic {
     infix def selectDynamic(obj: String): String = {
+      println(s"selectDynamic: $obj")
       allVars += (obj -> "")
       obj
     }
@@ -32,19 +33,19 @@ object VarAssignments:
 
   val v1 = new V1
   val i2 = new I2
-  val defineVar = v1 i1 i2
-  val LET = defineVar
-  val EnvTable = defineVar
+  val defineVar: Res = v1 i1 i2
+  val LET: Res = defineVar
+  val EnvTable: Res = defineVar
   val allVars: scala.collection.mutable.Map[String, String] = scala.collection.mutable.Map.empty[String, String]
 
   def declare(variableBlock: => String): Unit = variableBlock
 
   extension (key: String)
-    infix def <--(v:String) =
+    infix def <--(v:String): Unit =
       println(s"Assigning $v to $key")
       allVars(key) = v
 
-    infix def :=(v: Double) =
+    infix def :=(v: Double): Unit =
       println(s"Assigning $v to $key")
       allVars(key) = v.toString
 
@@ -58,7 +59,7 @@ object VarAssignments:
     {
       defineVar newVariable1;
       defineVar newVariable2
-    } <-- "1"
+    } //<-- "1"
 
     declare {
       defineVar newVariable3;
