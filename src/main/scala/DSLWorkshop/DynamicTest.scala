@@ -10,6 +10,8 @@ package DSLWorkshop
 
 import DSLWorkshop.DynamicTest.InitialState.transitions
 
+import scala.List
+
 
 object DynamicTest:
 
@@ -17,24 +19,47 @@ object DynamicTest:
   import scala.language.dynamics
   import scala.language.postfixOps
 
-  class Agent:
-    infix def has(defAgent: => Any): Any = defAgent
+  trait StageObject
 
-  class Behavior:
-    infix def contains(code: => Any): Behavior =
-      code
+  class Agent extends StageObject:
+    infix def has[T](defAgent: T): T = defAgent
+
+  class Behavior extends StageObject:
+    infix def responds[T](code: T): Behavior =
+      println(s"Behavior responds to $code")
+      this
+
+    infix def contains[T](code: T): Behavior =
       this
 
   trait Destination
 
   case object to extends Destination:
-    infix def apply(newState: State): Destination = new Destination {}
+    infix def apply[T](newTrigger: T): Destination =
+      new Destination {}
 
-  class State:
-    infix def behaves(behavior: => Behavior*): State = new State
+  case object assigned extends Destination:
+    infix def apply[T](values: T*) =
+      values.foreach(println(_) )
+      new Destination {}
+
+  class State extends StageObject:
+    infix def behaves(behavior: Behavior): State = new State
+
     infix def transitions(where: Destination): Destination = where
 
   case object InitialState extends State
+
+  class Message extends StageObject:
+    infix def has[T](defMessage: T): T = defMessage
+    infix def :=[T](someValue: T) = this
+
+  class Field extends StageObject:
+    infix def is(what: Destination) = what
+    infix def of(msg: => Message) = this
+    infix def :=[T](someValue: T) = this
+
+  class ProbDistribution extends StageObject
 
   class AgentConstruct extends Dynamic {
     infix def selectDynamic(name: String): Agent = {
@@ -57,20 +82,74 @@ object DynamicTest:
     }
   }
 
+  class MessageConstruct extends Dynamic {
+    infix def selectDynamic(name: String): Message = {
+      println(s"message construct: $name")
+      new Message()
+    }
+  }
+
+  class FieldConstruct extends Dynamic {
+    infix def selectDynamic(name: String): Field = {
+      println(s"field construct: $name")
+      new Field
+    }
+  }
+
+  class ProbDistributionConstruct extends Dynamic {
+    infix def selectDynamic(name: String): ProbDistribution = {
+      println(s"probabilistic distribution construct: $name")
+      new ProbDistribution
+    }
+  }
+//(classType: Class[T]): Option[T] = Some(classType.getDeclaredConstructor().newInstance())
+  class GenericConstruct[T <: StageObject](classType: Class[T]) extends Dynamic {
+    infix def selectDynamic(name: String): T = {
+      println(s"${classType.getName} construct: $name")
+      classType.getDeclaredConstructor().newInstance()
+    }
+  }
+
 
   def main(args: Array[String]): Unit = {
-    val agent = new AgentConstruct
-    val state = new StateConstruct
-    val behavior = new BehaviorConstruct
+    val agent = new GenericConstruct(classOf[Agent])
+    val state = new GenericConstruct(classOf[State])
+    val behavior = new GenericConstruct(classOf[Behavior])
+    val message = new GenericConstruct(classOf[Message])
+    val field = new GenericConstruct(classOf[Field])
+    val distribution = new GenericConstruct(classOf[ProbDistribution])
 
     (agent process1) has {
       InitialState behaves {
         (behavior behavior1) contains {
-          println("behavior1")
+          println("agent process1's behavior in the init state")
         }
-      } transitions to (state newState)
+      } transitions to(state newState);
+      (state newState) behaves {
+        (behavior behavior1) contains {
+          println("agent process1's behavior in the new state")
+        }
+      } transitions to(state newState1);
+      (state newState1) transitions to (state newState2)
     }
+
     (agent process2) has {
       println("process2")
     }
+
+    (message message1) has {
+      (field f1) is assigned ("a", 2, 3);
+      (field f2);
+      (field f1) is assigned (distribution uniform1);
+    }
+
+    (behavior b1) responds to {
+      (message message1);
+      (message message2)
+    } contains {
+      println("implementation of behavior b1")
+      (field f1) of (message message1) := "value1"
+      val x = (field f1) of (message message2)
+    }
+
   }
