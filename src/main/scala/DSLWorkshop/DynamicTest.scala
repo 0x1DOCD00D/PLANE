@@ -39,7 +39,7 @@ object DynamicTest:
       new Destination {}
 
   case object assigned extends Destination:
-    infix def apply[T](values: T*) =
+    infix def apply[T](values: T*): Destination =
       values.foreach(println(_) )
       new Destination {}
 
@@ -52,12 +52,12 @@ object DynamicTest:
 
   class Message extends StageObject:
     infix def has[T](defMessage: T): T = defMessage
-    infix def :=[T](someValue: T) = this
+    infix def :=[T](someValue: T): Message = this
 
   class Field extends StageObject:
-    infix def is(what: Destination) = what
-    infix def of(msg: => Message) = this
-    infix def :=[T](someValue: T) = this
+    infix def is(what: Destination): Destination = what
+    infix def of(msg: => Message): Field = this
+    infix def :=[T](someValue: T): Field = this
 
   class ProbDistribution extends StageObject
 
