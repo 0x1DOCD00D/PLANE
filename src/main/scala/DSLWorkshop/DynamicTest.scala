@@ -43,6 +43,17 @@ object DynamicTest:
       values.foreach(println(_) )
       new Destination {}
 
+  case object SELECT extends Destination:
+    infix def apply[T](values: T*): From =
+      values.foreach(println(_))
+      new From
+
+  class From {
+    infix def FROM[T](values: T*): Destination =
+      values.foreach(println(_))
+      new Destination {}
+  }
+
   class State extends StageObject:
     infix def behaves(behavior: Behavior): State = new State
 
@@ -60,6 +71,9 @@ object DynamicTest:
     infix def :=[T](someValue: T): Field = this
 
   class ProbDistribution extends StageObject
+
+  class Select extends StageObject
+  class Table extends StageObject
 
   class AgentConstruct extends Dynamic {
     infix def selectDynamic(name: String): Agent = {
@@ -110,7 +124,6 @@ object DynamicTest:
     }
   }
 
-
   def main(args: Array[String]): Unit = {
     val agent = new GenericConstruct(classOf[Agent])
     val state = new GenericConstruct(classOf[State])
@@ -118,6 +131,10 @@ object DynamicTest:
     val message = new GenericConstruct(classOf[Message])
     val field = new GenericConstruct(classOf[Field])
     val distribution = new GenericConstruct(classOf[ProbDistribution])
+    val attribute = new GenericConstruct(classOf[Select])
+    val table = new GenericConstruct(classOf[Table])
+
+    SELECT ((attribute attr1), (attribute attr2), (attribute attr3)) FROM((table SomeTable))
 
     (agent process1) has {
       InitialState behaves {
