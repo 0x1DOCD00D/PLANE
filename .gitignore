@@ -11,7 +11,7 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
-*/project/target/*
+**/project/target/**
 
 .idea/codeStyles
 .idea/copyright
@@ -101,15 +101,7 @@ src/**/*.iml
 *.log
 lib/
 target/
-project/target/**
-project/target/config-classes/$520a9b8e712bfab2b771.cache
-project/target/config-classes/$8b430eb09bfe15fd2996.cache
-project/target/config-classes/$9b54ffdc6e092481e25c.cache
-project/target/config-classes/$aef6b077348a3a383dd5.cache
-project/target/config-classes/$c85338c5dfce44fec09d.cache
-project/target/config-classes/$ded2bddd77a58d0cfd23.cache
-project/target/streams/compile/compileIncSetup/
-project/target/streams/compile/compileOutputs/
+**/project/target
 target/scala-2.13/classes/META-INF/
 target/scala-2.13/update/
 target/streams/_global/_global/_global/
