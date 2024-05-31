@@ -134,7 +134,7 @@ object DynamicTest:
     val attribute = new GenericConstruct(classOf[Select])
     val table = new GenericConstruct(classOf[Table])
 
-    SELECT ((attribute attr1), (attribute attr2), (attribute attr3)) FROM((table SomeTable))
+    SELECT (attribute attr1, attribute attr2, attribute attr3) FROM (table SomeTable)
 
     (agent process1) has {
       InitialState behaves {
