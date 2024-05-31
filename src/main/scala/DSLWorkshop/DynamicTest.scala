@@ -156,13 +156,13 @@ object DynamicTest:
 
     (message message1) has {
       (field f1) is assigned ("a", 2, 3);
-      (field f2);
+      field f2;
       (field f1) is assigned (distribution uniform1);
     }
 
     (behavior b1) responds to {
-      (message message1);
-      (message message2)
+      message message1;
+      message message2
     } contains {
       println("implementation of behavior b1")
       (field f1) of (message message1) := "value1"
