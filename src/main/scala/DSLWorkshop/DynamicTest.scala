@@ -21,8 +21,12 @@ object DynamicTest:
 
   trait StageObject
 
+  object Agent extends StageObject:
+    def doIt(s: String) = println(s"access the context $s")
+
   class Agent extends StageObject:
-    infix def has[T](defAgent: T): T = defAgent
+    infix def has[T](defAgent: => T):T =
+      defAgent
 
   class Behavior extends StageObject:
     infix def responds[T](code: T): Behavior =
@@ -30,6 +34,7 @@ object DynamicTest:
       this
 
     infix def contains[T](code: T): Behavior =
+      Agent.doIt(s"${this.getClass().getName()}")
       this
 
   trait Destination
@@ -55,6 +60,7 @@ object DynamicTest:
   }
 
   class State extends StageObject:
+    def doIt() = println("access the context in this class!")
     infix def behaves(behavior: Behavior): State = new State
 
     infix def transitions(where: Destination): Destination = where
@@ -70,10 +76,13 @@ object DynamicTest:
     infix def of(msg: => Message): Field = this
     infix def :=[T](someValue: T): Field = this
 
-  class ProbDistribution extends StageObject
+  class ProbDistribution extends StageObject:
+    def doIt() = println("access the context in this class!")
 
-  class Select extends StageObject
-  class Table extends StageObject
+  class Select extends StageObject:
+    def doIt() = println("access the context in this class!")
+  class Table extends StageObject:
+    def doIt() = println("access the context in this class!")
 
   class AgentConstruct extends Dynamic {
     infix def selectDynamic(name: String): Agent = {
@@ -135,7 +144,7 @@ object DynamicTest:
     val table = new GenericConstruct(classOf[Table])
 
     SELECT (attribute attr1, attribute attr2, attribute attr3) FROM (table SomeTable)
-
+    import Agent.*
     (agent process1) has {
       InitialState behaves {
         (behavior behavior1) contains {
