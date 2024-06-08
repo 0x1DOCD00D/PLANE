@@ -53,7 +53,7 @@ object EntityCreation:
       attrs = attrs :+ v
       v
 
-  @main def runDslEntity =
+  @main def runDslEntity: Unit =
     import EntityCreation.*
     create an Order where ((Id is 1) and (Description is "whiskey"))
     println(create an Order where ((Id is 2) and (Description is "carrots")))

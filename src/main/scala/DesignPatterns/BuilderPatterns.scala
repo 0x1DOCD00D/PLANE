@@ -1,11 +1,9 @@
 /*
+ * Copyright (c) 2024 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
  *
- *  * Copyright (c) 2020 Mark Grechanik. All rights reserved.
- *  *
- *  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
  */
 
 package DesignPatterns
@@ -15,15 +13,15 @@ import DesignPatterns.BuilderPatterns.{Object2Build, SomeObj1}
 object BuilderPatterns {
 
   //the simplest implementation of the pattern Builder is with the case class
-  case class Object2Build(val p1: Int, val p2: SomeObj1, val p3: Tuple2[Float, List[String]]) {
+  case class Object2Build(p1: Int, val p2: SomeObj1, val p3: Tuple2[Float, List[String]]) {
     //we may add constraints to make sure that the object is initialized properly
     require(p1 > 0)
-    require(p2.p1.isEmpty != true)
-    require(p3 != null && p3._2.isEmpty != true)
+    require(!p2.p1.isEmpty)
+    require(p3 != null && !p3._2.isEmpty)
 
   }
 
-  case class SomeObj1(val p1: String)
+  case class SomeObj1(p1: String)
 
   val object1 = Object2Build(p2 = SomeObj1(p1 = "Stuff"), p1 = 1, p3 = (1.2f, List("Howdy")))
 }

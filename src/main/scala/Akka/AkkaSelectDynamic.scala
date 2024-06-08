@@ -22,7 +22,7 @@ import scala.language.postfixOps
 case class MyRecord(var from: ActorRef) extends Dynamic:
   private val fields = scala.collection.mutable.Map[String, Any]("prop1" -> 1, "prop2" -> "howdy")
   infix def selectDynamic(name: String): Any = fields(name)
-  def updateDynamic(name: String)(amount: Any) = fields(name) = amount
+  def updateDynamic(name: String)(amount: Any): Unit = fields(name) = amount
 
 object ActorGenericMsgExperiments:
   class MyActor extends Actor with ActorLogging:
