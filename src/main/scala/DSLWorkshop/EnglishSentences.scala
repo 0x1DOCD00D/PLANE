@@ -23,5 +23,5 @@ case object ObjectOfAction extends GrammarComponent:
 
 object EnglishSentences:
   def main(args: Array[String]): Unit =
-    Subject verb ObjectOfAction prepositionalPhrase "to the store" and Subject verb ObjectOfAction prepositionalPhrase "to the bank"
-    println("Hello, world!")
+    val sentence = Subject verb ObjectOfAction prepositionalPhrase "to the store" and Subject verb ObjectOfAction prepositionalPhrase "to the bank"
+    println(sentence)
