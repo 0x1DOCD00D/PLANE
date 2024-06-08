@@ -46,7 +46,7 @@ trait ConfigureAndPrint extends PrinterConfiguration {
 
 //let us create some types whose functionalities are orthogonal to printing
 trait Document {
-  self: ConfigureAndPrint with PrintingWithAccess2Configure =>
+  self: ConfigureAndPrint & PrintingWithAccess2Configure =>
   val content: String
 
   def modify(loc: Int, byte: Char) = true

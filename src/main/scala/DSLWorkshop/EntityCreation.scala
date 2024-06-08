@@ -11,7 +11,7 @@ package DSLWorkshop
 object EntityCreation:
   //create an Order where ( Id is 1, Description is "whiskey", Price is 100.0, Quantity is 2 )
   object create:
-    def an(o: Entity) = o match {
+    infix def an(o: Entity) = o match {
       case Order => new OrderRecord()
       case _ => throw new Exception("Not supported")
     }

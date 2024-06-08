@@ -28,7 +28,7 @@ object VarAssignments:
   }
 
   class V1 {
-    def i1(i2: I2): Res = new Res(i2)
+    infix def i1(i2: I2): Res = new Res(i2)
   }
 
   val v1 = new V1

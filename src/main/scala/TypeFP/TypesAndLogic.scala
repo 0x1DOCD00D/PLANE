@@ -67,7 +67,7 @@ object TypesAndLogic {
   trait B
 
   //  A and B
-  val andType: A with B = new A with B {}
+  val andType: A & B = new A with B {}
 
   class C extends A with B
 
@@ -95,7 +95,7 @@ object TypesAndLogic {
   * not T equiv T => false using the truth table for NOT
   * */
   type NOT[T] = T => Nothing
-  type OR[T, S] = NOT[NOT[T] with NOT[S]]
+  type OR[T, S] = NOT[NOT[T] & NOT[S]]
 
   //  Let's write the code that proves that Int <:< (Int OR String)
   implicitly[NOT[NOT[Int]] <:< OR[Int, String]]
@@ -130,7 +130,7 @@ object TypesAndLogic {
   * NOT[Int]=>Nothing <:< (NOT[Int] with NOT[String]) => Nothing equiv
   * Int=>Nothing=>Nothing <:< (Int=>Nothing with String=Nothing) => Nothing
   * */
-  implicitly[Function1[Function1[Int, Nothing], Nothing] <:< Function1[Function1[Int, Nothing] with Function1[String, Nothing], Nothing]]
+  implicitly[Function1[Function1[Int, Nothing], Nothing] <:< Function1[Function1[Int, Nothing] & Function1[String, Nothing], Nothing]]
   implicitly[Function1[Human, Progressive] <:< Function1[American, Democrat]]
 
   implicitly[NOT[NOT[Human]] =:= Function1[Function1[Human, Nothing], Nothing]]

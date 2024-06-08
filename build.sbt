@@ -4,7 +4,7 @@ ThisBuild / version := {
   if (orig.endsWith("-SNAPSHOT")) "1.0.A-SNAPSHOT"
   else orig
 }
-ThisBuild / scalaVersion := "3.2.1"
+ThisBuild / scalaVersion := "3.4.1"
 
 val logbackVersion = "1.3.0-alpha10"
 val typeSafeConfigVersion = "1.4.2"
@@ -36,7 +36,8 @@ resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/reposi
 resolvers += ("Apache repo" at "https://repository.apache.org/").withAllowInsecureProtocol(true)
 resolvers += Resolver.sbtPluginRepo("releases")
 
-//noinspection SpellCheckingInspection
+//noinspection SpellCheckingInspe
+// ction
 lazy val root = (project in file("."))
   .settings(
     name := "PLANE",

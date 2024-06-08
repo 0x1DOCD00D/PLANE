@@ -103,7 +103,7 @@ object DynamicTest:
     }
   }
 //(classType: Class[T]): Option[T] = Some(classType.getDeclaredConstructor().newInstance())
-  class GenericConstruct[T <: StageObject](classType: Class[T]) extends Dynamic {
+  case class GenericConstruct[T <: StageObject](classType: Class[T]) extends Dynamic {
     infix def selectDynamic(name: String): T = {
       println(s"${classType.getName} construct: $name")
       classType.getDeclaredConstructor().newInstance()
@@ -112,12 +112,12 @@ object DynamicTest:
 
 
   def main(args: Array[String]): Unit = {
-    val agent = new GenericConstruct(classOf[Agent])
-    val state = new GenericConstruct(classOf[State])
-    val behavior = new GenericConstruct(classOf[Behavior])
-    val message = new GenericConstruct(classOf[Message])
-    val field = new GenericConstruct(classOf[Field])
-    val distribution = new GenericConstruct(classOf[ProbDistribution])
+    val agent = GenericConstruct(classOf[Agent])
+    val state = GenericConstruct(classOf[State])
+    val behavior = GenericConstruct(classOf[Behavior])
+    val message = GenericConstruct(classOf[Message])
+    val field = GenericConstruct(classOf[Field])
+    val distribution = GenericConstruct(classOf[ProbDistribution])
 
     (agent process1) has {
       InitialState behaves {

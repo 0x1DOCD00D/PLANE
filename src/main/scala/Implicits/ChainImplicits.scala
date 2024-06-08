@@ -68,7 +68,7 @@ object ChainImplicits extends App {
   implicit def convert2C4FromC3[XX](i: XX)(implicit xx: XX => C3): C4[XX] = new C4[XX]
 //  given convert2C4FromC3[XX](i: XX)(using xx: XX => C3): C4[XX] with new C4[XX]
 
-  val result4: C4[_] = 3
+  val result4: C4[?] = 3
 
   class C5
 

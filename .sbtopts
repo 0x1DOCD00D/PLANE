@@ -1,0 +1,4 @@
+-J-XX:MaxMetaspaceSize=2048M
+-J-Xmx50G
+-J-Xss60M
+-J-XX:+UseG1GC

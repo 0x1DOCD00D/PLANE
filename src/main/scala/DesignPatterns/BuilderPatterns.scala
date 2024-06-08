@@ -43,7 +43,7 @@ object NowWeWantToCheckIfAllValuesAreProvided {
   class ObjectBuilder[SetV <: SetValue] private(var p1: Int, var p2: SomeObj1, var p3: Tuple2[Float, List[String]]) {
     def this() = this(p2 = SomeObj1(p1 = "Stuff"), p1 = 1, p3 = (1.2f, List("Howdy")))
 
-    protected def this(ob: ObjectBuilder[_]) = this(ob.p1, ob.p2, ob.p3)
+    protected def this(ob: ObjectBuilder[?]) = this(ob.p1, ob.p2, ob.p3)
 
     //sealed abstract class =:=[From, To] extends (From <:< To) with Serializable
     def setP1(pp1: Int)(implicit ev: SetV =:= Nothing): ObjectBuilder[SetP1] = {
