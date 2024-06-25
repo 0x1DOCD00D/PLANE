@@ -29,45 +29,47 @@ object loadPdfExtractText:
     println(
        "File /Users/drmark/IdeaProjects/PLANE/src/main/scala/pdfWorkshop/loadPdfExtractText.scala created at time 10:47 AM"
     )
-    val jls22 = this.getClass().getResource("/JLS22.pdf")
+    val jls22 = this.getClass.getResource("/JLS22.pdf")
     val stripperByArea = new PDFTextStripperByArea()
 
-    val result: Either[String, String] = Try(Loader.loadPDF(new File(jls22.toURI()))) match
+    val result: Either[String, String] = Try(Loader.loadPDF(new File(jls22.toURI))) match
       case Success(doc) =>
         val pages: PDPageTree = doc.getPages
         pages
           .iterator()
           .forEachRemaining(page =>
             page.getAnnotations.forEach(annot =>
-              if annot.isInstanceOf[PDAnnotationLink] then
-                val link = annot.asInstanceOf[PDAnnotationLink]
-                val action: Any = annot.asInstanceOf[PDAnnotationLink].getAction
-                if action.isInstanceOf[PDActionGoTo] then
-                  val destination: PDDestination = action.asInstanceOf[PDActionGoTo].getDestination
-                  if destination.isInstanceOf[PDNamedDestination] then
-                    val nd = destination.asInstanceOf[PDNamedDestination].getNamedDestination
-                    println(nd)
-                  else if destination.isInstanceOf[PDPageDestination] then
-                    val pd = destination.asInstanceOf[PDPageDestination]
-                    val pn = pd.retrievePageNumber
+              annot match
+                case link: PDAnnotationLink =>
+                  val action: Any = link.getAction
+                  if action.isInstanceOf[PDActionGoTo] then
+                    val destination: PDDestination =
+                      action.asInstanceOf[PDActionGoTo].getDestination
+                    if destination.isInstanceOf[PDNamedDestination] then
+                      val nd = destination.asInstanceOf[PDNamedDestination].getNamedDestination
+                      println(nd)
+                    else if destination.isInstanceOf[PDPageDestination] then
+                      val pd = destination.asInstanceOf[PDPageDestination]
+                      val pn = pd.retrievePageNumber
 
-                    val rect: PDRectangle = link.getRectangle();
-                    val x = rect.getLowerLeftX();
-                    var y = rect.getUpperRightY();
-                    val width = rect.getWidth();
-                    val height = rect.getHeight();
-                    val rotation = page.getRotation();
-                    if (rotation == 0) {
-                      val pageSize = page.getMediaBox();
-                      y = pageSize.getHeight() - y;
-                    }
-                    val rect2D: Rectangle2D.Float = new Rectangle2D.Float(x, y, width, height)
-                    stripperByArea.addRegion("gmark", rect2D);
-                    stripperByArea.extractRegions(page)
-                    val txt = stripperByArea.getTextForRegion("gmark")
-                    println(
-                       s"Page number: $pn with link ${txt}"
-                    )
+                      val rect: PDRectangle = link.getRectangle()
+                      val x = rect.getLowerLeftX()
+                      var y = rect.getUpperRightY()
+                      val width = rect.getWidth()
+                      val height = rect.getHeight()
+                      val rotation = page.getRotation()
+                      if (rotation == 0) {
+                        val pageSize = page.getMediaBox()
+                        y = pageSize.getHeight() - y
+                      }
+                      val rect2D: Rectangle2D.Float = new Rectangle2D.Float(x, y, width, height)
+                      stripperByArea.addRegion("gmark", rect2D);
+                      stripperByArea.extractRegions(page)
+                      val txt = stripperByArea.getTextForRegion("gmark")
+                      println(
+                         s"Page number: $pn with link ${txt}"
+                      )
+                case _ =>
             )
           )
         val stripper = PDFTextStripper()
