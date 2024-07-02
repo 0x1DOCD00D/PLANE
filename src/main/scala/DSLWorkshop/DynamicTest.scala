@@ -12,7 +12,6 @@ import DSLWorkshop.DynamicTest.InitialState.transitions
 
 import scala.List
 
-
 object DynamicTest:
 
   import scala.Dynamic
@@ -21,7 +20,10 @@ object DynamicTest:
 
   trait StageObject
 
-  class Agent extends StageObject:
+  case class MutableReference(var ref: Option[String])
+  val mutableRef: MutableReference = MutableReference(None)
+
+  class Agent(name: String) extends StageObject:
     infix def has[T](defAgent: T): T = defAgent
 
   class Behavior extends StageObject:
@@ -40,11 +42,13 @@ object DynamicTest:
 
   case object assigned extends Destination:
     infix def apply[T](values: T*): Destination =
-      values.foreach(println(_) )
+      values.foreach(println(_))
       new Destination {}
 
   class State extends StageObject:
-    infix def behaves(behavior: Behavior): State = new State
+    infix def behaves(behavior: => Behavior): State =
+      behavior
+      new State
 
     infix def transitions(where: Destination): Destination = where
 
@@ -64,7 +68,7 @@ object DynamicTest:
   class AgentConstruct extends Dynamic {
     infix def selectDynamic(name: String): Agent = {
       println(s"agent construct: $name")
-      new Agent()
+      new Agent(name)
     }
   }
 
@@ -105,11 +109,12 @@ object DynamicTest:
 //(classType: Class[T]): Option[T] = Some(classType.getDeclaredConstructor().newInstance())
   case class GenericConstruct[T <: StageObject](classType: Class[T]) extends Dynamic {
     infix def selectDynamic(name: String): T = {
+      if classType == classOf[Agent] then mutableRef.ref = Some(name)
+
       println(s"${classType.getName} construct: $name")
       classType.getDeclaredConstructor().newInstance()
     }
   }
-
 
   def main(args: Array[String]): Unit = {
     val agent = GenericConstruct(classOf[Agent])
@@ -122,30 +127,33 @@ object DynamicTest:
     (agent process1) has {
       InitialState behaves {
         (behavior behavior1) contains {
-          println("agent process1's behavior in the init state")
+          println(s"agent ${mutableRef.ref.get} behavior in the init state")
+        }
+        (behavior behavior2) contains {
+          println(s"agent ${mutableRef.ref.get} behavior 2 in the init state")
         }
       } transitions to(state newState);
       (state newState) behaves {
         (behavior behavior1) contains {
-          println("agent process1's behavior in the new state")
+          println(s"agent ${mutableRef.ref.get} behavior in the new state")
         }
       } transitions to(state newState1);
-      (state newState1) transitions to (state newState2)
+      (state newState1) transitions to(state newState2)
     }
 
     (agent process2) has {
-      println("process2")
+      println(s"Agent ${mutableRef.ref.get} is defined")
     }
 
     (message message1) has {
-      (field f1) is assigned ("a", 2, 3);
-      (field f2);
-      (field f1) is assigned (distribution uniform1);
+      (field f1) is assigned("a", 2, 3);
+      field f2;
+      (field f1) is assigned(distribution uniform1);
     }
 
     (behavior b1) responds to {
-      (message message1);
-      (message message2)
+      message message1;
+      message message2
     } contains {
       println("implementation of behavior b1")
       (field f1) of (message message1) := "value1"

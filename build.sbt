@@ -22,7 +22,6 @@ val catsVersion = "2.8.0"
 val catsEffectVersion = "3.3.14"
 val snakeYamlVersion = "1.29"
 val scalaZVersion = "7.4.0-M8"
-val jsoupVersion = "1.14.3"
 val codecVersion = "1.15"
 val xmlVersion = "2.0.1"
 val scalaReflectVersion = "2.13.8"
@@ -32,6 +31,7 @@ val monocleVersion = "3.1.0"
 val scalaZversion = "7.3.8"
 val stanfordNlpVersion = "4.5.7"
 val pdfBoxVersion = "3.0.2"
+val jsoupVersion = "1.17.2"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots")
   .withAllowInsecureProtocol(true)
@@ -99,7 +99,8 @@ lazy val root = (project in file("."))
         "dev.optics" %% "monocle-macro" % monocleVersion,
         "org.scalaz" %% "scalaz-core" % scalaZversion,
         "edu.stanford.nlp" % "stanford-corenlp" % stanfordNlpVersion,
-        "org.apache.pdfbox" % "pdfbox" % pdfBoxVersion
+        "org.apache.pdfbox" % "pdfbox" % pdfBoxVersion,
+        "org.jsoup" % "jsoup" % jsoupVersion
      ),
      homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
      licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),
