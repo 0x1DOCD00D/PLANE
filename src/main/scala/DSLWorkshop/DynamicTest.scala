@@ -19,14 +19,19 @@ object DynamicTest:
   import scala.language.postfixOps
 
   trait StageObject
+  
+  trait JoinDeclarations:
+    infix def ~[T](next: T): T = next
 
   case class MutableReference(var ref: Option[String])
   val mutableRef: MutableReference = MutableReference(None)
 
-  class Agent(name: String) extends StageObject:
-    infix def has[T](defAgent: T): T = defAgent
+  class Agent(name: String) extends StageObject with JoinDeclarations:
+    infix def has[T](defAgent: T): Agent =
+      //defAgent
+      this
 
-  class Behavior extends StageObject:
+  class Behavior extends StageObject with JoinDeclarations:
     infix def responds[T](code: T): Behavior =
       println(s"Behavior responds to $code")
       this
@@ -34,7 +39,8 @@ object DynamicTest:
     infix def contains[T](code: T): Behavior =
       this
 
-  trait Destination
+  trait Destination:
+    infix def ~[T](next: T): T = next
 
   case object to extends Destination:
     infix def apply[T](newTrigger: T): Destination =
@@ -125,7 +131,7 @@ object DynamicTest:
     val distribution = GenericConstruct(classOf[ProbDistribution])
 
     (agent process1) has {
-      InitialState behaves {
+      (state startState) behaves {
         (behavior behavior1) contains {
           println(s"agent ${mutableRef.ref.get} behavior in the init state")
         }
@@ -139,18 +145,15 @@ object DynamicTest:
         }
       } transitions to(state newState1);
       (state newState1) transitions to(state newState2)
-    }
-
-    (agent process2) has {
+    } ~ (agent process2) has {
       println(s"Agent ${mutableRef.ref.get} is defined")
-    }
-
+      (behavior behavior10)
+    } ~
     (message message1) has {
       (field f1) is assigned("a", 2, 3);
       field f2;
       (field f1) is assigned(distribution uniform1);
     }
-
     (behavior b1) responds to {
       message message1;
       message message2
