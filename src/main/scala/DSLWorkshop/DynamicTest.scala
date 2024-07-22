@@ -153,6 +153,8 @@ object DynamicTest:
       (field f1) is assigned("a", 2, 3);
       field f2;
       (field f1) is assigned(distribution uniform1);
+      (field single) is assigned (2);
+      (field matrix) is assigned ((2,3,5), (1,2,3), ("a" -> 2, "b" -> 3, "c" -> 4));
     }
     (behavior b1) responds to {
       message message1;
