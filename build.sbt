@@ -37,6 +37,8 @@ resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/reposi
   .withAllowInsecureProtocol(true)
 resolvers += ("Apache repo" at "https://repository.apache.org/").withAllowInsecureProtocol(true)
 resolvers += Resolver.sbtPluginRepo("releases")
+Global / resolvers += "scala-integration" at
+  "https://scala-ci.typesafe.com/artifactory/scala-integration/"
 
 //noinspection SpellCheckingInspe
 // ction
@@ -50,9 +52,11 @@ lazy val root = (project in file("."))
         "-unchecked",
         "-deprecation",
         "-feature",
-        "-language:implicitConversions"
+        "-language:implicitConversions",
+        "-experimental"
      ),
      scalacOptions += "-language:experimental.macros",
+     scalacOptions += "-language:experimental.fewerBraces",
      description := "Programming Language ANalyses Experimentation",
      Test / parallelExecution := false,
      libraryDependencies ++= Seq(

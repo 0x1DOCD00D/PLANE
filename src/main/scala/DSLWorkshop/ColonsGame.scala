@@ -8,6 +8,9 @@
 
 package DSLWorkshop
 
+import scala.annotation.experimental
+
+@experimental
 object ColonsGame:
   def key1(value: Int): Int =
     println(s"key1: $value")
