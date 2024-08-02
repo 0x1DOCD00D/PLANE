@@ -20,7 +20,7 @@ object PersonUnapply:
     def unapply(x: X): Option[Person] = Some(getPerson(x))
   }
 
-  def doTheMatch(x: X) = x match {
+  def doTheMatch(x: X): Unit = x match {
     case GetPerson(Person(name, age)) if name == "Alice" => println(s"Alice is $age years old.")
     case GetPerson(Person(name, age)) if name == "Bob"   => println(s"Bob is $age years old.")
     case GetPerson(Person(name, age)) => println(s"Person $name is $age years old.")
