@@ -32,6 +32,8 @@ val scalaZversion = "7.3.8"
 val stanfordNlpVersion = "4.5.7"
 val pdfBoxVersion = "3.0.2"
 val jsoupVersion = "1.17.2"
+val langchain4jVersion = "0.33.0"
+val ollama4jVersion = "1.0.73"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots")
   .withAllowInsecureProtocol(true)
@@ -104,7 +106,9 @@ lazy val root = (project in file("."))
         "org.scalaz" %% "scalaz-core" % scalaZversion,
         "edu.stanford.nlp" % "stanford-corenlp" % stanfordNlpVersion,
         "org.apache.pdfbox" % "pdfbox" % pdfBoxVersion,
-        "org.jsoup" % "jsoup" % jsoupVersion
+        "org.jsoup" % "jsoup" % jsoupVersion,
+        "dev.langchain4j" % "langchain4j" % langchain4jVersion,
+        "io.github.amithkoujalgi" % "ollama4j" % ollama4jVersion
      ),
      homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
      licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),
