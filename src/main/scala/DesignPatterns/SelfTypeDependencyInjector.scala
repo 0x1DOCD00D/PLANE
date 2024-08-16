@@ -43,7 +43,7 @@ object SelfType {
 
     //When this method is called on the object of the type Professor
     //it prints out DesignPatterns.SelfType$Professor
-    protected[this] def savePersonnelType: Unit = println(this.getClass.getName)
+    protected def savePersonnelType: Unit = println(this.getClass.getName)
   }
 
   class Student(override val UID: BigInt) extends UniversityPersonnel with StorageDevice {

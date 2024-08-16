@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2023 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ */
+
 package Cats
 
 import cats.Monad
@@ -47,7 +55,36 @@ object StateComposition extends IOApp:
     (math.abs(rnd.nextLong()), math.abs(rnd.nextInt()))
   }
 
+  import cats.syntax.all.catsSyntaxMonad
+
+
+  def extractNextItem(result: (List[String], Boolean)): State[List[Int], (List[String], Boolean)] = State { state =>
+    println(s"state: $state")
+    if (state.isEmpty) (Nil, (result._1,false))
+    else
+      (state.tail, (s"s_${state.head.toString}" :: result._1, true))
+  }
+  def process(i: (List[String],Boolean)): Option[(List[String], Boolean)] =
+    println(s"processing $i")
+    if i._2 then Some(i) else None
+
+  def loop(in: State[List[Int], (List[String],Boolean)]): State[List[Int], (List[String],Boolean)] =
+//    val choice: State[List[Int], Int] = extractNextItem map process
+    in map process flatMap { i =>
+      println(s"i: $i")
+      if i.isEmpty then in
+      else loop(extractNextItem(i.get))
+    }
+
   override def run(args: List[String]): IO[ExitCode] =
+    val rloop = loop(extractNextItem((List.empty,true))).run(List.tabulate(10)(i=>i)).value
+    println(s"rloop: $rloop")
+
+    val stateListOfInts = State[List[Int], Int] { state =>
+      (state.tail, state.head)
+    }
+    println(stateListOfInts.run(List(1, 2, 3)).value)
+
     val randGen = for {
       r1 <- randomInt
       l1 = log("r1: ", r1.toString)

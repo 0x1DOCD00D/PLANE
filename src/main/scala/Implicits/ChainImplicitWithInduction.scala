@@ -37,7 +37,7 @@ object ChainImplicitWithInduction extends App {
   //this class, NextType specifies a relation between some type used as the type parameter and the parameterized type, NextType
   class NextType[NT <: IntermediateType] extends IntermediateType
 
-  type IntermediateType_1 = NextType[BaseClass[_]]
+  type IntermediateType_1 = NextType[BaseClass[?]]
   type IntermediateType_2 = NextType[IntermediateType_1]
   type IntermediateType_3 = NextType[IntermediateType_2]
   type IntermediateType_4 = NextType[IntermediateType_3]

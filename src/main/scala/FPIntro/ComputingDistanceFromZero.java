@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Mark Grechanik. All rights reserved.
+ * Copyright (c) 2022 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 class DecartesCoordinates {
-    private Integer x;
-    private Integer y;
+    private final Integer x;
+    private final Integer y;
 
     public DecartesCoordinates(Integer x, Integer y) {
         this.x = x;

@@ -1,11 +1,9 @@
 /*
+ * Copyright (c) 2024 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
  *
- *  * Copyright (c) 2020 Mark Grechanik. All rights reserved.
- *  *
- *  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
  */
 
 package TypeFP
@@ -50,7 +48,7 @@ object TypesAndLogic {
 
   //union types: T or S
   //  Either is used to model the union of types
-  def f[T, S](i: Either[T, S]) = if (i.isLeft) Right(true) else Left(false)
+  def f[T, S](i: Either[T, S]): Either[Boolean, Boolean] = if (i.isLeft) Right(true) else Left(false)
 
   def returnUnion(i: String): Either[NumberFormatException, Int] = {
     try {
@@ -67,7 +65,7 @@ object TypesAndLogic {
   trait B
 
   //  A and B
-  val andType: A with B = new A with B {}
+  val andType: A & B = new A with B {}
 
   class C extends A with B
 
@@ -95,7 +93,7 @@ object TypesAndLogic {
   * not T equiv T => false using the truth table for NOT
   * */
   type NOT[T] = T => Nothing
-  type OR[T, S] = NOT[NOT[T] with NOT[S]]
+  type OR[T, S] = NOT[NOT[T] & NOT[S]]
 
   //  Let's write the code that proves that Int <:< (Int OR String)
   implicitly[NOT[NOT[Int]] <:< OR[Int, String]]
@@ -130,7 +128,7 @@ object TypesAndLogic {
   * NOT[Int]=>Nothing <:< (NOT[Int] with NOT[String]) => Nothing equiv
   * Int=>Nothing=>Nothing <:< (Int=>Nothing with String=Nothing) => Nothing
   * */
-  implicitly[Function1[Function1[Int, Nothing], Nothing] <:< Function1[Function1[Int, Nothing] with Function1[String, Nothing], Nothing]]
+  implicitly[Function1[Function1[Int, Nothing], Nothing] <:< Function1[Function1[Int, Nothing] & Function1[String, Nothing], Nothing]]
   implicitly[Function1[Human, Progressive] <:< Function1[American, Democrat]]
 
   implicitly[NOT[NOT[Human]] =:= Function1[Function1[Human, Nothing], Nothing]]

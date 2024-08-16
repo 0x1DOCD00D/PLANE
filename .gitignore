@@ -11,7 +11,7 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
-*/project/target/*
+**/project/target/*
 
 .idea/codeStyles
 .idea/copyright
@@ -88,7 +88,11 @@ fabric.properties
 
 # Sonarlint plugin
 .idea/**/sonarlint/
+<<<<<<< HEAD
 .idea/
+=======
+.idea/*.xml
+>>>>>>> b2aaf23f7e962d0d8284db7698bb4c096902fc76
 # SonarQube Plugin
 .idea/**/sonarIssues.xml
 
@@ -96,6 +100,7 @@ fabric.properties
 .idea/**/markdown-navigator.xml
 .idea/**/markdown-navigator/
 
+src/**/*.iml
 *.class
 *.log
 lib/

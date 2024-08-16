@@ -22,7 +22,7 @@ object RossTateTypeCast extends App {
 
   def toL(b: B)(x: Any): b.L = x
 
-  val p: B with A = null
+  val p: B & A = null
   val p1: B = null
 
   //  println(toL(p)("somestring").getClass.toString)

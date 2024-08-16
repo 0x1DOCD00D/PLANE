@@ -1,11 +1,9 @@
 /*
+ * Copyright (c) 2024 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
  *
- *  * Copyright (c) 2020 Mark Grechanik. All rights reserved.
- *  *
- *  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
  */
 
 package InterestingScalaFeatures
@@ -31,7 +29,7 @@ trait PrintingWithAccess2Configure extends Printing {
   //of the trait PrinterConfiguration. But the method configure is not defined, hence this trait
   //can be mixed only with the concrete implementation of this method.
   self: PrinterConfiguration =>
-  override def print(printer: Int, data: String) = {
+  override def print(printer: Int, data: String): Unit = {
     configure(printer)
     //send data here
     println(data)
@@ -46,12 +44,12 @@ trait ConfigureAndPrint extends PrinterConfiguration {
 
 //let us create some types whose functionalities are orthogonal to printing
 trait Document {
-  self: ConfigureAndPrint with PrintingWithAccess2Configure =>
+  self: ConfigureAndPrint & PrintingWithAccess2Configure =>
   val content: String
 
   def modify(loc: Int, byte: Char) = true
 
-  def outputContent(device: Int) = print(device, content)
+  def outputContent(device: Int): Unit = print(device, content)
 }
 
 //we want the trait ConfigureAndPrint to mix with the trait Document to add the printing functionality
