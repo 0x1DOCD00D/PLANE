@@ -88,7 +88,11 @@ fabric.properties
 
 # Sonarlint plugin
 .idea/**/sonarlint/
+<<<<<<< HEAD
+.idea/
+=======
 .idea/*.xml
+>>>>>>> b2aaf23f7e962d0d8284db7698bb4c096902fc76
 # SonarQube Plugin
 .idea/**/sonarIssues.xml
 
