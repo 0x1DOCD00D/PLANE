@@ -17,7 +17,7 @@ object Input2Output:
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Language/CollectionsGame/Input2Output.scala created at time 8:45PM")
     breakable {
     collection.Iterator
-      .continually(readLine()) // Is this the same as continually(io.StdIn.readLine)?
+      .continually(readLine())
       .foreach { line =>
         println(s"got: $line")
         if line == "exit now!" then break
