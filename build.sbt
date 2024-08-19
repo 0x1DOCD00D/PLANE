@@ -98,6 +98,7 @@ lazy val root = (project in file("."))
         "org.scala-lang" % "scala-reflect" % scalaReflectVersion,
         "org.scala-lang" % "scala-compiler" % scalaCompilerVersion,
         "org.scala-lang" %% "scala3-staging" % scalaVersion.value,
+        "org.scala-lang" % "scala3-compiler_3" % scalaVersion.value,
         "org.http4s" %% "http4s-ember-server" % https4sVersion,
         "org.http4s" %% "http4s-ember-client" % https4sVersion,
         "org.http4s" %% "http4s-circe" % https4sVersion,
