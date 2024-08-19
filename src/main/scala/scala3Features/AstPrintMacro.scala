@@ -7,8 +7,6 @@
 package scala3Features
 
 import scala.quoted.*
-import scala.reflect.*
-import scala.quoted.runtime.impl.*
 
 object AstPrintMacro {
   def printASTImpl(expr: Expr[Any])(using Quotes): Expr[Unit] = {
@@ -21,7 +19,6 @@ object AstPrintMacro {
 
   def getASTImpl(expr: Expr[Any])(using Quotes): Expr[String] = {
     import quotes.reflect.*
-    println("Macro is running")
     val tree: Tree = expr.asTerm
     val ts = tree.show(using Printer.TreeStructure)
     Expr(ts)
