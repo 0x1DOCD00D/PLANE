@@ -35,6 +35,7 @@ val jsoupVersion = "1.17.2"
 val langchain4jVersion = "0.33.0"
 val ollama4jVersion = "1.0.73"
 val jTokkitVersion = "1.1.0"
+val deepLearning4jVersion = "1.0.0-M2.1"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots")
   .withAllowInsecureProtocol(true)
@@ -110,7 +111,10 @@ lazy val root = (project in file("."))
         "org.jsoup" % "jsoup" % jsoupVersion,
         "dev.langchain4j" % "langchain4j" % langchain4jVersion,
         "io.github.amithkoujalgi" % "ollama4j" % ollama4jVersion,
-        "com.knuddels" % "jtokkit" % jTokkitVersion
+        "com.knuddels" % "jtokkit" % jTokkitVersion,
+        "org.deeplearning4j" % "deeplearning4j-core" % deepLearning4jVersion,
+        "org.deeplearning4j" % "deeplearning4j-nlp" % deepLearning4jVersion,
+        "org.nd4j" % "nd4j-native" % "1.0.0-M2.1"
      ),
      homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
      licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),
