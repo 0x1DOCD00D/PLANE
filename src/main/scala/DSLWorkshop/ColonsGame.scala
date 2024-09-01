@@ -12,6 +12,10 @@ import scala.annotation.experimental
 
 @experimental
 object ColonsGame:
+  def key(v1: => Int, v2: => Int): Int =
+    println(s"key: $v1, $v2")
+    v1 + v2
+
   def key1(value: => Int): Int =
     println(s"key1: $value")
     value
@@ -24,6 +28,12 @@ object ColonsGame:
     in1 + in2
 
   @main def runColonsGame(args: String*): Unit =
+    val getIt =
+      key(
+         10,
+         20
+      )
+
     key1:
       20
 
