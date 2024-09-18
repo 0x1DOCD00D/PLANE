@@ -16,14 +16,33 @@ object ColonsGame:
     println(s"key: $v1, $v2")
     v1 + v2
 
+  val ZZ = X
+  
+  def X[T](value: => T): T =
+    println(s"key: $value")
+    value
+
+  def Y[T](value: => T): T =
+    println(s"key: $value")
+    value
+
+  def Z[T](value: => T): T =
+    println(s"key: $value")
+    value
+  
   def key1(value: => Int): Int =
     println(s"key1: $value")
     value
+
+  def key3(value: => Int): Int =
+    println(s"key3: $value")
+    value
+
   def key2(in: => Int): Int =
     println(s"key2: ${in + 10}")
     in + 10
 
-  def key3(in1: => Int)(in2: => Int): Int =
+  def key31(in1: => Int)(in2: => Int): Int =
     println(s"key3: ${in1 + in2}")
     in1 + in2
 
@@ -43,12 +62,24 @@ object ColonsGame:
 
     val result = key3:
       key1:
-        40;
+        40
       key2:
         key2:
           2
+        key3:
+          key1:
+            20
 
+    val resultX = X:
+      Y:
+        "val1"
+      Y:
+        X:
+          2.0f
+        Z:
+          ZZ:
+            20L
     println(
        "File /Users/drmark/IdeaProjects/PLANE/src/main/scala/DSLWorkshop/ColonsGame.scala created at time 2:38PM"
     )
-    println(result(10))
+    println(resultX)
