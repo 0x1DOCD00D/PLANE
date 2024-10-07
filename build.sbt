@@ -116,7 +116,8 @@ lazy val root = (project in file("."))
         "org.deeplearning4j" % "deeplearning4j-core" % deepLearning4jVersion,
         "org.deeplearning4j" % "deeplearning4j-nlp" % deepLearning4jVersion,
         "org.nd4j" % "nd4j-native" % "1.0.0-M2.1",
-        "io.github.ollama4j" % "ollama4j" % "1.0.84"
+        "io.github.ollama4j" % "ollama4j" % "1.0.84",
+        "org.tensorflow" % "tensorflow" % "1.15.0"
      ),
      homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
      licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),

@@ -17,7 +17,7 @@ object ColonsGame:
     v1 + v2
 
   val ZZ = X
-  
+
   def X[T](value: => T): T =
     println(s"key: $value")
     value
@@ -29,7 +29,7 @@ object ColonsGame:
   def Z[T](value: => T): T =
     println(s"key: $value")
     value
-  
+
   def key1(value: => Int): Int =
     println(s"key1: $value")
     value
@@ -52,13 +52,6 @@ object ColonsGame:
          10,
          20
       )
-
-    key1:
-      20
-
-    key2:
-      key1:
-        30
 
     val result = key3:
       key1:
