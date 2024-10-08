@@ -18,6 +18,9 @@ object AnimalKingdom:
   class Cat extends Animal {
     override def makeSound(): Unit = println("Meow")
   }
+  
+  def processAnimals[T <: Animal](lst: List[T]): List[Animal] =
+    new Dog :: lst
 
   // Contravariant class
   class Trainer[-A <: Animal] {

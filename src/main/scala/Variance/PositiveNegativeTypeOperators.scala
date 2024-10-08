@@ -16,7 +16,7 @@ object PositiveNegativeTypeOperators:
   }
 
   // Covariant Function: Covariant types occur in the range (output) of functions
-  class AnimalProducer[+A](animal: A) {
+  class AnimalProducer[+A](val animal: A) {
     def produce: A = animal // A is in the return type (output)
   }
 
@@ -26,12 +26,13 @@ object PositiveNegativeTypeOperators:
   val producedAnimal: Animal = animalProducer.produce
 
   // Contravariant Function: Contravariant types occur in the domain (input) of functions
-  class AnimalConsumer[-A <: Animal] {
+  class AnimalTrainer[-A <: Animal] {
     def train(animal: A): Unit = animal.makeSound() // A is in the input (domain)
   }
 
-  val animalTrainer: AnimalConsumer[Animal] = new AnimalConsumer[Animal]
-  val dogTrainer: AnimalConsumer[Dog] = animalTrainer // This works because of contravariance
+  val animalTrainer: AnimalTrainer[Animal] = new AnimalTrainer[Animal]
+  val dogTrainer: AnimalTrainer[Dog] = animalTrainer // This works because of contravariance
+//  val dog1Trainer: AnimalTrainer[Animal] = new AnimalTrainer[Dog] // This works because of contravariance
 
   dogTrainer.train(new Dog())
 

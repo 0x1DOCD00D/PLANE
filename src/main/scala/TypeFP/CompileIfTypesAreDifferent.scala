@@ -49,7 +49,7 @@ object CompileIfTypesAreDifferent {
   //  how many implicits like this do we need?! Argh!
   //  the solution is to exploit the property of implicit object search where only
   //  one implicit object should be found in the given scope to resolve the reference to it
-  implicit def neqMeth[A, B]: =!=[A, B] = null
+  implicit def neqMeth3[A, B]: =!=[A, B] = null
 
   implicit def neqMeth1[A]: =!=[A, A] = null
 
@@ -61,5 +61,5 @@ object CompileIfTypesAreDifferent {
   val ok2Compile5 = NotEqualClassTypeParams(25, "DrMark")
   //this expression fails because the implicit cannot be resolved since both implicit
   //evidence methods, neqMeth1 and neqMeth2 are triggered
-  //  val ok2Compile6 = NotEqualClassTypeParams(30,50)
+//    val ok2Compile6 = NotEqualClassTypeParams(30,50)
 }
