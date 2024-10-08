@@ -26,12 +26,12 @@ object PositiveNegativeTypeOperators:
   val producedAnimal: Animal = animalProducer.produce
 
   // Contravariant Function: Contravariant types occur in the domain (input) of functions
-  class AnimalTrainer[-A <: Animal] {
+  class AnimalConsumer[-A <: Animal] {
     def train(animal: A): Unit = animal.makeSound() // A is in the input (domain)
   }
 
-  val animalTrainer: AnimalTrainer[Animal] = new AnimalTrainer[Animal]
-  val dogTrainer: AnimalTrainer[Dog] = animalTrainer // This works because of contravariance
+  val animalTrainer: AnimalConsumer[Animal] = new AnimalConsumer[Animal]
+  val dogTrainer: AnimalConsumer[Dog] = animalTrainer // This works because of contravariance
 
   dogTrainer.train(new Dog())
 
