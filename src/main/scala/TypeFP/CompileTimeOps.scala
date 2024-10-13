@@ -6,6 +6,8 @@
 
 package TypeFP
 
+import scala.compiletime.ops.boolean.&&
+
 object CompileTimeOps:
 
   import scala.compiletime.ops.int._
@@ -34,6 +36,17 @@ object CompileTimeOps:
     case Circle[r]          => r * r * 3 // Circle area (Pi ~ 3)
     case Rectangle[w, h, p] => w * h
     case Triangle[b, h]     => (b * h) / 2 // Triangle area
+  }
+
+  type IsPointWithinLimits[X <: Int, Y <: Int, LimXfrom <: Int, LimXto <: Int, LimYfrom <: Int, LimYto <: Int] = (LimXfrom <= X) && (X <= LimXto) && (LimYfrom <= Y) && (Y <= LimYto)
+
+  type AreaOfRectangle[W <: Int, H <: Int] = W * H
+  type ConditionalArea[W <: Int, H <: Int, P <: Point[?, ?]] <: Int = P match {
+    case Point[x, y] =>
+    IsPointWithinLimits[x, y, 1, 10, 2, 20] match {
+      case true => AreaOfRectangle[W, H] * 2 // If point within limits, double the area
+      case false => AreaOfRectangle[W, H] // Otherwise, calculate area normally
+    }
   }
 
   type MyPoint = Point[2, 3]
