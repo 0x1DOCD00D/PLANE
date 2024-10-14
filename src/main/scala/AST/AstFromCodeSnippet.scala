@@ -16,20 +16,11 @@ object AstFromCodeSnippet {
 
   // Function to parse and return the AST from a block of code
   def getASTFromCode(code: String)(implicit ctx: Context): Tree = {
-    // Create a virtual file with the Scala code as content
     val virtualFile = new VirtualFile("dummy.scala")
     val writer = virtualFile.output
     writer.write(code.getBytes)
     writer.close()
-
-    // Create a source file from the virtual file
-    val sourceFile = new SourceFile(virtualFile, code.toCharArray)
-
-    // Use the Scala 3 parser to parse the source file and produce an AST
-    val parser = new Parser(sourceFile)
-    val tree = parser.block() // Parse the code block into an AST
-
-    tree // Return the AST
+    new Parser(new SourceFile(virtualFile, code.toCharArray)).block() // Parse the code block into an AST
   }
 
   def traverseTree(tree: Tree): Unit = {
