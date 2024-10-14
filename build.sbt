@@ -1,10 +1,12 @@
+import sbt.Keys.scalaVersion
+
 ThisBuild / organization := "com.lsc"
 ThisBuild / version := {
   val orig = (ThisBuild / version).value
   if (orig.endsWith("-SNAPSHOT")) "1.0.A-SNAPSHOT"
   else orig
 }
-ThisBuild / scalaVersion := "3.4.1"
+ThisBuild / scalaVersion := "3.5.1"
 
 val logbackVersion = "1.5.7"
 val typeSafeConfigVersion = "1.4.2"
@@ -98,7 +100,6 @@ lazy val root = (project in file("."))
         "org.scala-lang" % "scala-reflect" % scalaReflectVersion,
         "org.scala-lang" % "scala-compiler" % scalaCompilerVersion,
         "org.scala-lang" %% "scala3-staging" % scalaVersion.value,
-        "org.scala-lang" % "scala3-compiler_3" % scalaVersion.value,
         "org.http4s" %% "http4s-ember-server" % https4sVersion,
         "org.http4s" %% "http4s-ember-client" % https4sVersion,
         "org.http4s" %% "http4s-circe" % https4sVersion,
@@ -117,7 +118,8 @@ lazy val root = (project in file("."))
         "org.deeplearning4j" % "deeplearning4j-nlp" % deepLearning4jVersion,
         "org.nd4j" % "nd4j-native" % "1.0.0-M2.1",
         "io.github.ollama4j" % "ollama4j" % "1.0.84",
-        "org.tensorflow" % "tensorflow" % "1.15.0"
+        "org.tensorflow" % "tensorflow" % "1.15.0",
+        "org.scala-lang" %% "scala3-compiler" % scalaVersion.value
      ),
      homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
      licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),
