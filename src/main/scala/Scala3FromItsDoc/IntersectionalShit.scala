@@ -37,7 +37,7 @@ object NewTypes:
   }
 
   @main def runNewTypes(args: String*): Unit =
-    println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Scala3FromItsDoc/NewTypes.scala created at time 10:29AM")
+    println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Scala3FromItsDoc/IntersectionalShit.scala created at time 10:29AM")
     println {
       class X extends Intersex.Resettable with Intersex.Growable[String] {
         override def reset(): Unit = println("reset")
