@@ -6,7 +6,7 @@
 
 package Scala3FromItsDoc
 
-object NewTypes:
+object IntersectionalShit:
   object Intersex {
     trait Resettable:
       def reset(): Unit
