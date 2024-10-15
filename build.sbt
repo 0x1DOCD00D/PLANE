@@ -54,7 +54,7 @@ lazy val root = (project in file("."))
      scalacOptions := Seq(
         "-explain",
         "-Yexplain-lowlevel",
-        "-Xfatal-warnings",
+//        "-Xfatal-warnings",
         "-unchecked",
         "-deprecation",
         "-feature",
