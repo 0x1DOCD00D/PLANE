@@ -6,6 +6,14 @@ object ComposeKind:
     type Composed[A] = F[G[A]]
   }
 
+  trait ComposeMore[F[_,_], G[_]] {
+    type Composed[A,B] = F[G[A], G[B]]
+  }
+
+  object MoreCompositions extends ComposeMore[Map, Option] {
+    override type Composed[String, Int] = Map[Option[String], Option[Int]]
+  }
+
   // Compose `Option` and `List` into a new type constructor
   object ComposeOptionList extends Compose[Option, List] {
     // `Composed[Int]` is `Option[List[Int]]`
