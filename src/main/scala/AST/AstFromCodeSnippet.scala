@@ -4,13 +4,12 @@ import dotty.tools.dotc.*
 import dotty.tools.dotc.core.Contexts.*
 import dotty.tools.dotc.core.Phases.*
 import dotty.tools.dotc.ast.tpd.*
-import dotty.tools.dotc.ast.untpd
+import dotty.tools.dotc.ast.{desugar, untpd}
 import dotty.tools.dotc.core.Constants.Constant
 import dotty.tools.dotc.util.SourceFile
 import dotty.tools.io.VirtualFile
 import dotty.tools.dotc.parsing.Parsers.Parser
-import dotty.tools.dotc.reporting.Reporter
-import dotty.tools.dotc.typer.Typer
+import ast.desugar.*
 
 object AstFromCodeSnippet {
 
@@ -96,6 +95,8 @@ object AstFromCodeSnippet {
   }
 
   def main(args: Array[String]): Unit = {
+    import scala.reflect.runtime.universe._
+    import scala.tools.reflect.ToolBox
     // Initialize a basic context with default settings
     implicit val ctx: Context = (new ContextBase).initialCtx.fresh
 
@@ -106,6 +107,12 @@ object AstFromCodeSnippet {
       x + y
     """
 
+    val mirror = runtimeMirror(this.getClass.getClassLoader)
+    val toolbox = mirror.mkToolBox()
+    val blockOld = toolbox.parse(code)
+    val res1 = toolbox.eval(blockOld)
+    println(s"evaluated: $res1")
+
     // Parse the code and get the AST
     val tree = getASTFromCode(code)
 
@@ -113,7 +120,15 @@ object AstFromCodeSnippet {
     println(s"AST of the code block:\n${tree.show}")
 
     traverseTree(tree)
-    val newTree = rewriteTree(tree)
-    println(s"AST of the NEW code block:\n${newTree.show}")
+    val newTree: untpd.Tree = rewriteTree(tree)
+    println(s"AST of the NEW code block:\n${newTree.toString}")
+
+    val newCode = TreeToAsciiConverter.treeToAscii(newTree)
+    println("Converted unparsed tree:")
+    println(newCode)
+    val blockNew = toolbox.parse(newCode)
+    val res2 = toolbox.eval(blockNew)
+    println(s"evaluated: $res2")
+
   }
 }
