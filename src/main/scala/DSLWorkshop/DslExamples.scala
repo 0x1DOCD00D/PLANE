@@ -30,6 +30,7 @@ object DslExamples:
         get {
           complete(fetchUser(userId))
         }
+      
       }
     }
   * */
