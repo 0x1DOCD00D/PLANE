@@ -2,7 +2,7 @@ package Scala3FromItsDoc
 
 object PartialFunctions:
   def accumulate[A, B](pfs: PartialFunction[A, B]*): PartialFunction[A, B] = {
-    pfs.reduce(_ orElse _)
+    pfs.reduce(_ orElse _) 
   }
 
   def filter[A](list: List[A])(pf: PartialFunction[A, _]): List[A] = {
