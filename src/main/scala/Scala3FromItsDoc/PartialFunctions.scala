@@ -5,7 +5,7 @@ object PartialFunctions:
     pfs.reduce(_ orElse _) 
   }
 
-  def filter[A](list: List[A])(pf: PartialFunction[A, _]): List[A] = {
+  def filter[A](list: List[A])(pf: PartialFunction[A, ?]): List[A] = {
     list.collect {
       case x if pf.isDefinedAt(x) => x
     }
