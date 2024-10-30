@@ -9,11 +9,11 @@ object Laziness:
   lazy val fib: LazyList[Int] = 0 #:: 1 #:: fib.zip(fib.tail).map { case (a, b) => a + b }
 
   class A {
-    val x = {
+    val x: Int = {
       println("initializing x in A")
       1
     }
-    lazy val y = {
+    lazy val y: Int = {
       println("initializing y in A")
       2
     }
@@ -25,7 +25,7 @@ object Laziness:
   }
 
   var count = 0
-  lazy val xx = {
+  lazy val xx: Int = {
     count += 1
     count
   }

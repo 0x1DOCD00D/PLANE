@@ -46,6 +46,7 @@ resolvers += Resolver.sbtPluginRepo("releases")
 Global / resolvers += "scala-integration" at
   "https://scala-ci.typesafe.com/artifactory/scala-integration/"
 resolvers += "Akka library repository".at("https://repo.akka.io/maven")
+resolvers += "Typesafe Repo" at "https://repo.typesafe.com/typesafe/releases/"
 
 //noinspection SpellCheckingInspe
 // ction

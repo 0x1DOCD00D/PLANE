@@ -18,7 +18,7 @@ object Continuations:
     println(s"Computation 1: Input = $x")
     println(s"Computation 1: Cont = $cont")
     val result = x + 1
-    val ir = cont(result)  // Pass result to the continuation
+    val ir: Unit = cont(result)  // Pass result to the continuation
     println(ir)
     ir
   }
