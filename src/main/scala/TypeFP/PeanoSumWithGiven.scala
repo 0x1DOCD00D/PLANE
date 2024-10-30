@@ -49,6 +49,6 @@ object PeanoSumWithGiven:
 
     // Uncommenting the following line would cause a compile-time error
     // because 1 + 2 != 4
-    //  val wrong1: Proof[_1, _2, _4] = summon[Proof[_1, _2, _4]]
-    //  val wrong2: Proof[_0, _3, _4] = summon[Proof[_0, _3, _4]]
+//      val wrong1: Proof[_1, _2, _4] = summon[Proof[_1, _2, _4]]
+//      val wrong2: Proof[_0, _3, _4] = summon[Proof[_0, _3, _4]]
   }
