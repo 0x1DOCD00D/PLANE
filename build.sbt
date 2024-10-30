@@ -18,7 +18,7 @@ val nscalatimeVersion = "2.30.0"
 val apacheCommonMathVersion = "3.6.1"
 val asmVersion = "9.2"
 val guavaVersion = "33.2.1-jre"
-val akkaVersion = "2.7.0"
+val akkaVersion = "2.10.0"
 val akkaHttpVersion = "10.5.2"
 val catsVersion = "2.8.0"
 val catsEffectVersion = "3.3.14"
@@ -45,6 +45,7 @@ resolvers += ("Apache repo" at "https://repository.apache.org/").withAllowInsecu
 resolvers += Resolver.sbtPluginRepo("releases")
 Global / resolvers += "scala-integration" at
   "https://scala-ci.typesafe.com/artifactory/scala-integration/"
+resolvers += "Akka library repository".at("https://repo.akka.io/maven")
 
 //noinspection SpellCheckingInspe
 // ction
@@ -66,11 +67,9 @@ lazy val root = (project in file("."))
      description := "Programming Language ANalyses Experimentation",
      Test / parallelExecution := false,
      libraryDependencies ++= Seq(
-//      ("com.typesafe.akka" %% "akka-actor-typed" % akkaVersion).cross(CrossVersion.for3Use2_13),
-//      ("com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test).cross(CrossVersion.for3Use2_13),
         "com.typesafe" % "config" % typeSafeConfigVersion,
-        "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
-        "com.typesafe.akka" %% "akka-actor-testkit-TYPED" % akkaVersion % Test,
+        "com.typesafe.akka" %% "akka-actor" % akkaVersion,
+        "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test,
         "com.typesafe.akka" %% "akka-stream" % akkaVersion,
         "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
         "ch.qos.logback" % "logback-core" % logbackVersion,
