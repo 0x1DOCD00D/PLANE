@@ -16,8 +16,11 @@ object Continuations:
   // A computation that passes its result to the continuation (CPS style)
   def computation1(x: Int): Continuation[Int] = { cont =>
     println(s"Computation 1: Input = $x")
+    println(s"Computation 1: Cont = $cont")
     val result = x + 1
-    cont(result)  // Pass result to the continuation
+    val ir = cont(result)  // Pass result to the continuation
+    println(ir)
+    ir
   }
 
   def computation2(y: Int): Continuation[Int] = { cont =>
@@ -40,7 +43,9 @@ object Continuations:
   // Compose computations manually using CPS
   val composedContinuations: Continuation[Int] = { cont =>
     computation1(10) { result1 =>
+      println(s"after comp 1: $result1")
       computation2(result1) { result2 =>
+        println(s"after comp 2: $result2")
         computation3(result2)(cont) // Continue to the final continuation
       }
     }
