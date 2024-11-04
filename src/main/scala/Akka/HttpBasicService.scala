@@ -24,7 +24,8 @@ import akka.util.Timeout
 
 import scala.util.Failure
 import scala.util.Success
-import scala.io.StdIn
+
+//a modified basic http service from https://doc.akka.io/libraries/akka-http/current/quickstart-scala/
 
 object HttpBasicService:
   private def startHttpServer(routes: Route)(using system: ActorSystem[?]): Unit = {
