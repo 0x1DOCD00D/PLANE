@@ -19,7 +19,7 @@ val apacheCommonMathVersion = "3.6.1"
 val asmVersion = "9.2"
 val guavaVersion = "33.2.1-jre"
 val akkaVersion = "2.10.0"
-val akkaHttpVersion = "10.5.2"
+val akkaHttpVersion = sys.props.getOrElse("akka-http.version", "10.7.0")
 val catsVersion = "2.8.0"
 val catsEffectVersion = "3.3.14"
 val snakeYamlVersion = "2.0"
@@ -71,12 +71,14 @@ lazy val root = (project in file("."))
         "com.typesafe" % "config" % typeSafeConfigVersion,
         "com.typesafe.akka" %% "akka-actor" % akkaVersion,
         "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test,
-        "com.typesafe.akka" %% "akka-stream" % akkaVersion,
-        "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
+        "com.typesafe.akka" %% "akka-http"                % akkaHttpVersion,
+        "com.typesafe.akka" %% "akka-http-spray-json"     % akkaHttpVersion,
+        "com.typesafe.akka" %% "akka-actor-typed"         % akkaVersion,
+        "com.typesafe.akka" %% "akka-stream"              % akkaVersion,
+        "com.typesafe.akka" %% "akka-pki"                 % akkaVersion,
         "ch.qos.logback" % "logback-core" % logbackVersion,
         "ch.qos.logback" % "logback-classic" % logbackVersion,
         "org.slf4j" % "slf4j-api" % sfl4sVersion,
-        "com.typesafe" % "config" % typesafeConfigVersion,
         "commons-io" % "commons-io" % apacheCommonIOVersion,
         "org.apache.commons" % "commons-math3" % apacheCommonMathVersion,
         "org.apache.commons" % "commons-rng-simple" % "1.3",

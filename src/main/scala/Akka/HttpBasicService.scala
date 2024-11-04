@@ -8,31 +8,60 @@
 
 package Akka
 
-import akka.actor
-import akka.actor.ActorSystem
+import akka.actor.typed.ActorSystem
+import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.*
+import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives.*
-import akka.http.scaladsl.HttpConnectionContext
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, StatusCodes}
+import akka.http.scaladsl.server.Route
+import akka.actor.typed.Behavior
+import akka.actor.typed.scaladsl.Behaviors
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+import akka.actor.typed.scaladsl.AskPattern.*
+import akka.util.Timeout
+
+import scala.util.Failure
+import scala.util.Success
 import scala.io.StdIn
 
 object HttpBasicService:
+  private def startHttpServer(routes: Route)(using system: ActorSystem[?]): Unit = {
+    import system.executionContext
+
+    val futureBinding = Http().newServerAt("localhost", 8080).bind(routes)
+    futureBinding.onComplete {
+      case Success(binding) =>
+        val address = binding.localAddress
+        system.log.info("Server online at http://{}:{}/", address.getHostString, address.getPort)
+      case Failure(ex) =>
+        system.log.error("Failed to bind HTTP endpoint, terminating system", ex)
+        system.terminate()
+    }
+  }
+
+//  http://localhost:8080/hello
   @main def runHttpBasicService(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Akka/HttpBasicService.scala created at time 2:14 PM")
-    given ActorSystem = ActorSystem("HttpBasicService")
-    given ExecutionContext = summon[ActorSystem].dispatcher
 
-    val route =
+    val route: Route =
       path("hello") {
         get {
           complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
         }
       }
+    val rootBehavior: Behavior[Nothing] = Behaviors.setup[Nothing] { context =>
+      val anActor = context.spawn(
+        Behaviors.receiveMessage {
+          m =>
+            println(m)
+            Behaviors.same
+        }, "basichttpservice")
+      context.watch(anActor)
+      Behaviors.empty
+    }
 
-//    val bindingFuture = Http().newServerAt(interface = "localhost", port = 8080).bind(route)
-//
-//    println(s"Server now online. Please navigate to http://localhost:8080/hello\nPress RETURN to stop...")
-//    StdIn.readLine()
-//    bindingFuture.flatMap(_.unbind()).onComplete(_ => summon[ActorSystem].terminate())
+    given ActorSystem[Nothing] = ActorSystem[Nothing](rootBehavior, "HelloAkkaHttpServer")
+    startHttpServer(route)
+
