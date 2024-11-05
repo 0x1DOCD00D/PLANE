@@ -1,5 +1,7 @@
 package FPIntro
 
+import scala.annotation.tailrec
+
 object SumTypeProblem:
   sealed trait Looping
 
@@ -7,6 +9,7 @@ object SumTypeProblem:
 
   case object End extends Looping
 
+  @tailrec
   def paradoxicalLoop(looping: Looping): String = looping match {
     case End => "Reached End"
     case Next(nextVal) => paradoxicalLoop(nextVal)
