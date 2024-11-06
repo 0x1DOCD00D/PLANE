@@ -62,7 +62,7 @@ object HttpBasicService:
       context.watch(anActor)
       Behaviors.empty
     }
-
+    
     given ActorSystem[Nothing] = ActorSystem[Nothing](rootBehavior, "HelloAkkaHttpServer")
     startHttpServer(route)
 
