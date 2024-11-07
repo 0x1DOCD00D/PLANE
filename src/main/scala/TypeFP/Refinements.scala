@@ -14,9 +14,10 @@ object Refinements:
   type Less[X <: Int, Y <: Int] = X < Y
 
   inline def lessThan[X <: Int, Y <: Int]: Boolean =
-    inline erasedValue[Less[X, Y]] match
-      case true => true
-      case false => false
+    if erasedValue[Less[X, Y]] then
+      true
+    else
+      false
 
   def onlyEvens[T](x: T)(using ev: T =:= Int): Boolean = x % 2 == 0
 
@@ -29,7 +30,7 @@ object Refinements:
   def createPositiveInt(value: Int): GreaterThanZero {type T = Int} =
     new GreaterThanZero {
       type T = Int
-      val value = if (value > 0) value else throw new IllegalArgumentException("Must be greater than zero")
+      val value: Int = if (value > 0) value else throw new IllegalArgumentException("Must be greater than zero")
     }
   
   def main(args: Array[String]): Unit = {
