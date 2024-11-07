@@ -1,5 +1,7 @@
 package InterestingScalaFeatures
 
+import scala.language.reflectiveCalls
+
 object BehaviorIntro:
   import scala.reflect.Selectable.reflectiveSelectable
   
