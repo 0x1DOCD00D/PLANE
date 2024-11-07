@@ -13,10 +13,10 @@ object TypeLambdas:
     def map[A, B](fa: F[A])(f: A => B): F[B]
 
   given Functor[Option] with
-    def map[A, B](fa: Option[A])(f: A => B): Option[B] = fa.map(f)
+    def map[A, B](fa: Option[A])(f: A => B): Option[B] = if fa.isDefined then Option(f(fa.get)) else None
 
   given Functor[List] with
-    def map[A, B](fa: List[A])(f: A => B): List[B] = fa.map(f)
+    def map[A, B](fa: List[A])(f: A => B): List[B] = for member <- fa yield f(member) 
 
   // A composite functor for `F` and `G` where we need to type lambda to represent the composition.
   def composedFunctor[F[_] : Functor, G[_] : Functor]: Functor[[X] =>> F[G[X]]] = new Functor[[X] =>> F[G[X]]] {
