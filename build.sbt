@@ -38,6 +38,7 @@ val langchain4jVersion = "0.33.0"
 val ollama4jVersion = "1.0.73"
 val jTokkitVersion = "1.1.0"
 val deepLearning4jVersion = "1.0.0-M2.1"
+val ShapelessVersion = "3.4.3"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots")
   .withAllowInsecureProtocol(true)
@@ -121,7 +122,9 @@ lazy val root = (project in file("."))
         "org.nd4j" % "nd4j-native" % "1.0.0-M2.1",
         "io.github.ollama4j" % "ollama4j" % "1.0.84",
         "org.tensorflow" % "tensorflow" % "1.15.0",
-        "org.scala-lang" %% "scala3-compiler" % scalaVersion.value
+        "org.scala-lang" %% "scala3-compiler" % scalaVersion.value,
+        "org.typelevel" % "shapeless3-deriving_3" % ShapelessVersion,
+        "eu.timepit" %% "refined" % "0.10.1"
      ),
      homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
      licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),
