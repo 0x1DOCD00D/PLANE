@@ -20,5 +20,5 @@ object IntroAndElimination:
 
   def main(args: Array[String]): Unit = {
 //    println(sayHello(summon[Greeting]))
-    sayHello
+    println(sayHello)
   }

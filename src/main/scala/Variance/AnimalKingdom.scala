@@ -7,12 +7,17 @@
 package Variance
 
 object AnimalKingdom:
-  class Animal {
+  trait Mammal
+  class Animal extends Mammal {
     def makeSound(): Unit = println("Some animal sound")
   }
 
   class Dog extends Animal {
     override def makeSound(): Unit = println("Bark")
+  }
+
+  class SmallDog extends Animal {
+    override def makeSound(): Unit = println("Woof")
   }
 
   class Cat extends Animal {
