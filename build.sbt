@@ -6,7 +6,7 @@ ThisBuild / version := {
   if (orig.endsWith("-SNAPSHOT")) "1.0.A-SNAPSHOT"
   else orig
 }
-ThisBuild / scalaVersion := "3.5.1"
+ThisBuild / scalaVersion := "3.5.2"
 
 val logbackVersion = "1.5.7"
 val typeSafeConfigVersion = "1.4.2"
@@ -72,11 +72,11 @@ lazy val root = (project in file("."))
         "com.typesafe" % "config" % typeSafeConfigVersion,
         "com.typesafe.akka" %% "akka-actor" % akkaVersion,
         "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test,
-        "com.typesafe.akka" %% "akka-http"                % akkaHttpVersion,
-        "com.typesafe.akka" %% "akka-http-spray-json"     % akkaHttpVersion,
-        "com.typesafe.akka" %% "akka-actor-typed"         % akkaVersion,
-        "com.typesafe.akka" %% "akka-stream"              % akkaVersion,
-        "com.typesafe.akka" %% "akka-pki"                 % akkaVersion,
+        "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
+        "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
+        "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
+        "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+        "com.typesafe.akka" %% "akka-pki" % akkaVersion,
         "ch.qos.logback" % "logback-core" % logbackVersion,
         "ch.qos.logback" % "logback-classic" % logbackVersion,
         "org.slf4j" % "slf4j-api" % sfl4sVersion,
