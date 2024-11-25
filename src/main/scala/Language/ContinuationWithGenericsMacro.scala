@@ -1,3 +1,4 @@
+
 ////////////////////////////////////////////////////////////////////////////////
 // Copyright (c) 2024 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -6,19 +7,17 @@
 
 package Language
 
-object ContinuationsClassicShiftReset:
-  def reset[R](block: => R): R = block
-  def shift[A, R](f: (A => R) => R): (A => R) => R = k => f(k)
+object ContinuationWithGenericsMacro:
+  @main def runContinuationWithGenericsMacro(args: String*): Unit =
+    println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Language/ContinuationWithGenericsMacro.scala created at time 5:47PM")
+    import MacroUtilsWithGenerics.runWithExceptionHandling
+    import DefaultValue.given
 
-  @main def runContinuationsClassicShiftReset(args: String*): Unit =
-    println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Language/ContinuationsClassicShiftReset.scala created at time 11:33AM")
-    val result = reset[Int] {
-      val a = 10
-      val result = shift { (k: Int => Int) =>
-        println(s"Captured continuation with a = $a")
-        k(a * 2)
-      } { b => b + 5 }
-      result
+    val result: Int = runWithExceptionHandling {
+      println("Statement 1")
+      val x = 10 / 0 // This will cause an ArithmeticException
+      println(s"Value of x: $x")
+      x // Return x
     }
     println(s"Result: $result")
 
