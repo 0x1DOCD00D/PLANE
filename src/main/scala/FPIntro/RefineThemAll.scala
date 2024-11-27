@@ -1,4 +1,3 @@
-
 ////////////////////////////////////////////////////////////////////////////////
 // Copyright (c) 2024 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -17,7 +16,7 @@ object RefineThemAll:
 
   given Validated[true] = new Validated[true] {}
 
-  trait RefinedInt[Predicate[_ <: Int] <: Boolean]
+  trait RefinedInt[Predicate[_ <: Int] <: AnyVal]
 
   def validate[V <: Int, Predicate[_ <: Int] <: Boolean](using Validated[Predicate[V]]): RefinedInt[Predicate] = new RefinedInt {}
 
@@ -72,7 +71,7 @@ object RefineThemAll:
   def main(args: Array[String]): Unit = {
     val a: ValidatedPred[LowerThan[10]] = 6
 
-    // val x: Validated[LowerThan[10]] = 16 // Validation fails with:
+//    val x: Validated[LowerThan[10]] = 16 // Validation fails with:
     // Validation failed: 16 < 10
 
 //    val b: ValidatedPred[GreaterThan[5] And LowerThan[10]] = 6
