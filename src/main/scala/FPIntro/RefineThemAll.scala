@@ -1,3 +1,10 @@
+
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2024 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+////////////////////////////////////////////////////////////////////////////////
+
 package FPIntro
 
 object RefineThemAll:
@@ -28,7 +35,6 @@ object RefineThemAll:
   // no implicit argument of type iteration1.Validated[(false : Boolean)] was found for parameter x$2 of method validate in package iteration1
   // L25:   validate[4, [V <: Int] =>> V < 10 && V > 6](4)
 
-
   sealed trait Pred
 
   class And[A <: Pred, B <: Pred] extends Pred
@@ -47,15 +53,15 @@ object RefineThemAll:
         inline if constValue[V] < constValue[t]
         then new ValidatedPred[E] {}
         else
-          inline val vs = constValue[ToString[V]]
-          inline val limit = constValue[ToString[t]]
+          inline val vs = constValue[compiletime.ops.any.ToString[V]]
+          inline val limit = constValue[compiletime.ops.any.ToString[t]]
           error("Validation failed: " + vs + " < " + limit)
       case _: GreaterThan[t] =>
         inline if constValue[V] > constValue[t]
         then new ValidatedPred[E] {}
         else
-          inline val vs = constValue[ToString[V]]
-          inline val limit = constValue[ToString[t]]
+          inline val vs = constValue[compiletime.ops.any.ToString[V]]
+          inline val limit = constValue[compiletime.ops.any.ToString[t]]
           error("Validation failed: " + vs + " > " + limit)
       case _: And[a, b] =>
         inline mkValidated[V, a](v) match
