@@ -12,6 +12,7 @@ object ExceptionsAreNotReferentiallyTransparent:
   def failingFn(i: Int): Int =
 //    val y: Int = throw Exception("fail!")
     try
+//      s(-)
 //      i + y
       i + ((throw Exception("fail!")): Int)
     catch

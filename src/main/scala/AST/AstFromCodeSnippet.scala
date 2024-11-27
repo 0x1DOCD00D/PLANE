@@ -25,7 +25,110 @@ object AstFromCodeSnippet {
   def traverseTree(tree: Tree): Unit = {
     import AST.BasicManipulations.implicitCtx
     tree match {
-      // Match a ValDef node (variable declaration)
+/*
+      case v: TypeIdent  => println(v.name) 
+      case v: Return => 
+        println(v.expr.toString)
+        println(v.from.toString)
+      case Try(block, handlers, finalizer)             =>
+        node(ReflectionType.Try, c(block), c(handlers), c(finalizer))
+      case MatchTypeTree(bound, selector, cases)       =>
+        node(ReflectionType.MatchTypeTree, c(bound), c(selector), c(cases))
+      case If(cond, thenp, elsep)                      =>
+        node(ReflectionType.If, c(cond), c(thenp), c(elsep))
+      case Super(qual, mix)                            =>
+        node(ReflectionType.Super, c(qual), c(mix))
+      case TypeSelect(qualifier, name)                 =>
+        node(ReflectionType.TypeSelect, c(qualifier), c(name))
+      case TypeCaseDef(pat, body)                      =>
+        node(ReflectionType.TypeCaseDef, c(pat), c(body))
+      case TypeProjection(qualifier, name)             =>
+        node(ReflectionType.TypeProjection, c(qualifier), c(name))
+      case Repeated(elems, elemtpt)                    =>
+        node(ReflectionType.Repeated, c(elems), c(elemtpt))
+      case Typed(expr, tpt)                            =>
+        node(ReflectionType.Typed, c(expr), c(tpt))
+      case Annotated(arg, annot)                       =>
+        node(ReflectionType.Annotated, c(arg), c(annot))
+      case This(qual)                                  =>
+        node(ReflectionType.This, c(qual))
+      case Singleton(ref)                              =>
+        node(ReflectionType.Singleton, c(ref))
+      case PackageClause(pid, stats)                   =>
+        node(ReflectionType.PackageClause, c(pid), c(stats))
+      case CaseDef(pat, guard, body)                   =>
+        node(ReflectionType.CaseDef, c(pat), c(guard), c(body))
+      case Inlined(call, bindings, expansion)          =>
+        node(ReflectionType.Inlined, c(call), c(bindings), c(expansion))
+      case DefDef(name, paramsClauses, returnTpt, rhs) =>
+        node(ReflectionType.DefDef, c(name), c(paramsClauses), c(returnTpt), c(rhs))
+      case ClassDef(name, constr, parents, self, body) =>
+        node(ReflectionType.ClassDef, c(name), c(constr), c(parents), c(self), c(body))
+      case Export(expr, selectors)                     =>
+        node(ReflectionType.Export, c(expr), c(selectors))
+      case WildcardTypeTree()                          =>
+        node(ReflectionType.WildcardTypeTree)
+      case TypedOrTest(tree, tpt)                      =>
+        node(ReflectionType.TypedOrTest, c(tree), c(tpt))
+      case TypeApply(fun, args)                        =>
+        node(ReflectionType.TypeApply, c(fun), c(args))
+      case ByName(result)                              =>
+        node(ReflectionType.ByName, c(result))
+      case Literal(const)                              =>
+        node(ReflectionType.Literal, c(const))
+      case Inferred()                                  =>
+        node(ReflectionType.Inferred)
+      case LambdaTypeTree(tparams, body)               =>
+        node(ReflectionType.LambdaTypeTree, c(tparams), c(body))
+      case Alternatives(patterns)                      =>
+        node(ReflectionType.Alternatives, c(patterns))
+      case TypeBind(name, bounds)                      =>
+        node(ReflectionType.TypeBind, c(name), c(bounds))
+      case TypeDef(name, rhs)                          =>
+        node(ReflectionType.TypeDef, c(name), c(rhs))
+      case Apply(fun, args)                            =>
+        node(ReflectionType.Apply, c(fun), c(args))
+      case Applied(tpt, args)                          =>
+        node(ReflectionType.Applied, c(tpt), c(args))
+      case TypeBoundsTree(lo, hi)                      =>
+        node(ReflectionType.TypeBoundsTree, c(lo), c(hi))
+      case Wildcard()                                  =>
+        node(ReflectionType.Wildcard)
+      case While(cond, body)                           =>
+        node(ReflectionType.While, c(cond), c(body))
+      case Unapply(fun, implicits, patterns)           =>
+        node(ReflectionType.Unapply, c(fun), c(implicits), c(patterns))
+      case Import(expr, selectors)                     =>
+        node(ReflectionType.Import, c(expr), c(selectors))
+      case Refined(tpt, refinements)                   =>
+        node(ReflectionType.Refined, c(tpt), c(refinements))
+      case SummonFrom(cases)                           =>
+        node(ReflectionType.SummonFrom, c(cases))
+      case Bind(name, body)                            =>
+        node(ReflectionType.Bind, c(name), c(body))
+      case ValDef(name, tpt, rhs)                      =>
+        node(ReflectionType.ValDef, c(name), c(tpt), c(rhs))
+      case New(tpt)                                    =>
+        node(ReflectionType.New, c(tpt))
+      case NamedArg(name, arg)                         =>
+        node(ReflectionType.NamedArg, c(name), c(arg))
+      case Select(qualifier, name)                     =>
+        node(ReflectionType.Select, c(qualifier), c(name))
+      case Match(selector, cases)                      =>
+        node(ReflectionType.Match, c(selector), c(cases))
+      case Closure(meth, tpt)                          =>
+        node(ReflectionType.Closure, c(meth), c(tpt))
+      case Block(stats, expr)                          =>
+        node(ReflectionType.Block, c(stats), c(expr))
+      case TypeBlock(aliases, tpt)                     =>
+        node(ReflectionType.TypeBlock, c(aliases), c(tpt))
+      case Assign(lhs, rhs)                            =>
+        node(ReflectionType.Assign, c(lhs), c(rhs))
+      case Ident(name)                                 =>
+        node(ReflectionType.Ident, c(name))
+      
+      
+*/
       case v: ValDef =>
         println(s"ValDef: name = ${v.name}, rhs = ${v.rhs.show}")
         traverseTree(v.rhs) // Traverse the right-hand side (rhs) of the definition

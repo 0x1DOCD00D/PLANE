@@ -1,6 +1,7 @@
 package TypeFP
 
 import scala.compiletime.ops.int.+
+import scala.concurrent.Future
 
 object TypeMatchExamples:
   type DepthOf[T] <: Int = T match
@@ -34,7 +35,12 @@ object TypeMatchExamples:
     val depth2: DepthOf[List[List[Int]]] = 2 // Two levels of nesting
     val depth3: DepthOf[List[List[List[Int]]]] = 3 // Three levels of nesting
 
-    val tpl:Append[L1, L2] = (1, "a", true, 3.7d)
+    implicit val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
+
+    val ff:Future[Append[L1, L2]] = Future {
+      (1, "a", true, 3.7f)
+    }
+    val tpl:Append[L1, L2] = (1, "a", true, 3.7f)
 
     type Converted1 = ConvertIntToString[Int] // String
     type Converted2 = ConvertIntToString[Option[Int]] // Option[String]
