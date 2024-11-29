@@ -16,7 +16,7 @@ object RefineThemAll:
 
   given Validated[true] = new Validated[true] {}
 
-  trait RefinedInt[Predicate[_ <: Int] <: AnyVal]
+  trait RefinedInt[Predicate[_ <: Int] <: Boolean]
 
   def validate[V <: Int, Predicate[_ <: Int] <: Boolean](using Validated[Predicate[V]]): RefinedInt[Predicate] = new RefinedInt {}
 
