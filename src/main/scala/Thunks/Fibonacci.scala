@@ -14,6 +14,14 @@ object Fibonacci:
     fib.take((n + 1).toInt).last
   }
 
+  val fibs =
+    def go(current: BigInt, next: BigInt): LazyList[BigInt] = current #:: go(next, current + next)
+    go(0, 1)
+
+
   @main def runFibonacci(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Thunks/Fibonacci.scala created at time 4:13PM")
     println(fibonacci(100)) 
+    println{
+      fibs.take(102).toList
+    }
