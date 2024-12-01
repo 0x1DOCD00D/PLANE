@@ -1,4 +1,3 @@
-
 ////////////////////////////////////////////////////////////////////////////////
 // Copyright (c) 2024 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -7,19 +6,22 @@
 
 package TypeFP
 
+import scala.annotation.tailrec
+
 object UnfoldingIt:
   def unfold_1[A, S](initState: S)(f: S => Option[(A, S)]): List[A] = {
     f(initState) match {
       case Some((value, nextState)) => value :: unfold_1(nextState)(f)
-      case None => Nil
+      case None                     => Nil
     }
   }
 
   def unfold_2[A, S](initState: S)(f: S => Option[(A, S)]): Set[A] = {
+    @tailrec
     def loop(state: S, acc: Set[A]): Set[A] = {
       f(state) match {
         case Some((value, nextState)) => loop(nextState, acc + value)
-        case None => acc
+        case None                     => acc
       }
     }
 
@@ -52,4 +54,3 @@ object UnfoldingIt:
     }
     println(tree)
     // Output: Tree(1,List(Tree(2,List(Tree(4,List()), Tree(5,List()))), Tree(3,List(Tree(6,List()), Tree(7,List())))))
-
