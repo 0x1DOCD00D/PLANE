@@ -8,15 +8,17 @@
 package FPIntro
 
 //https://learning.oreilly.com/library/view/functional-programming-in/9781617299582/OEBPS/Text/04.htm#heading_id_3
+class MyException(s: String) extends Exception(s)
 object ExceptionsAreNotReferentiallyTransparent:
   def failingFn(i: Int): Int =
 //    val y: Int = throw Exception("fail!")
     try
 //      s(-)
 //      i + y
-      i + ((throw Exception("fail!")): Int)
+      i + ((throw MyException("fail!")): Int)
     catch
       case e: Exception => 2*i
+      case _ => 3*i
 
   @main def runExceptionsAreNotReferentiallyTransparent(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/FPIntro/ExceptionsAreNotReferentiallyTransparent.scala created at time 7:02PM")
