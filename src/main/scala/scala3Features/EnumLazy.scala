@@ -1,4 +1,3 @@
-
 ////////////////////////////////////////////////////////////////////////////////
 // Copyright (c) 2024 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -23,14 +22,14 @@ object EnumLazy:
 	at scala3Features.EnumLazy$Spam$$anon$1.<init>(EnumLazy.scala:15)
 	at scala3Features.EnumLazy$Spam$.$new(EnumLazy.scala:15)
 	at scala3Features.EnumLazy$Spam$.<clinit>(EnumLazy.scala:14)
-    * */
-    lazy val x = this match // lazy fixes the error
+     * */
+    lazy val x: Int = this match // lazy fixes the error
       case Ham => 0
 
   extension (s: String)
-    def toSpam = s match
+    def toSpam: Spam = s match
       case "HAM" => Spam.Ham
-      case _ => Spam.NoHam
+      case _     => Spam.NoHam
 
   "HAM".toSpam
   @main def runEnumLazy(args: String*): Unit =
