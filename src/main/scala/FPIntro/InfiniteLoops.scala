@@ -12,7 +12,7 @@ import scala.util.control.Breaks.{break, breakable}
 //https://users.scala-lang.org/t/functional-style-for-infinite-loop/5949/12
 object InfiniteLoops:
   class Service:
-    def take(): Boolean = (new Random()).nextInt() < 2_100_000_000
+    def take(): Boolean = new Random().nextInt() < 2_100_000_000
 
   given Service = Service()
 
@@ -22,7 +22,7 @@ object InfiniteLoops:
         while (true) {
           val status = summon[Service].take()
           println(status)
-          if (status == false) break
+          if (!status) break
         }
       }
     }

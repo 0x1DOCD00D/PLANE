@@ -6,15 +6,15 @@
 
 package FPIntro
 
-import java.nio.file.{FileSystems, Path, Paths, StandardWatchEventKinds, WatchEvent, WatchKey}
+import java.nio.file.{FileSystems, Path, Paths, StandardWatchEventKinds, WatchEvent, WatchKey, WatchService}
 import scala.concurrent.duration.Duration
-import scala.concurrent.{blocking, Await, ExecutionContext, ExecutionContextExecutor, Future}
+import scala.concurrent.{Await, ExecutionContext, ExecutionContextExecutor, Future, blocking}
 import scala.jdk.CollectionConverters.*
 import scala.util.{Failure, Success, Try}
 
 object WatchFS:
-  val home = Paths.get(".").toAbsolutePath
-  val watchService = FileSystems.getDefault.newWatchService()
+  val home: Path = Paths.get(".").toAbsolutePath
+  val watchService: WatchService = FileSystems.getDefault.newWatchService()
   home.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY)
 
   given executionContext: ExecutionContextExecutor = ExecutionContext.global

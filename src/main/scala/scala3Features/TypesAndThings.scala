@@ -22,7 +22,7 @@ object TypesAndThings:
     case _: TypeRepr.Num.type => Type.Num
 
   object NestedType:
-    val nested = Some(Some(3))
+    val nested: Option[Some[Int]] = Some(Some(3))
 
     def nestedMatch(value: Any): String =
       value match
