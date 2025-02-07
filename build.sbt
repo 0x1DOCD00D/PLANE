@@ -64,6 +64,7 @@ lazy val root = (project in file("."))
         "-deprecation",
         "-feature",
         "-language:implicitConversions",
+        "-source:3.3",
         "-experimental"
      ),
      scalacOptions += "-language:experimental.macros",
