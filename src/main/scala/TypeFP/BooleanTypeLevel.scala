@@ -34,8 +34,8 @@ object BooleanTypeLevel:
       case False => B
 
     // De Morgan's laws: Type equivalence definitions
-    type DeMorganAnd[A <: Bool, B <: Bool] = ^[(A \/ B)] =:= (^[A] /\ ^[B])
-    type DeMorganOr[A <: Bool, B <: Bool] = ^[(A /\ B)] =:= (^[A] \/ ^[B])
+    type DeMorganAnd[A <: Bool, B <: Bool] = ^[A \/ B] =:= (^[A] /\ ^[B])
+    type DeMorganOr[A <: Bool, B <: Bool] = ^[A /\ B] =:= (^[A] \/ ^[B])
 
     // Type class to inductively prove De Morgan’s laws
     trait DeMorganProof[A <: Bool, B <: Bool]
@@ -57,13 +57,13 @@ object BooleanTypeLevel:
   @main def runBooleanTypeLevel(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/TypeFP/BooleanTypeLevel.scala created at time 8:01PM")
     // Verify De Morgan’s Laws at the type level
-    val dmAndTrueFalse = Bool.verifyDeMorganAnd[True, False] // Should compile
-    val dmOrTrueFalse = Bool.verifyDeMorganOr[True, False] // Should compile
+    val dmAndTrueFalse = Bool.verifyDeMorganAnd[True, False]
+    val dmOrTrueFalse = Bool.verifyDeMorganOr[True, False]
 
-    val dmAndFalseFalse = Bool.verifyDeMorganAnd[False, False] // Should compile
-    val dmOrFalseFalse = Bool.verifyDeMorganOr[False, False] // Should compile
+    val dmAndFalseFalse = Bool.verifyDeMorganAnd[False, False]
+    val dmOrFalseFalse = Bool.verifyDeMorganOr[False, False]
 
-    val dmAndTrueTrue = Bool.verifyDeMorganAnd[True, True] // Should compile
-    val dmOrTrueTrue = Bool.verifyDeMorganOr[True, True] // Should compile
+    val dmAndTrueTrue = Bool.verifyDeMorganAnd[True, True]
+    val dmOrTrueTrue = Bool.verifyDeMorganOr[True, True]
 
     println("De Morgan's laws verified at the type level!")
