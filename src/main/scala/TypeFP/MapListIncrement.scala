@@ -84,7 +84,7 @@ object MapListIncrement:
   def checkTApply3: Aux[TInc, 3, 4] = summon[TApply[TInc, 3]]
 
 //  def checkTMap1: TMap.Aux[TCons[1, TCons[2, TCons[3, TNil]]], TInc, TCons[2, TCons[3, TCons[4, TNil]]]] = summon[TMap[TCons[1, TCons[2, TCons[3, TNil]]], TInc]]
-  def checkTMap1 = summon[TMap[TCons[1, TCons[2, TCons[3, TNil]]], TInc]]
+  def checkTMap1: TMap.Aux[TCons[1, TCons[2, TCons[3, TNil]]], TInc, TCons[2, TCons[3, TCons[4, TNil]]]] = summon[TMap[TCons[1, TCons[2, TCons[3, TNil]]], TInc]]
 
   type FullyExpandedMapped = TMap[TCons[1, TCons[2, TCons[3, TNil]]], TInc]#Out
   type FullyExpandedExpected = TCons[2, TCons[3, TCons[4, TNil]]]
@@ -102,7 +102,7 @@ object MapListIncrement:
 
   type ExtractOut[X] = X match
     case TApply.Aux[_, _, out] => out
-    case _ => X
+    case _                     => X
 
   type ExtractedTApply = ExtractOut[Aux[TInc, 1, 2]]
   type Expected2 = 2
@@ -114,6 +114,5 @@ object MapListIncrement:
     val r = summon[TApply[TInc, 1]]
     summon[ExtractOut[r.type] =:= Expected2]
 
-  
   @main def runMapListIncrement(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/TypeFP/MapListIncrement.scala created at time 9:28AM")
