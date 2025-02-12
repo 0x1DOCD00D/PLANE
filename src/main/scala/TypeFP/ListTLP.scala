@@ -14,7 +14,7 @@ object ListTLP:
   }
 
   final case class ACons[H, T <: AList[M], +M[_]](head: M[H], tail: T) extends AList[M] {
-    def @:[N[X] >: M[X], G](g: N[G]) = ACons(g, this: ACons[H, T, N])
+    def @:[N[X] >: M[X], G](g: N[G]): ACons[G, ACons[H, T, N], N] = ACons(g, this: ACons[H, T, N])
 
     type Fun[R] = H => tail.Fun[R]
 
@@ -26,7 +26,7 @@ object ListTLP:
   }
 
   sealed class ANil extends AList[Nothing] {
-    def @:[M[_], H](h: M[H]) = ACons(h, this)
+    def @:[M[_], H](h: M[H]): ACons[H, ANil, M] = ACons(h, this)
 
     type Fun[R] = R
 
