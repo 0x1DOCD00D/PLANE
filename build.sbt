@@ -6,7 +6,7 @@ ThisBuild / version := {
   if (orig.endsWith("-SNAPSHOT")) "1.0.A-SNAPSHOT"
   else orig
 }
-ThisBuild / scalaVersion := "3.5.2"
+ThisBuild / scalaVersion := "3.6.3"
 
 val logbackVersion = "1.5.7"
 val typeSafeConfigVersion = "1.4.2"
@@ -59,6 +59,7 @@ lazy val root = (project in file("."))
      scalacOptions := Seq(
         "-explain",
         "-Yexplain-lowlevel",
+        "-Xprint:typer",
 //        "-Xfatal-warnings",
         "-unchecked",
         "-deprecation",
@@ -106,6 +107,7 @@ lazy val root = (project in file("."))
         "org.scala-lang" % "scala-reflect" % scalaReflectVersion,
         "org.scala-lang" % "scala-compiler" % scalaCompilerVersion,
         "org.scala-lang" %% "scala3-staging" % scalaVersion.value,
+        "org.scala-lang" %% "scala3-compiler" % scalaVersion.value,
         "org.http4s" %% "http4s-ember-server" % https4sVersion,
         "org.http4s" %% "http4s-ember-client" % https4sVersion,
         "org.http4s" %% "http4s-circe" % https4sVersion,
