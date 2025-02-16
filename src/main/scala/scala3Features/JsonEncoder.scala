@@ -1,4 +1,3 @@
-
 ////////////////////////////////////////////////////////////////////////////////
 // Copyright (c) 2025 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -8,7 +7,7 @@
 package scala3Features
 
 import scala.deriving.Mirror
-import scala.compiletime.{erasedValue, summonInline, constValueTuple}
+import scala.compiletime.{constValueTuple, erasedValue, summonInline}
 
 trait JsonEncoder[A] {
   def encode(value: A): String
@@ -33,12 +32,16 @@ object JsonEncoder {
   inline def summonAll[T <: Tuple]: List[JsonEncoder[?]] =
     inline erasedValue[T] match
       case _: EmptyTuple => Nil
-      case _: (t *: ts) => summonInline[JsonEncoder[t]] :: summonAll[ts]
+      case _: (t *: ts)  => summonInline[JsonEncoder[t]] :: summonAll[ts]
 }
 
-case class Person(name: String, age: Int) derives JsonEncoder
+case class PersonX(name: String, age: Int) derives JsonEncoder
 
 @main def runJsonEncoder(args: String*): Unit =
   println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/scala3Features/JsonEncoder.scala created at time 10:00AM")
-  val p = Person("Alice", 25)
-  println(summon[JsonEncoder[Person]].encode(p)) // {"name": "Alice", "age": 25}
+  val p = PersonX("Alice", 25)
+  println(summon[JsonEncoder[PersonX]].encode(p))
+  case class Address(city: String, zip: Int) derives JsonEncoder
+  case class Person(name: String, age: Int, address: Address) derives JsonEncoder
+
+  println(summon[JsonEncoder[Person]].encode(Person("Alice", 25, Address("New York", 10001))))
