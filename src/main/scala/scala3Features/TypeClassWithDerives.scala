@@ -21,16 +21,15 @@ object TypeClassWithDerives:
       def method(a: Int): String = s"Int: ${a.toString}"
 
     inline given derived[T](using m: Mirror.ProductOf[T]): TypeName[T] =
-      new TypeName[T]:
-        def method(a: T): String =
-          val className = constValue[m.MirroredLabel] // Extracts case class name
-          val elemNames = constValueTuple[m.MirroredElemLabels].toList.asInstanceOf[List[String]]
-          val elemInstances = summonAll1[m.MirroredElemTypes]
-          val elems = a.asInstanceOf[Product].productIterator.toList
-          val formattedFields = elemNames.zip(elems.zip(elemInstances)).map:
-            case (name, (elem, enc: TypeName[t])) =>
-              s"$name=${enc.asInstanceOf[TypeName[Any]].method(elem)}"
-          s"$className(${formattedFields.mkString(", ")})"
+      (a: T) =>
+        val className = constValue[m.MirroredLabel] // Extracts case class name
+        val elemNames = constValueTuple[m.MirroredElemLabels].toList.asInstanceOf[List[String]]
+        val elemInstances = summonAll1[m.MirroredElemTypes]
+        val elems = a.asInstanceOf[Product].productIterator.toList
+        val formattedFields = elemNames.zip(elems.zip(elemInstances)).map:
+          case (name, (elem, enc: TypeName[t])) =>
+            s"$name=${enc.asInstanceOf[TypeName[Any]].method(elem)}"
+        s"$className(${formattedFields.mkString(", ")})"
 
     inline def summonAll1[T <: Tuple]: List[TypeName[?]] =
       inline erasedValue[T] match
@@ -46,3 +45,4 @@ object TypeClassWithDerives:
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/scala3Features/TypeClassWithDerives.scala created at time 12:48PM")
     val p = Person("Mark", 58, Address("USA", 12345))
     println(someActionOnInputParam(p))
+    println(someActionOnInputParam("Scala"))
