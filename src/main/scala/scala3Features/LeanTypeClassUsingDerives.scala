@@ -11,8 +11,7 @@ object LeanTypeClassUsingDerives:
   import scala.deriving.Mirror
   import TypeClassInduction.*
 
-  inline given derived[A](using m: Mirror.Of[A]): TypeName[A] = new TypeName[A]:
-    def method(a: A): String = s"Derived(${a.toString})"
+  inline given derived[A](using m: Mirror.Of[A]): TypeName[A] = (a: A) => s"Derived(${a.toString})"
 
   case class User(name: String, age: Int)
 
