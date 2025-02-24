@@ -41,6 +41,7 @@ val deepLearning4jVersion = "1.0.0-M2.1"
 val ShapelessVersion = "3.4.3"
 val scalaFxVersion = "22.0.0-R33"
 val spoonVersion = "11.1.0"
+val scalaMetaVersion = "4.13.1.1"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots")
   .withAllowInsecureProtocol(true)
@@ -131,6 +132,7 @@ lazy val root = (project in file("."))
         "org.typelevel" % "shapeless3-deriving_3" % ShapelessVersion,
         "eu.timepit" %% "refined" % "0.11.2",
         "org.scalafx" %% "scalafx" % scalaFxVersion,
+        "org.scalameta" %% "scalameta" % scalaMetaVersion,
         "fr.inria.gforge.spoon" % "spoon-core" % spoonVersion
      ),
      homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
