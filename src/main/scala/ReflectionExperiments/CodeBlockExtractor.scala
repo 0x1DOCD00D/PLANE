@@ -13,6 +13,29 @@ object CodeBlockExtractor:
   inline def codeBlockToStrings[T](inline block: => T): List[String] =
     ${ codeBlockToStringsImpl('block) }
 
+  private def codeBlockToStringsImpl_Experiment[T: Type](block: Expr[T])(using Quotes): Expr[List[String]] =
+    import quotes.reflect.*
+
+    val term = block.asTerm
+    val termSym = term.symbol
+
+    // If we do have a real symbol, we can attempt to get the ValDef tree
+    def valDefSource(sym: Symbol): Option[String] =
+      // If the compiler truly knows about this val, we can see its .tree
+      if sym != Symbol.noSymbol then
+        sym.tree match
+          case vd: ValDef =>
+            // For a val, its right-hand side is in vd.rhs
+            vd.rhs match
+              case Some(rhsTree) => Some(rhsTree.show)
+              case None => None
+          case _ => None
+      else None
+
+    val codeString = valDefSource(termSym).getOrElse(term.show)
+
+    Expr(List(codeString))  
+
   private def codeBlockToStringsImpl(block: Expr[Unit])(using Quotes): Expr[List[String]] =
     import quotes.reflect.*
 

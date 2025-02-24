@@ -49,5 +49,5 @@ object BlockCodeExecutor:
 
     val computedValue = BlockCodeExecutor.evaluateBlock(lines)
 
-//    computedValue.foreach(println)
+    computedValue.foreach(println)
     println(s"z = ${LazyRuntimeEval.z}")
