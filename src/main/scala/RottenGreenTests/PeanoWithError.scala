@@ -10,22 +10,30 @@ object PeanoWithError:
   sealed trait Peano {
     def add(that: Peano): Peano
   }
-
   case object Zero extends Peano {
     def add(that: Peano): Peano = that
   }
-
   case class Succ[N <: Peano](n: N) extends Peano {
     def add(that: Peano): Peano = that match {
-      case Zero => this
-      case Succ(m) => if (this == Zero) m else Succ(n.add(m))
+      case Zero    => this
+      case Succ(m) => if (this == Zero) that else Succ(this).add(m)
+//      uncomment the following line to introduce a bug
+//      case Succ(m) => if (this == Zero) m else Succ(n.add(m))
     }
+  }
+
+  def Sum(a: Peano, b: Peano): Peano = b match {
+    case Zero    => a
+    case Succ(m) => if (a == Zero) b else Succ(Sum(a, m))
   }
 
   @main def runPeanoWithError(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/RottenGreenTests/PeanoWithError.scala created at time 1:33PM")
     val x = Succ(Succ(Zero)) // Peano(2)
     val y = Succ(Succ(Succ(Zero))) // Peano(3)
+    assert(Sum(Zero, Zero) == Zero)
+    assert(Sum(Zero, x) == x)
+    assert(Sum(x, y) == Succ(Succ(Succ(Succ(Succ(Zero)))))) // Test passes
     val z = Succ(Zero) // Peano(1), now a real test
 
     val left = x.add(y).add(z) // (2 + 3) + 1
