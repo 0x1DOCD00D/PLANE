@@ -12,7 +12,7 @@ object TypeLevelDependent:
   object ValueLevelComputation {
     def applyFunc[F <: Int => Int](f: F, x: Int): Int = f(x)
     def Triple(x: Int): Int = x * 3
-    val computed: Int = applyFunc(Triple, 5) // Should be 10
+    assert(applyFunc(Triple, 5) == 15)
   }
 
   object TypeLevelComputation {
@@ -46,4 +46,4 @@ object TypeLevelDependent:
 //  summon[FinalResult =:= 20]
   @main def runTypeLevelDependent(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/TypeFP/TypeLevelDependent.scala created at time 12:53PM")
-    println(ValueLevelComputation.computed)
+    println(ValueLevelComputation)
