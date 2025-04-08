@@ -133,6 +133,7 @@ lazy val root = (project in file("."))
         "eu.timepit" %% "refined" % "0.11.2",
         "org.scalafx" %% "scalafx" % scalaFxVersion,
         "org.scalameta" %% "scalameta" % scalaMetaVersion,
+        "org.scala-lang" %% "scala3-tasty-inspector" % scalaVersion.value,
         "fr.inria.gforge.spoon" % "spoon-core" % spoonVersion
      ),
      homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
