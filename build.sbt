@@ -61,6 +61,7 @@ lazy val root = (project in file("."))
         "-explain",
         "-Yexplain-lowlevel",
         "-Xprint:typer",
+        "-Xignore-scala2-macros",
 //        "-Xfatal-warnings",
         "-unchecked",
         "-deprecation",
@@ -71,6 +72,7 @@ lazy val root = (project in file("."))
      ),
      scalacOptions += "-language:experimental.macros",
      scalacOptions += "-language:experimental.fewerBraces",
+     javaOptions += "--add-opens=java.base/java.lang=ALL-UNNAMED",
      description := "Programming Language ANalyses Experimentation",
      Test / parallelExecution := false,
      libraryDependencies ++= Seq(
