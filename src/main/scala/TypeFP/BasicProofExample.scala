@@ -7,16 +7,23 @@
 
 package TypeFP
 
+import scala.util.NotGiven
+
 object BasicProofExample:
   trait A; trait B; trait C
   given proofAB(using a: A): B with
     new B {}
-  given A with {}
+
+  given vacuous(
+    using NotGiven[A] ): B with
+    new B {}
+  given A with {} //this proposition can be commented out and the proof still works vacuously
 
   @main def runBasicProofExample(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/TypeFP/BasicProofExample.scala created at time 4:22PM")
     def use[T](v: T): Unit = println(s"Using ${v.getClass.getName}")
     use(summon[B])
+    //if we comment out given A with {} the proof still works vacuously
 //    this theorem is not provable, uncomment it for a compile-time error
 //    use(summon[C])
 
