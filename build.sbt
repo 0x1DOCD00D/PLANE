@@ -62,7 +62,6 @@ lazy val root = (project in file("."))
         "-Yexplain-lowlevel",
         "-Xprint:typer",
         "-Xignore-scala2-macros",
-//        "-Xfatal-warnings",
         "-unchecked",
         "-deprecation",
         "-feature",
