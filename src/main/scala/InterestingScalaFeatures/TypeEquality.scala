@@ -12,7 +12,7 @@ object TypeEquality:
   def printIfEqual[
      A <: Singleton,
      B <: Singleton
-  ](a: A, b: B)(using ev: A =:= B = null) =
+  ](a: A, b: B)(using ev: A =:= B = null): Unit =
     Option(ev) match
       case Some(eq) =>
         println(s"$a == $b")
