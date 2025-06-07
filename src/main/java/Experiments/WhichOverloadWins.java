@@ -6,22 +6,19 @@
 
 package Experiments;
 
-import java.util.List;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
-public class SafeVarArgs {
-    @SafeVarargs
-    static <T> void sink(List<T>... lists) {
-        Object[] raw = lists;
-        System.out.println("raw[0] = " + raw[0]);
-        raw[0] = List.of(42);
-        T t = lists[0].get(0);                
-        System.out.println("raw[0] = " + t);                
+public class WhichOverloadWins {
+    static void choose(Function<Integer,Integer> f) {        // (1)
+        System.out.println("Function<String,Integer>");
     }
+    static void choose(UnaryOperator<Integer> u) {          // (2)
+        System.out.println("UnaryOperator<Integer>");
+    }
+
     public static void main(String[] args) {
-        try {
-            sink(List.of("Hello"), List.of("World"));
-        } catch (ClassCastException e) {
-            System.out.println("Caught ClassCastException: " + e.getMessage());
-        }
+        choose(x -> x.hashCode());
+        choose((Integer x) -> x + 1);
     }
 }

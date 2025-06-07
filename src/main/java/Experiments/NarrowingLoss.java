@@ -6,22 +6,19 @@
 
 package Experiments;
 
-import java.util.List;
-
-public class SafeVarArgs {
-    @SafeVarargs
-    static <T> void sink(List<T>... lists) {
-        Object[] raw = lists;
-        System.out.println("raw[0] = " + raw[0]);
-        raw[0] = List.of(42);
-        T t = lists[0].get(0);                
-        System.out.println("raw[0] = " + t);                
-    }
+public class NarrowingLoss {
+    static void f(byte x) { }
     public static void main(String[] args) {
-        try {
-            sink(List.of("Hello"), List.of("World"));
-        } catch (ClassCastException e) {
-            System.out.println("Caught ClassCastException: " + e.getMessage());
+        byte b = 12;
+        Number num = 7;   // boxes to Integer, then widens to Number – legal
+        Number num2 = (Number) 7;   // error: int cannot be cast to Number
+        class Varargz {
+            static void f(Integer x)          { System.out.println("Integer"); }
+            static void f(int... xs)          { System.out.println("varargs"); }
         }
+        Varargz.f(b);
+        Varargz.f(12);
+
+//        f(12);         // error: no applicable method found
     }
 }
