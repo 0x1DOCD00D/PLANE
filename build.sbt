@@ -6,7 +6,7 @@ ThisBuild / version := {
   if (orig.endsWith("-SNAPSHOT")) "1.0.A-SNAPSHOT"
   else orig
 }
-ThisBuild / scalaVersion := "3.6.3"
+ThisBuild / scalaVersion := "3.7.1"
 
 val logbackVersion = "1.5.7"
 val typeSafeConfigVersion = "1.4.2"
@@ -70,9 +70,16 @@ lazy val root = (project in file("."))
         "-experimental"
      ),
      scalacOptions += "-language:experimental.macros",
-     scalacOptions += "-language:experimental.fewerBraces",
      javaOptions += "--add-opens=java.base/java.lang=ALL-UNNAMED",
      description := "Programming Language ANalyses Experimentation",
+     Compile / run / fork := true,
+     Compile / run / javaOptions += "--enable-preview",
+     Test / javaOptions ++= Seq(
+        "-Dscala.concurrent.context.numThreads=2",
+        "-Dscala.concurrent.context.maxThreads=10",
+        "--enable-preview"
+     ),
+     Test / fork := true,
      Test / parallelExecution := false,
      libraryDependencies ++= Seq(
         "com.typesafe" % "config" % typeSafeConfigVersion,
@@ -110,6 +117,7 @@ lazy val root = (project in file("."))
         "org.scala-lang" % "scala-compiler" % scalaCompilerVersion,
         "org.scala-lang" %% "scala3-staging" % scalaVersion.value,
         "org.scala-lang" %% "scala3-compiler" % scalaVersion.value,
+        "org.scala-lang.modules" % "scala-parallel-collections_3" % "1.1.0",
         "org.http4s" %% "http4s-ember-server" % https4sVersion,
         "org.http4s" %% "http4s-ember-client" % https4sVersion,
         "org.http4s" %% "http4s-circe" % https4sVersion,
