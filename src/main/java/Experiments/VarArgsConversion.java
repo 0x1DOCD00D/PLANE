@@ -6,19 +6,11 @@
 
 package Experiments;
 
-public class NarrowingLoss {
-    static void f(byte x) { }
+class VarArgsConversion {
+    static void g(Long x)    { System.out.println("never"); }
+    static void g(Integer x)    { System.out.println("boxed"); }
+    static void g(int... xs)    { System.out.println("varargs"); }
     public static void main(String[] args) {
-        byte b = 12;
-        Number num = 7;   // boxes to Integer, then widens to Number – legal
-        Number num2 = (Number) 7;   // error: int cannot be cast to Number
-        class Varargz {
-            static void f(Integer x)          { System.out.println("Integer"); }
-            static void f(int... xs)          { System.out.println("varargs"); }
-        }
-        Varargz.f(b);
-        Varargz.f(12);
-
- //       f(12);         // error: no applicable method found
+        g(7);
     }
 }
