@@ -9,7 +9,7 @@
 package DSLWorkshop
 
 object EntityCreation:
-  //create an Order where ( Id is 1, Description is "whiskey", Price is 100.0, Quantity is 2 )
+  //create an Order where ( Container is 1, Description is "whiskey", Price is 100.0, Quantity is 2 )
   object create:
     infix def an(o: Entity) = o match {
       case Order => new OrderRecord()
