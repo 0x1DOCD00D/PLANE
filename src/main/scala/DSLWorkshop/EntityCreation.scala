@@ -11,13 +11,13 @@ package DSLWorkshop
 object EntityCreation:
   //create an Order where ( Container is 1, Description is "whiskey", Price is 100.0, Quantity is 2 )
   object create:
-    infix def an(o: Entity) = o match {
+    infix def an(o: Entity): OrderRecord = o match {
       case Order => new OrderRecord()
       case _ => throw new Exception("Not supported")
     }
 
   class OrderRecord:
-    infix def where(a: EntityAttribute) = a match {
+    infix def where(a: EntityAttribute): OrderRecord = a match {
       case IdAttribute(i) =>
         this.id = i
         this
@@ -53,7 +53,7 @@ object EntityCreation:
       attrs = attrs :+ v
       v
 
-  @main def runDslEntity: Unit =
+  @main def runDslEntity(): Unit =
     import EntityCreation.*
     create an Order where ((Id is 1) and (Description is "whiskey"))
     println(create an Order where ((Id is 2) and (Description is "carrots")))
