@@ -110,7 +110,7 @@ PLANE/
 
 ## License
 
-PLANE is released under the MITLicense – see [LICENSE](LICENSE) for details.
+PLANE is released under the Apache License – see [LICENSE](LICENSE) for details.
 
 ## Contact
 
