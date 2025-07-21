@@ -42,6 +42,7 @@ val ShapelessVersion = "3.4.3"
 val scalaFxVersion = "22.0.0-R33"
 val spoonVersion = "11.1.0"
 val scalaMetaVersion = "4.13.1.1"
+val record4sVersion = "0.13.0"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots")
   .withAllowInsecureProtocol(true)
@@ -143,7 +144,8 @@ lazy val root = (project in file("."))
         "org.scalafx" %% "scalafx" % scalaFxVersion,
         "org.scalameta" %% "scalameta" % scalaMetaVersion,
         "org.scala-lang" %% "scala3-tasty-inspector" % scalaVersion.value,
-        "fr.inria.gforge.spoon" % "spoon-core" % spoonVersion
+        "fr.inria.gforge.spoon" % "spoon-core" % spoonVersion,
+        "com.github.tarao" %% "record4s" % record4sVersion
      ),
      homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
      licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),

@@ -8,7 +8,7 @@ package Experiments;
 
 class VarArgsConversion {
     static void g(Long x)    { System.out.println("never"); }
-    static void g(Integer x)    { System.out.println("boxed"); }
+//    static void g(Integer x)    { System.out.println("boxed"); }
     static void g(int... xs)    { System.out.println("varargs"); }
     public static void main(String[] args) {
         g(7);
