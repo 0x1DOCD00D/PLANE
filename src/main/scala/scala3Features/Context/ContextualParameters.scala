@@ -18,16 +18,16 @@ object ContextualParameters {
 
   def main(args: Array[String]): Unit = {
     object X {
-      def f(x: (n: Int) ?=> Int) = x(using 42);
+      def f(x: (n: Int) ?=> Int): Int = x(using 42)
 
-      def f(x: Int) = (x * 2).toString
+      def f(x: Int): String = (x * 2).toString
     }
     X.f(3)
 
     object X1 {
-      def f(x: (n: Int) => Int) = x(42);
+      def f(x: (n: Int) => Int): Int = x(42)
 
-      def f(x: Int) = (x * 2).toString
+      def f(x: Int): String = (x * 2).toString
     }
 
     X1.f(_ + 1)
