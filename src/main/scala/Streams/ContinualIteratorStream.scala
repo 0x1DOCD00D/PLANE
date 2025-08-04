@@ -16,12 +16,12 @@ object LazyListRetrievalElements {
 }
 
 object ContinualIteratorStream extends App {
-  def streamNaturalNumbers(startFrom: Int): LazyList[Int] = {
+  private def streamNaturalNumbers(startFrom: Int): LazyList[Int] = {
     startFrom #:: streamNaturalNumbers(startFrom + 1)
   }
 
   val list = streamNaturalNumbers(0)
   list.take(20).foreach(println)
-  val iterateIt = Iterator.continually(LazyListRetrievalElements(list))
+  private val iterateIt = Iterator.continually(LazyListRetrievalElements(list))
   iterateIt.take(10).foreach(println)
 }

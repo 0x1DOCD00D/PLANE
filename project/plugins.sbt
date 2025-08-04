@@ -1,2 +1,3 @@
 //addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.3")
 //addSbtPlugin("ch.epfl.lamp" % "sbt-dotty" % "0.5.1")
+addSbtPlugin("com.github.sbt" % "sbt-dynver" % "5.0.1")

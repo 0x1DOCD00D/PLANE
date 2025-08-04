@@ -1,11 +1,12 @@
 import sbt.Keys.scalaVersion
 
 ThisBuild / organization := "com.lsc"
-ThisBuild / version := {
-  val orig = (ThisBuild / version).value
-  if (orig.endsWith("-SNAPSHOT")) "1.0.A-SNAPSHOT"
-  else orig
+
+ThisBuild / version ~= { base =>
+  if (base.endsWith("-SNAPSHOT")) "1.0.A-SNAPSHOT" else base
 }
+
+
 ThisBuild / scalaVersion := "3.7.1"
 
 val logbackVersion = "1.5.7"
@@ -22,6 +23,7 @@ val akkaVersion = "2.10.0"
 val akkaHttpVersion = sys.props.getOrElse("akka-http.version", "10.7.0")
 val catsVersion = "2.13.0"
 val catsEffectVersion = "3.6.1"
+val log4catsV = "2.7.1"
 val snakeYamlVersion = "2.0"
 val scalaZVersion = "7.4.0-M8"
 val codecVersion = "1.15"
@@ -100,6 +102,7 @@ lazy val root = (project in file("."))
         "org.typelevel" %% "cats-core" % catsVersion,
         "org.typelevel" %% "cats-laws" % catsVersion % Test,
         "org.typelevel" %% "cats-effect" % catsEffectVersion,
+        "org.typelevel" %% "log4cats-slf4j" % log4catsV,
         "com.github.nscala-time" %% "nscala-time" % nscalatimeVersion,
         "org.scalactic" %% "scalactic" % scalacticVersion,
         "org.scalatest" %% "scalatest" % scalacticVersion % Test,
