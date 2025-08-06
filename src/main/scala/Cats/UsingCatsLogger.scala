@@ -31,6 +31,8 @@ object UsingCatsLogger extends IOApp {
         _ <- risky(-1).logError(e => s"Only log errors: ${e.getMessage}")
       yield ()
 
-    start *> prog.as(ExitCode.Success)
+    start *> 
+      prog *>
+      Logger[IO].info("Finished computation...").as(ExitCode.Success)
   }
 }
