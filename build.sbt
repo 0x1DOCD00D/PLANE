@@ -3,9 +3,8 @@ import sbt.Keys.scalaVersion
 ThisBuild / organization := "com.lsc"
 
 ThisBuild / version ~= { base =>
-  if (base.endsWith("-SNAPSHOT")) "1.0.A-SNAPSHOT" else base
+  if(base.endsWith("-SNAPSHOT")) "1.0.A-SNAPSHOT" else base
 }
-
 
 ThisBuild / scalaVersion := "3.7.1"
 
