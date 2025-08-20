@@ -13,12 +13,12 @@ object SemigroupCases {
   import cats.*, cats.syntax.all.*
   import cats.data.NonEmptyList
 
-  val xs = NonEmptyList.of(1, 2, 3)
-  val sum = xs.reduce // uses Semigroup[Int]
+  val xs: NonEmptyList[Int] = NonEmptyList.of(1, 2, 3)
+  val sum: Int = xs.reduce // uses Semigroup[Int]
 
   import cats.syntax.foldable.* // combineAllOption
 
-  val r1 = List(1, 2, 3).combineAllOption // Some(6)
+  val r1: Option[Int] = List(1, 2, 3).combineAllOption // Some(6)
   List.empty[Int].combineAllOption // None
 
   def combineChunks[A: Semigroup](chunks: List[List[A]]): Option[A] =
@@ -30,7 +30,7 @@ object SemigroupCases {
 
   val m1 = Map("a" -> 1, "b" -> 2)
   val m2 = Map("b" -> 3, "c" -> 1)
-  val merged = m1 |+| m2 // Map(a -> 1, b -> 5, c -> 1)
+  val merged: Map[String, Int] = m1 |+| m2 // Map(a -> 1, b -> 5, c -> 1)
 
   import cats.data.*, cats.syntax.all.*
 
@@ -40,8 +40,8 @@ object SemigroupCases {
   def even(i: Int): ValidatedNel[String, Int] =
     if i % 2 == 0 then i.validNel else "must be even".invalidNel
 
-  val lst1 = (pos(-2), even(-2)).mapN((_, _) => ())
-  val lst2 = (pos(2), even(2)).mapN((a, b) => List(a, b))
+  val lst1: ValidatedNel[String, Unit] = (pos(-2), even(-2)).mapN((_, _) => ())
+  val lst2: ValidatedNel[String, List[Int]] = (pos(2), even(2)).mapN((a, b) => List(a, b))
 
   final case class Conf(host: Option[String], port: Option[Int])
 
@@ -56,7 +56,7 @@ object SemigroupCases {
   val env = Conf(None, Some(8080))
   val cli = Conf(Some("example.com"), None)
 
-  val effective = base |+| env |+| cli // host=Some("example.com"), port=Some(8080)
+  val effective: Conf = base |+| env |+| cli // host=Some("example.com"), port=Some(8080)
 
   @main def runSemigroupCases(args: String*): Unit = {
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Cats/SemigroupCases.scala created at time 3:08PM")
