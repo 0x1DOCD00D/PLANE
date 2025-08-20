@@ -52,10 +52,10 @@ object ApplicativeJobRecord_v2 {
   val ioYears: IO[Int] = IO.sleep(500.millis) *> IO.pure(10)
 
   // sequential (mapN on IO is left-to-right sequential)
-  val ioSeq: IO[JobRecord] = buildJobRecord(ioId, ioYears) // ~1s because both sleep sequentially
+  val ioSeq: IO[JobRecord] = buildJobRecord(ioId, ioYears) 
 
   // parallel via Parallel/IO.parMapN
-  val ioPar: IO[JobRecord] = (ioId, ioYears).parMapN(JobRecord.apply) // ~0.5s
+  val ioPar: IO[JobRecord] = (ioId, ioYears).parMapN(JobRecord.apply) 
 
   // run them just to demonstrate (unsafe for REPL demo only)
   @main def demo(): Unit =
@@ -67,6 +67,4 @@ object ApplicativeJobRecord_v2 {
     println(ioSeq.unsafeRunSync()) // slower
     println("Running parallel IO...")
     println(ioPar.unsafeRunSync()) // faster
-
-
 }
