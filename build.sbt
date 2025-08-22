@@ -3,8 +3,9 @@ import sbt.Keys.scalaVersion
 ThisBuild / organization := "com.lsc"
 
 ThisBuild / version ~= { base =>
-  if(base.endsWith("-SNAPSHOT")) "1.0.A-SNAPSHOT" else base
+  if (base.endsWith("-SNAPSHOT")) "1.0.A-SNAPSHOT" else base
 }
+
 
 ThisBuild / scalaVersion := "3.7.1"
 
@@ -69,6 +70,7 @@ lazy val root = (project in file("."))
         "-feature",
         "-language:implicitConversions",
         "-source:3.3",
+        "-Ymacro-annotations",
         "-experimental"
      ),
      scalacOptions += "-language:experimental.macros",
