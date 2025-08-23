@@ -11,6 +11,8 @@ import cats.data.{State, StateT}
 import cats.effect.{IO, IOApp}
 import cats.syntax.all.*
 
+//https://typelevel.org/cats/datatypes/statet.html
+
 // Our machine: just a counter
 final case class Machine(counter: Int)
 
