@@ -42,6 +42,13 @@ object Functors :
     given Functor[JobRecord] with {
       override def map[A, B](fa: JobRecord[A])(f: A => B): JobRecord[B] = JobRecord(f(fa.company), fa.start, fa.end, f(fa.position))
     }
+//    def lift[A, B](f: A => B): F[A] => F[B] = fa => map(fa)(f)
+    val liftedUp: JobRecord[String] => JobRecord[String] = Functor[JobRecord].lift(up)
+    val liftedLen: JobRecord[String] => JobRecord[Int] = Functor[JobRecord].lift(len)
+
+
+  val up: String => String = _.toUpperCase
+  val len: String => Int = _.length
 
   @main def runMainFunctors(): Unit =
     import com.github.nscala_time.time.Implicits.richDateTime
@@ -53,3 +60,8 @@ object Functors :
     val newJR = JobRecord(1, processStart, processEnd, 2).map(_+1)
     println(newJR)
     println(elapsed)
+    import Cats.Functors.JobRecord.{liftedLen, liftedUp}
+    val upperJR = liftedUp(JobRecord("ab", processStart, processEnd, "cd"))
+    val lenJR = liftedLen(JobRecord("abc", processStart, processEnd, "cdefg"))
+    println(upperJR)
+    println(lenJR)
