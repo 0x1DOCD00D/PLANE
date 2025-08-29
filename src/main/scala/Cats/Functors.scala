@@ -7,6 +7,8 @@
 
 package Cats
 
+import Cats.Functors.JobRecord.compJR
+
 /*
  *
  *  Copyright (c) 2021. Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
@@ -45,7 +47,7 @@ object Functors :
 //    def lift[A, B](f: A => B): F[A] => F[B] = fa => map(fa)(f)
     val liftedUp: JobRecord[String] => JobRecord[String] = Functor[JobRecord].lift(up)
     val liftedLen: JobRecord[String] => JobRecord[Int] = Functor[JobRecord].lift(len)
-
+    val compJR: Functor[[x] =>> JobRecord[Option[x]]] = Functor[JobRecord].compose[Option]
 
   val up: String => String = _.toUpperCase
   val len: String => Int = _.length
@@ -65,3 +67,5 @@ object Functors :
     val lenJR = liftedLen(JobRecord("abc", processStart, processEnd, "cdefg"))
     println(upperJR)
     println(lenJR)
+    val incJR = compJR.map(JobRecord(Some(10), processStart, processEnd, Some(20)))(_ + 1)
+    println(incJR)
