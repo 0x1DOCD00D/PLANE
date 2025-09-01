@@ -58,7 +58,7 @@ object ApplicativeJobRecord_v2 {
   val ioPar: IO[JobRecord] = (ioId, ioYears).parMapN(JobRecord.apply) 
 
   // run them just to demonstrate (unsafe for REPL demo only)
-  @main def demo(): Unit =
+  @main def demoV2(): Unit =
     println(jobOpt)
     println(jobOptMissing)
     println(vGood)
