@@ -14,9 +14,9 @@ object MonadErrorExample {
     }
 
   // Demo with Either
-  sealed trait OpErr;
+  sealed trait OpErr
 
-  case object Flaky extends OpErr;
+  case object Flaky extends OpErr
 
   case object Fatal extends OpErr
 
