@@ -14,7 +14,9 @@ object PS_v1 {
 
   def csv(p: Product): String = {
     (0 until p.productArity).map(i => String.valueOf(p.productElement(i))).mkString(",") ++ " :: " ++
-    (0 until p.productArity).map(p.productElementName(_)).mkString(",")
+    (0 until p.productArity).map {
+      p.productElementName
+    }.mkString(",")
   }
 
   case class User(id: Int, name: String)
