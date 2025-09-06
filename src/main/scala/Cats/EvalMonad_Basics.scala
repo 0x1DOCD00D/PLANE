@@ -1,25 +1,39 @@
+
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2025 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+////////////////////////////////////////////////////////////////////////////////
+
 package Cats
 
 import cats.{Eval, Foldable}
 
 import scala.language.postfixOps
 
-/*
- *
- *  Copyright (c) 2021. Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
- *   
- *   Unless required by applicable law or agreed to in writing, software distributed under
- *   the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- *   either express or implied.  See the License for the specific language governing permissions and limitations under the License.
- *  
- */
-
-object EvalMonad:
+object EvalMonad_Basics:
   /*
   * val Now eager, memoized
     def Always lazy, not memoized
     lazy val Later lazy, memoized
+
+ Eval.now(x)      Eval.later(x)           Eval.always(x)
+-------------------------------------------------------------
+Eager            Lazy (memoized)         Lazy (not memoized)
+Value computed   Value computed once     Value recomputed
+immediately      on first access,        every time
+                 then cached
+
+val a = Eval.now(1 + 2)         val b = Eval.later{ println("calc"); 1+2 }
+println(a.value) // 3           println(b.value) // prints "calc", then 3
+println(a.value) // 3           println(b.value) // just 3, no "calc"
+
+                 val c = Eval.always{ println("calc"); 1+2 }
+                 println(c.value) // prints "calc", 3
+                 println(c.value) // prints "calc", 3 again
+
   * */
+
 
   val lstOfFuncz1000: List[Int => Int] = List.fill(1000)((i: Int) => i + 1)
 
@@ -33,7 +47,7 @@ object EvalMonad:
   val composedFuncBaad: Int=>Int = lstOfFunczMil.foldLeft((i: Int) => i) {
     (acc, f) => acc andThen f
   }
-  //    println(composedFuncBaad(0))//blows up the stack
+//  println(composedFuncBaad(0))//blows up the stack
 
   /*
   * We define our own composer method that defers the evaluation
@@ -44,7 +58,7 @@ object EvalMonad:
   def composeEvals(f: Int=>Eval[Int], g: Int=>Eval[Int]): Int=>Eval[Int] =
       (i:Int)=> Eval.defer{ f(i).flatMap(x=> g(x))}
 
-  @main def runMain_EvalMonad$(): Unit =
+  @main def runMain_EvalMonad(): Unit =
 //  from the cats documentation: Defer a computation which produces an Eval[A] value
 //  This is useful when you want to delay execution of an expression which produces an Eval[A] value.
 //  Like .flatMap, it is stack-safe. Because Eval guarantees stack-safety, we can chain a lot of
