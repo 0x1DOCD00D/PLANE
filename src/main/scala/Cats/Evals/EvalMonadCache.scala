@@ -5,23 +5,21 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package Cats
+package Cats.Evals
 
-object EvalMonadAlwaysComprehension:
+object EvalMonadCache:
 
   import cats.Eval
-  import scala.util.Random
 
-  val randomEval: Eval[Int] = Eval.always(Random.nextInt(100))
+  def expensiveApiCall(): String =
+    println("Calling API...")
+    Thread.sleep(500)
+    "data-from-api"
 
-  val program: Eval[String] =
-    for
-      a <- randomEval
-      b <- randomEval
-    yield s"Two random numbers: $a and $b"
+  val cachedCall: Eval[String] = Eval.later(expensiveApiCall())
 
+  @main def runEvalMonadCache(args: String*): Unit =
+    println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Cats/EvalMonadCache.scala created at time 3:11PM")
+    println(cachedCall.value) // First time triggers API call
+    println(cachedCall.value) // Second time uses cached result
 
-  @main def runEvalMonadAlwaysComprehension(args: String*): Unit =
-    println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Cats/EvalMonadAlwaysComprehension.scala created at time 3:12PM")
-    println(program.value) // each bind recomputes, both are different
-    println(program.value) // recomputes again, fresh values
