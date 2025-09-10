@@ -11,6 +11,7 @@ object WriterForFinJob:
   import cats.data.Writer
   import cats.implicits._
 
+//  Writer[W, A] carries two values: a log of type W and a result of type A.
   type Logged[A] = Writer[List[String], A]
 
   def step1(amount: Double): Logged[Double] =
