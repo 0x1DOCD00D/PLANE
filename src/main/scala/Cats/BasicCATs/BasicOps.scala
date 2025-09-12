@@ -1,0 +1,41 @@
+
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2025 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+////////////////////////////////////////////////////////////////////////////////
+
+package Cats.BasicCATs
+
+import cats.{Eq, Show}
+
+//scala with cats book - chapter 1
+object BasicOps:
+  import cats.Eq.*
+  import cats.instances.*
+  import cats.syntax.eq.*
+  import cats.syntax.option.*
+  import cats.syntax.show.*
+
+  case class Professor(name:String, subject: String, citations: Int)
+
+  given Show[Int] with {
+    override def show(t: Int): String = if t > 10000 then "it's a mighty number" else "too small"
+  }
+
+  given Show[Professor] with {
+    override def show(t: Professor): String = s"[${t.name}] knows about ${t.subject} and has ${t.citations} citations"
+  }
+
+  given Eq[Professor] with {
+    override def eqv(x: Professor, y: Professor): Boolean = if x.citations === y.citations then true else false
+  }
+
+  @main def runMainBasicOps(): Unit =
+    val eqInt = Eq[Int]
+    println(120466.show)
+    println(eqInt.eqv(11,12))
+    println(11 =!= 12)
+    println(Professor("Mark G", "CS", 4016).show)
+    println(1.some === none[Int])
+    println(Professor("Mark G", "CS", 4016) === Professor("Funky Spunk", "ECE", 4016))

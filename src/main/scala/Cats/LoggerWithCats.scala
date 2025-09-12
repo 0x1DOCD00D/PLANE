@@ -41,5 +41,25 @@ object LoggerWithCats {
     }
   }
 
-  def main(args: Array[String]): Unit = {}
+  def main(args: Array[String]): Unit = {
+    import cats.effect.*
+    import org.typelevel.log4cats.slf4j.Slf4jLogger
+
+    given Logger[IO] = Slf4jLogger.getLogger[IO]
+
+    val program1: IO[Int] = IO(42).log(a => s"program1 success: $a", e => s"program1 error: $e")
+    val program2: IO[Int] = IO.raiseError(new RuntimeException("BOOM")).log(a => s"program2 success: $a", e => s"program2 error: $e")
+
+    val program3: IO[Int] = IO(100).logError(e => s"program3 error: $e")
+    val program4: IO[Int] = IO.raiseError(new RuntimeException("CRASH")).logError(e => s"program4 error: $e")
+
+    val combined = for {
+      _ <- program1.handleError(_ => -1)
+      _ <- program2.handleError(_ => -1)
+      _ <- program3.handleError(_ => -1)
+      _ <- program4.handleError(_ => -1)
+    } yield ()
+
+    println(combined) 
+  }
 }
