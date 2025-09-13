@@ -7,8 +7,6 @@
 
 package Cats.Transformers
 
-package Cats.Transformers
-
 import cats.*
 import cats.data.*
 import cats.implicits.*
