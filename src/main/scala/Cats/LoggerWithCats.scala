@@ -15,7 +15,7 @@ object LoggerWithCats {
 
   /*
    * extension [F[_], E, A](fa: F[A]) … introduces two new methods, log and logError, for any value fa of type F[A]. Three type parameters appear:
-    F[_] — the effect type (for example cats.effect.IO, EitherT[IO, Err, *], Task, etc.).
+    F[_] — the effect type (for example cats.effect.IO, EitherT[IO, ErrorCode, *], Task, etc.).
     E — the error channel carried by MonadError[F, E].
     A — the success value produced when the computation works.
 
