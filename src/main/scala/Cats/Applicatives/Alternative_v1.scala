@@ -7,10 +7,10 @@
 
 package Cats.Applicatives
 
-object Alternative_v1 {
-  import cats.*
-  import cats.syntax.all.*
+import cats.*
+import cats.syntax.all.*
 
+object Alternative_v1 {
   final case class Parser[+A](run: String => List[(A, String)])
 
   object Parser {
