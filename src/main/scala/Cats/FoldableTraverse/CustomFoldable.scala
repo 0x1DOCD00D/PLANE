@@ -16,12 +16,12 @@ object CustomFoldable:
   final case class File[A](name: String, a: A) extends FS[A]
 
   given fsFoldable: Foldable[FS] = new Foldable[FS] {
-    def foldLeft[A,B](fa: FS[A], b: B)(f:(B,A)=>B) = fa match {
+    def foldLeft[A,B](fa: FS[A], b: B)(f:(B,A)=>B): B = fa match {
       case File(_, sz)     => f(b, sz)
       case Dir(_, children)=> children.foldLeft(b)((acc, c) => foldLeft(c, acc)(f))
     }
-    def foldRight[A,B](fa: FS[A], lb: Eval[B])(f:(A,Eval[B])=>Eval[B]) = fa match {
-      case File(_, sz)     => f(sz.asInstanceOf[A], lb)
+    def foldRight[A,B](fa: FS[A], lb: Eval[B])(f:(A,Eval[B])=>Eval[B]): Eval[B] = fa match {
+      case File(_, sz)     => f(sz, lb)
       case Dir(_, kids)    => Foldable[List].foldRight(kids, lb)((c, e) => foldRight[A,B](c, e)(f))
     }
   }
@@ -45,7 +45,7 @@ object CustomFoldable:
     def empty = Stats(0, 0)
     def combine(x: Stats, y: Stats) = Stats(x.sum + y.sum, x.count + y.count)
 
-  val s = Foldable[FS].foldMap(tree)(bytes => Stats(bytes, 1))
+  val s: Stats = Foldable[FS].foldMap(tree)(bytes => Stats(bytes, 1))
   val avg: Double = if s.count == 0 then 0.0 else s.sum.toDouble
   
   @main def runCustomFoldable(args: String*): Unit =

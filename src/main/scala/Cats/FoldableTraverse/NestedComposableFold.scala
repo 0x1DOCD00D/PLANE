@@ -44,7 +44,7 @@ object NestedComposableFold:
 
   def totalPoints[F[_] : Foldable, G[_] : Foldable](xs: F[G[Story]]): Int =
     Foldable[F].compose[G].foldMap(xs)(_.points)
-  val total = totalPoints(backlog)
+  val total: Int = totalPoints(backlog)
 
   import cats._, cats.implicits._
 
@@ -57,15 +57,15 @@ object NestedComposableFold:
   def stats[F[_] : Foldable, G[_] : Foldable](xs: F[G[Story]]): Stats =
     Foldable[F].compose[G].foldMap(xs)(s => Stats(s.points, 1))
 
-  val s = stats(backlog) // Stats(16, 3)
-  val avg = if s.count == 0 then 0.0 else s.sum.toDouble / s.count
+  val s: Stats = stats(backlog) // Stats(16, 3)
+  val avg: Double = if s.count == 0 then 0.0 else s.sum.toDouble / s.count
 
   type H3[X] = List[Vector[Option[X]]]
   val H3F: Foldable[H3] =
     Foldable[List].compose[Vector].compose[Option]
 
   val xs: H3[Story] = List(Vector(Some(Story(2)), None), Vector(Some(Story(4))))
-  val sum3 = H3F.foldMap(xs)(_.points) // 6
+  val sum3: Int = H3F.foldMap(xs)(_.points) // 6
 
 
   @main def runNestedComposableFold(args: String*): Unit =

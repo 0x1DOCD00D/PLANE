@@ -16,7 +16,7 @@ object MyApplicativeWithTraverse:
     def map[A, B](fa: F[A])(f: A => B): F[B] = map2(fa, pure(()))((a, _) => f(a))
 
   object Applicative:
-    def apply[F[_]](using F: Applicative[F]) = F
+    def apply[F[_]](using F: Applicative[F]): Applicative[F] = F
 
   // Traverse says: given an Applicative for F, I can flip G[F[_]] -> F[G[_]]
   trait Traverse[G[_]]:

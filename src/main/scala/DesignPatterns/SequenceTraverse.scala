@@ -92,7 +92,7 @@ def foldRightMStackSafe[G[_], F[_], A, B](
 object GivenInstances:
   given ConsK[List] with
     def empty[A] = List.empty[A]
-    def cons[A](h: A, t: List[A]) = h :: t
+    def cons[A](h: A, t: List[A]): List[A] = (h :: t).asInstanceOf
 
   given Stepper[List] with
     def iterator[A](ga: List[A]) = ga.iterator
@@ -136,7 +136,7 @@ Type flip:
   G[F[A]]  ──sequence──►  F[G[A]]
 * */
 object SequenceTraverse:
-  def map[F[_], A, B](ma: F[A])(f: A => B)(using st: SequenceTraverse[F]) =
+  def map[F[_], A, B](ma: F[A])(f: A => B)(using st: SequenceTraverse[F]): F[B] =
     st.flatMap(ma)(a => st.unit(f(a)))
 
   def map2[F[_], A, B, C](ma: F[A], mb: F[B])(f: (A, B) => C)(using st: SequenceTraverse[F]): F[C] =
@@ -182,6 +182,44 @@ object SequenceTraverse:
       S.map(f(a))(b => C.cons(b, acc))
     }
 
+/*
+  Short version:
+
+* sequence flips structure It turns a container of effects into an effect that yields a container.
+
+  // flip G[F[A]] -> F[G[A]]
+  def sequence[F[_], G[_], A](gfa: G[F[A]]): F[G[A]]
+
+* traverse maps, then flips It first applies an effectful function to each element, producing `G[F[B]]`, then calls `sequence` to flip.
+
+  // map A -> F[B], then flip: G[A] -> G[F[B]] -> F[G[B]]
+  def traverse[F[_], G[_], A, B](ga: G[A])(f: A => F[B]): F[G[B]]
+
+Key identities (types line up with suitable instantiations):
+
+* sequence(gfa) == traverse(gfa)((fa: F[A]) => fa)
+* traverse(ga)(f) == sequence( /* G-map of ga with f */ )
+  (Conceptually “map then sequence”; in your setup we rebuilt that `G-map` via `Stepper`+`ConsK`.)
+
+Behavioral notes:
+
+* Order is preserved (your `sequence` folds right-to-left with `cons`).
+* Short-circuiting / combination follows `F`.** With your `SequenceTraverse` (which defines `map2` via `flatMap`), effects run left-to-right and fail fast for things like `Option`/`Either`.
+* Stack-safe: Your `sequence` is implemented with `foldRightMStackSafe`, so both `sequence` and any `traverse` built on it handle large `G` without blowing the stack.
+
+// F = Option, G = List
+sequence(List(Some(1), Some(2)))          // Some(List(1,2))
+sequence(List(Some(1), None, Some(3)))    // None
+
+traverse(List(1,2,3))(a => Option(a).filter(_ % 2 == 1))
+// None (since 2 maps to None)
+
+Mental model:
+
+* Use sequence when you already have G[F[A]] and you just need to flip.
+* Use traverse when you start from G[A] and need to apply an A => F[B] to every element, then flip.
+
+* */
   @main def runSequenceTraverse(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/DesignPatterns/SequenceTraverse.scala created at time 10:14AM")
     import GivenInstances.given
