@@ -24,6 +24,7 @@ object AdaptError extends IOApp:
 
   final case class CsvError(msg: String, cause: Option[Throwable] = None) extends Exception(msg, cause.orNull)
 
+  //adaptError only runs on the error channel, so the success path stays untouched.
   def parseCsv(path: String): IO[List[Map[String, String]]] =
     IO.blocking {
       val nioPath = java.nio.file.Paths.get(path)

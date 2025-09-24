@@ -35,6 +35,11 @@ object Connect2Db extends IOApp:
     else true
   }
 
+  /*
+   IO.blocking captures the effect without running it now.
+   attempt converts exceptions to Either[Throwable, A].
+   You then project to your domain error.
+  * */
   def connectIO(url: String): IO[Either[DbError, Boolean]] =
     IO.blocking(unsafeConnect(url)).attempt.map {
       case Right(c) => Right(c)
