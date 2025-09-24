@@ -72,4 +72,4 @@ object EffectfulOrNot extends IOApp:
     hitOnce
     fiveHits
 
-    (simpleEffectful) *> simpleEffectful *> EffectfulOrNot_Program.guarantee(IO.println("shutting down")).as(ExitCode.Success)
+    simpleEffectful *> simpleEffectful *> EffectfulOrNot_Program.guarantee(IO.println("shutting down")).as(ExitCode.Success)
