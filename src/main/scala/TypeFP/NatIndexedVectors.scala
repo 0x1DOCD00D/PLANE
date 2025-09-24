@@ -90,3 +90,7 @@ object NatIndexedVectors:
     println(first)
     println(doubled) // VCons(2, VCons(4, VCons(6, VCons(8, VCons(10, VNil)))))
     println(append(doubled, VNil)) // VCons(2, VCons(4, VCons(6, VCons(8, VCons(10, VNil)))))
+    // The following line would not compile, as expected:
+    val wrong: Vec[Int, _5] = append(v3, v2)//changing the type _5 to _4 will not compile
+  // val wrong: Vec[Int, _4] = append(v3, v2)
+

@@ -36,7 +36,7 @@ object LookupXformer:
   //   - .value unwraps back to Either[ErrorCode, Option[A]] when you need the base type again.
 
   def cached(id: UserId): Either[ErrorCode, Option[User]] =
-    Right(cache.get(id)) // cache miss -> None, hit -> Some(u)
+    Right(cache.get(id)) // cache miss -> None, a -> Some(u)
 
   def findUser(id: Long): Either[ErrorCode, Option[User]] =
     for

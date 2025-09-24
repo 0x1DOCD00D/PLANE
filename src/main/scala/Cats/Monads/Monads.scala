@@ -69,8 +69,10 @@ object Monads:
   } yield app
 
   @main def runMain_Monads$(): Unit =
+    JobAppMonad(JobApplication("ibm", "software engineer", 150000.25)).flatMap(ja => JobAppMonad(s"Applied for a position of ${ja.position} at ${ja.company}"))
     val res = for {
       v1 <- JobAppMonad(JobApplication("ibm", "software engineer", 150000.25))
+      _ = println(s"v1 = $v1")
       v2 <- JobAppMonad(JobApplication("twitter", "janitor", 23000.18))
     } yield (v1,v2)
 

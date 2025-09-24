@@ -20,7 +20,7 @@ object SemigroupK_v3 extends IOApp.Simple {
   def source(name: String, hit: Boolean, delayMs: Long): OptionT[IO, User] =
     OptionT {
       IO.sleep(delayMs.millis) *>
-        IO.println(s"[$name] queried, hit=$hit") *>
+        IO.println(s"[$name] queried, a=$hit") *>
         IO.pure(if (hit) Some(User(s"$name-user")) else None)
     }
 

@@ -5,7 +5,7 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package Cats.Semigroupal
+package Cats.SemigroupalExperiments
 
 import cats.Semigroupal
 import cats.instances.list.*
@@ -23,12 +23,12 @@ object SKU_Catalog:
   // Derive useful data in one pass with mapN:
   val skus: List[String] = (colors, sizes, regions).mapN { (c, s, r) => s"SKU-$c-$s-$r" }
 
-  // If you want the raw Semigroupal:
+  // If you want the raw SemigroupalExperiments:
   val raw: List[((String, String), String)] =
     Semigroupal[List].product(Semigroupal[List].product(colors, sizes), regions)
 
   @main def runSKU_Catalog(args: String*): Unit =
-    println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Cats/Semigroupal/SKU_Catalog.scala created at time 1:05PM")
+    println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Cats/SemigroupalExperiments/SKU_Catalog.scala created at time 1:05PM")
     println(s"All combinations: $combos")
     println(s"SKUs: $skus")
     println(s"Raw: $raw")

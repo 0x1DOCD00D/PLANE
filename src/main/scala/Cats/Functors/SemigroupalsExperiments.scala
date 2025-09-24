@@ -19,16 +19,16 @@ package Cats.Functors
 
 /*
 * chapter 6 of cats
-* Semigroupal encompasses the notion of composing pairs of contexts.
+* SemigroupalExperiments encompasses the notion of composing pairs of contexts.
   Cats provides a cats.syntax.apply module that makes use of
-  Semigroupal and Functor to allow users to sequence functions with multiple arguments.
-  Parallel converts types with a Monad instance to a related type with a Semigroupal instance.
-  Applicative extends Semigroupal and Functor. It provides a way of applying functions to parameters within a context.
+  SemigroupalExperiments and Functor to allow users to sequence functions with multiple arguments.
+  Parallel converts types with a Monad instance to a related type with a SemigroupalExperiments instance.
+  Applicative extends SemigroupalExperiments and Functor. It provides a way of applying functions to parameters within a context.
   Applicative is the source of the pure method.
-  There is only one law for Semigroupal: the product method must be associative.
+  There is only one law for SemigroupalExperiments: the product method must be associative.
 * */
 
-object Semigroupals:
+object SemigroupalsExperiments:
   import cats.Semigroupal
   import cats.instances.option.*
 
@@ -54,7 +54,7 @@ object Semigroupals:
     import cats.syntax.apply.*
     println((Option(123), Option("abc")).tupled)
     println((Option(123), Option("abc"), Option(true)).tupled)
-//    println((Cat("Golda"), Cat("Fima")).tupled)//Could not find an instance of Invariant for Cats.Semigroupals.Cat
+//    println((Cat("Golda"), Cat("Fima")).tupled)//Could not find an instance of Invariant for Cats.SemigroupalsExperiments.Cat
     val appl1: Option[MyOwnDataType] = (Option(1), Option("p2"), Option(Cat("Golda"))).mapN(MyOwnDataType.apply)
     println(appl1)
 

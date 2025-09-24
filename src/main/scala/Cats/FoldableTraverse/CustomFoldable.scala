@@ -28,7 +28,7 @@ object CustomFoldable:
 
   val tree: FS[Long] = Dir("root", List(File("a.txt", 10), Dir("docs", List(File("b.pdf", 32)))))
   /*
-    foldMap maps each element to a monoid and then combines them. With identity, 
+    foldMap maps each element to a monoid and then combines them. With identity,
     it maps each file size to itself, so you just get a monoidal sum of all Longs in the tree.
     def foldMap[A, B](fa: FS[A])(f: A => B)(using M: Monoid[B]): B = foldLeft(fa, M.empty)((b, a) => M.combine(b, f(a)))
     fa is tree: FS[Long].

@@ -32,7 +32,7 @@ object Flip_FG_GF:
     def sequence[A](fas: List[F[A]]): F[List[A]] = traverse(fas)(fa => fa)
     def traverse[A, B](as: List[A])(f: A => F[B]): F[List[B]] = as.foldRight(unit(List[B]()))((a, acc) => f(a).map2(acc)(_ :: _))
     extension [A](fa: F[A])
-     def map2[B, C](fb: F[B])(f: (A, B) => C): F[C] = a.flatMap(a => fb.map(b => f(a, b)))   
+     def map2[B, C](fb: F[B])(f: (A, B) => C): F[C] = a.flatMap(a => fb.map(b => f(a, b)))
 
     sequence is the specialization that actually flips a nested type
     From `G[F[A]]` to `F[G[A]]`.

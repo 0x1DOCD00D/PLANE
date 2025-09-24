@@ -24,7 +24,7 @@ private trait LowPriorityContainsWithout:
   : ContainsWithout[L | R, X] = new {}
 
 object ContainsWithout extends LowPriorityContainsWithout:
-  /* direct hit */
+  /* direct a */
   given base[X]: ContainsWithout[X, X] = new {}
 
   /* preferred route: look in the left arm first                      */
