@@ -31,7 +31,7 @@ val p = a.flatMap(_ => a.map(_ => ()))
 Both _ <- a steps just await the same future a. They do not re-run the body println("a"), because that body ran when a was created.
 So you see “a” once.
 * */
-val a: Future[Unit] = Future(println("a"))  // runs now
+val hit: Future[Unit] = Future(println("base hit"))  // runs now
 
 object EffectfulOrNot extends IOApp:
   def log[T](message: String, instance: T): T =
@@ -45,19 +45,19 @@ object EffectfulOrNot extends IOApp:
   }
 
   def hitOnce: Future[Any] = for {
-    _ <- a
-    _ <- a
-    _ <- a
-    _ <- a
-    _ <- a
+    _ <- hit
+    _ <- hit
+    _ <- hit
+    _ <- hit
+    _ <- hit
   } yield ()
 
   def fiveHits: Future[Any] = for {
-    _ <- Future(println("a"))
-    _ <- Future(println("a"))
-    _ <- Future(println("a"))
-    _ <- Future(println("a"))
-    _ <- Future(println("a"))
+    _ <- Future(println("hit 1"))
+    _ <- Future(println("hit 2"))
+    _ <- Future(println("hit 3"))
+    _ <- Future(println("hit 4"))
+    _ <- Future(println("hit 5"))
   } yield ()
 
 
@@ -71,5 +71,7 @@ object EffectfulOrNot extends IOApp:
 //    Await.result(a, duration.Duration.Inf)  // ensure a runs before anything else
     hitOnce
     fiveHits
+    import cats.effect.unsafe.implicits.global
+    IO(println("hello world!")).unsafeRunSync()
 
     simpleEffectful *> simpleEffectful *> EffectfulOrNot_Program.guarantee(IO.println("shutting down")).as(ExitCode.Success)
