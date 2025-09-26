@@ -5,25 +5,32 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package CatsIO
+package CatsIO.Navigation
 
+import CatsIO.Helpers.Aid4Debugging.debugInfo
 import CatsIO.Helpers.{bold, green}
-import cats.MonadError
-import cats.instances.either.*
 import cats.effect.{ExitCode, IO, IOApp}
-import cats.syntax.all.*
+import cats.implicits.*
 
-object CleaningTheMessFromErrors extends IOApp:
-  def CheckTheGuess[F[_]](guess: Int): MonadError[F, Throwable] ?=> F[Int] =
-    if(guess >= 100) guess.pure[F]
-    else new Exception("Guess must be greater than or equal to 100").raiseError[F, Int]
+/*
+from https://essentialeffects.dev/:
 
-  override def run(args: List[String]): IO[ExitCode] =
-    val program = for {
-      result <- CheckTheGuess(3)
-    } yield result
+F[A] => (A => G[B]) => G[F[B]]
+For example, if F is List and G is IO, then (par)traverse would be a function from a
+List[A] to an IO[List[B]] when given a function A ⇒ IO[B].
+List[A] => (A => IO[B]) => IO[List[B]]
+*/
 
-    import Helpers.red
-    program match
-      case Left(msg) => IO.println(msg.getMessage.red.bold).as(ExitCode.Error)
-      case Right(guess) => IO.println(s"Correct number ${guess*2}".green).as(ExitCode.Success)
+object ParTraverse extends IOApp:
+  def log[T](message: String, instance: T): T =
+    println(message + ": " + instance.toString)
+    instance
+  end log
+
+  val tasks: List[Int] = (1 to 100).toList
+  def task(id: Int): IO[Int] = IO(id).debugInfo()
+
+  def ParTraverse_Program: IO[Unit] =
+    tasks.parTraverse(task).debugInfo().map(r => log("Result: ".green.bold, r)).void
+
+  override def run(args: List[String]): IO[ExitCode] = ParTraverse_Program.as(ExitCode.Success)

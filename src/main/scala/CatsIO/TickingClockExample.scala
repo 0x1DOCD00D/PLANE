@@ -10,7 +10,7 @@ import cats.effect.{ExitCode, IO, IOApp}
 
 import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success, Try}
-import Aid4Debugging.debugInfo
+import CatsIO.Helpers.Aid4Debugging.debugInfo
 
 object TickingClockExample extends IOApp:
   def log[T](message: String, instance: T): T =

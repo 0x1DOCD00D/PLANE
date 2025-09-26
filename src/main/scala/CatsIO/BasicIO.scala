@@ -9,7 +9,8 @@ package CatsIO
 
 import cats.effect.*
 import cats.effect.unsafe.implicits.global
-import Aid4Debugging.*
+import CatsIO.Helpers.Aid4Debugging.*
+import CatsIO.Helpers.green
 import cats.syntax.all.*
 
 object BasicIO extends IOApp:

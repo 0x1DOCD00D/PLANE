@@ -12,7 +12,7 @@ import cats.implicits.*
 
 import scala.util.{Failure, Success, Try}
 import scala.concurrent.ExecutionContext.Implicits.global
-import CatsIO.Aid4Debugging.*
+import CatsIO.Helpers.Aid4Debugging.*
 import cats.effect.implicits.parallelForGenSpawn
 
 object ParMapNWithErrors extends IOApp:
@@ -20,9 +20,9 @@ object ParMapNWithErrors extends IOApp:
   val ko1: IO[String] = IO.raiseError[String](new RuntimeException("oh!")).debugInfo()
   val ko2: IO[String] = IO.raiseError[String](new RuntimeException("no!")).debugInfo()
   val e1: IO[Unit] = (ok, ko1).parMapN((_, _) => ())
-  val e2: IO[Unit] = (ko1, ok).parMapN((_, _) => ())
+  val e2: IO[Unit] = (ko1, ok).parMapN((_, _)).void
   val e3: IO[Unit] = (ko1, ko2).parMapN((_, _) => ())
-  val e4: IO[Unit] = (ok, ok).parMapN((_, _) => ())
+  val e4: IO[(String, String)] = (ok, ok).parTupled
 
   def ParMapNWithErrors_Program: IO[Unit] =
     e1.attempt.debugInfo() *>

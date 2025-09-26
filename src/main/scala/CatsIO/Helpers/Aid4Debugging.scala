@@ -4,9 +4,9 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package CatsIO
+package CatsIO.Helpers
 
-import CatsIO.Aid4Debugging.printStackContentEagerly
+import CatsIO.Helpers.Aid4Debugging.printStackContentEagerly
 import cats.effect.IO
 
 object Aid4Debugging:
@@ -22,8 +22,6 @@ object Aid4Debugging:
     println(message + ": " + instance.toString)
     instance
   end log
-
-  import ColorizeOutput.*
   extension [A](io: IO[A])
     def debugInfo(printStack: Boolean = false): IO[A] =
       for {
@@ -33,8 +31,6 @@ object Aid4Debugging:
         _ = if printStack then printStackContentEagerly() else ()
       } yield a
   end extension
-
-  import ColorizeOutput.*
   extension [A](io: IO[A])
     def showThreadAndData: IO[A] = 
       io.map(value => {
