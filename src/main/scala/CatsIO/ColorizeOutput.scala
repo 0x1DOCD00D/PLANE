@@ -7,28 +7,19 @@
 
 package CatsIO
 
-import cats.effect.*
-import cats.effect.unsafe.implicits.global
-import Aid4Debugging.*
-import cats.syntax.all.*
+object ColorizeOutput:
+  def wrap(s: String, code: String) = s"$code$s${Console.RESET}"
 
-object BasicIO extends IOApp:
-  override def run(args: List[String]): IO[ExitCode] =
-    val ioeff= IO { println("print me!".green) }
-    val raiseFromHell: IO[Int] = IO.raiseError(new RuntimeException("oh no!"))
-    val `ohNo!!`: IO[Int] = IO.delay(throw new RuntimeException("oh no!"))
+extension (s: String)
+  def red: String = ColorizeOutput.wrap(s, Console.RED)
+  def green: String = ColorizeOutput.wrap(s, Console.GREEN)
+  def yellow: String = ColorizeOutput.wrap(s, Console.YELLOW)
+  def blue: String   = ColorizeOutput.wrap(s, Console.BLUE)
+  def bold: String   = ColorizeOutput.wrap(s, Console.BOLD)
+  def u: String      = ColorizeOutput.wrap(s, Console.UNDERLINED)
 
-    val program =
-      for {
-        fib1 <- ioeff.start.showThreadAndData
-        fib2 <- ioeff.start.showThreadAndData
-        _ <- `ohNo!!`.attempt.showThreadAndData
-        _ <- raiseFromHell.attempt.showThreadAndData
-        _ <- fib1.join
-        _ <- fib2.join
-      } yield ()
-
-    program.as(ExitCode.Success)
-
-
+@main def pretty(): Unit =
+  println("Success".green)
+  println("Heads up".yellow.bold)
+  println("Docs".blue.u + " are over there.")
 

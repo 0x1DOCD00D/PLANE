@@ -70,7 +70,6 @@ lazy val root = (project in file("."))
         "-feature",
         "-language:implicitConversions",
         "-source:3.3",
-        "-Ymacro-annotations",
         "-experimental"
      ),
      scalacOptions += "-language:experimental.macros",

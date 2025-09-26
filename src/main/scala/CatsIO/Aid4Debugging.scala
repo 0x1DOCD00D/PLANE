@@ -16,24 +16,34 @@ object Aid4Debugging:
   def printStackContent: IO[Unit] = IO(Thread.currentThread().getStackTrace.foreach(println))
 
   def printStackContentEagerly(): Unit =
-    println("-----------------------------------------------------")
+    println("-----------------------------------------------------".red.bold)
     Thread.currentThread().getStackTrace.foreach(println)
 
   def log[T](message: String, instance: T): T =
     println(message + ": " + instance.toString)
     instance
   end log
-  
+
+  import ColorizeOutput.*
+  extension [A](io: IO[A])
+    def debugInfo: IO[A] =
+      for {
+        a <- io
+        tn = Thread.currentThread.getName
+        _ = println(tn.yellow.bold + "  " + a.toString.blue)
+        _ = printStackContentEagerly()
+      } yield a
+  end extension
+
+  import ColorizeOutput.*
   extension [A](io: IO[A])
     def showThreadAndData: IO[A] = 
       io.map(value => {
-        val x = 1
         println(value)
       })
       for {
       someValue <- io
-/*
       t = (Thread.currentThread().getName, Thread.currentThread().threadId())
-      _ = println(s"Thread [${t._1}, ${t._2}] ${someValue.toString}")
-*/
+      _ = println(s"Thread [${t._1}, ${t._2}] ".blue.bold + s" ${someValue.toString}".red)
+
     } yield someValue

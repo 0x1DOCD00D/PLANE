@@ -10,6 +10,7 @@ import cats.effect.{ExitCode, IO, IOApp}
 
 import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success, Try}
+import Aid4Debugging.debugInfo
 
 object TickingClockExample extends IOApp:
   def log[T](message: String, instance: T): T =
@@ -36,7 +37,7 @@ object TickingClockExample extends IOApp:
     for {
       _ <- IO.sleep(1.second)
       _ <- IO(println(printableDate(System.currentTimeMillis)))
-      _ <- tickingClock
+      _ <- tickingClock.debugInfo
     } yield ()
 
 
