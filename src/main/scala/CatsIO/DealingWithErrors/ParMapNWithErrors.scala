@@ -16,22 +16,22 @@ import CatsIO.Aid4Debugging.*
 import cats.effect.implicits.parallelForGenSpawn
 
 object ParMapNWithErrors extends IOApp:
-  val ok: IO[String] = IO("hi").debugInfo
-  val ko1: IO[String] = IO.raiseError[String](new RuntimeException("oh!"))
-  val ko2: IO[String] = IO.raiseError[String](new RuntimeException("noes!"))
+  val ok: IO[String] = IO("hi").debugInfo()
+  val ko1: IO[String] = IO.raiseError[String](new RuntimeException("oh!")).debugInfo()
+  val ko2: IO[String] = IO.raiseError[String](new RuntimeException("no!")).debugInfo()
   val e1: IO[Unit] = (ok, ko1).parMapN((_, _) => ())
   val e2: IO[Unit] = (ko1, ok).parMapN((_, _) => ())
   val e3: IO[Unit] = (ko1, ko2).parMapN((_, _) => ())
   val e4: IO[Unit] = (ok, ok).parMapN((_, _) => ())
 
   def ParMapNWithErrors_Program: IO[Unit] =
-    e1.attempt.debugInfo *>
-      IO("---").debugInfo *>
-        e2.attempt.debugInfo *>
-          IO("---").debugInfo *>
-            e3.attempt.debugInfo *>
-              IO("---").debugInfo *>
-                e4.attempt.debugInfo *>
-                  IO("---").debugInfo *> IO.pure(())
+    e1.attempt.debugInfo() *>
+      IO("---").debugInfo() *>
+        e2.attempt.debugInfo() *>
+          IO("---").debugInfo() *>
+            e3.attempt.debugInfo() *>
+              IO("---").debugInfo() *>
+                e4.attempt.debugInfo() *>
+                  IO("---").debugInfo() *> IO.pure(())
 
   override def run(args: List[String]): IO[ExitCode] = ParMapNWithErrors_Program.as(ExitCode.Success)

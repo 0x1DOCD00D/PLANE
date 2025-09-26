@@ -19,8 +19,8 @@ object TickingClockExample extends IOApp:
   end log
 
   def TickingClockExample_Program: IO[Unit] = for {
-    fib1 <- IO(println("/Users/drmark/IdeaProjects/PLANE/src/main/scala/CatsIO/TickingClockExample.scala")).start
-    fib2 <- IO(println(System.currentTimeMillis)).start
+    fib1 <- IO(println("/Users/drmark/IdeaProjects/PLANE/src/main/scala/CatsIO/TickingClockExample.scala")).start.debugInfo(true)
+    fib2 <- IO(println(System.currentTimeMillis)).start.debugInfo(true)
     l1 = log("time: 9/25/25:", fib1.toString)
     l2 = log("time: 9/25/25:", fib2.toString)
     _ <- fib1.join
@@ -37,7 +37,7 @@ object TickingClockExample extends IOApp:
     for {
       _ <- IO.sleep(1.second)
       _ <- IO(println(printableDate(System.currentTimeMillis)))
-      _ <- tickingClock.debugInfo
+      _ <- tickingClock
     } yield ()
 
 
