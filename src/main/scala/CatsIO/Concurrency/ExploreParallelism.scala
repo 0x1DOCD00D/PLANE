@@ -25,8 +25,8 @@ object ExploreParallelism extends IOApp:
     _ <- fib.join
   } yield ()
 
-  val numCpus = Runtime.getRuntime().availableProcessors()
-  val tasks = List.range(0, numCpus * 2).parTraverse(task)
+  val numCpus: Int = Runtime.getRuntime.availableProcessors()
+  val tasks: IO[List[Int]] = List.range(0, numCpus * 2).parTraverse(task)
   def task(i: Int): IO[Int] = IO(i).debugInfo(  )
 
   override def run(args: List[String]): IO[ExitCode] = ExploreParallelism_Program.as(ExitCode.Success)
