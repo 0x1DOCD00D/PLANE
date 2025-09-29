@@ -22,7 +22,7 @@ def daemonThreadFactory(name: String): ThreadFactory =
     private val default = Executors.defaultThreadFactory()
     def newThread(r: Runnable): Thread = {
       val t = default.newThread(r)
-      t.setName(name + "-" + t.getId)
+      t.setName(name + "-" + t.getName)
       t.setDaemon(true)
       t
     }
