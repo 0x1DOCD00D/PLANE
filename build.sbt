@@ -22,7 +22,7 @@ val guavaVersion = "33.2.1-jre"
 val akkaVersion = "2.10.0"
 val akkaHttpVersion = sys.props.getOrElse("akka-http.version", "10.7.0")
 val catsVersion = "2.13.0"
-val catsEffectVersion = "3.6.1"
+val catsEffectVersion = "3.6.3"
 val log4catsV = "2.7.1"
 val snakeYamlVersion = "2.0"
 val scalaZVersion = "7.4.0-M8"
@@ -101,7 +101,7 @@ lazy val root = (project in file("."))
         "org.apache.commons" % "commons-rng-simple" % "1.3",
         "org.typelevel" %% "cats-core" % catsVersion,
         "org.typelevel" %% "cats-laws" % catsVersion % Test,
-        "org.typelevel" %% "cats-effect" % catsEffectVersion,
+        "org.typelevel" %% "cats-effect" % catsEffectVersion withSources() withJavadoc(),
         "org.typelevel" %% "log4cats-slf4j" % log4catsV,
         "com.github.nscala-time" %% "nscala-time" % nscalatimeVersion,
         "org.scalactic" %% "scalactic" % scalacticVersion,
