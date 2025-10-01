@@ -48,7 +48,7 @@ object FormingCalls extends IOApp:
 
     val asyncUnit: IO[Unit] = IO.async_[Unit] { cb =>
       schedulerExecutor.schedule(new Runnable {
-        def run = cb {
+        def run(): Unit = cb {
           println("[timeout] inside the callback".blue.bold)
           Right(())
         }
@@ -57,7 +57,7 @@ object FormingCalls extends IOApp:
     }
     (askAndRead >>= printOut).debugInfo() *>
     asyncUnit.debugInfo() >> loop.timeout(5.seconds).debugInfo().handleErrorWith {
-        case e: Throwable => IO.println(s"Computation timed out: ${e.getMessage}".red.bold)
+      (e: Throwable) => IO.println(s"Computation timed out: ${e.getMessage}".red.bold)
     } >>
     IO.println("static stuff").debugInfo() *>
       IO.println("computing stuff").debugInfo() >>

@@ -9,7 +9,7 @@ package CatsIO.AsyncComputations
 
 import cats.effect.{ExitCode, IO, IOApp}
 
-import java.util.concurrent.Executors
+import java.util.concurrent.{ExecutorService, Executors}
 import scala.util.{Failure, Success, Try}
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{Duration, DurationInt}
@@ -18,7 +18,7 @@ import CatsIO.Helpers.ColorizeOutput.*
 import CatsIO.Helpers.{bold, green}
 
 trait SlummingWithAsyncTrait:
-  val threadPool = Executors.newFixedThreadPool(8)
+  val threadPool: ExecutorService = Executors.newFixedThreadPool(8)
   given ExecutionContext = ExecutionContext.fromExecutorService(threadPool)
   type Callback[A] = Either[Throwable, A] => Unit
 end SlummingWithAsyncTrait
