@@ -5,26 +5,19 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package CatsIO
+package CatsIO.ExternalFrameworks
 
-// A minimal effect that delays a side effect until you run it.
-final case class MyIO[A](unsafeRun: () => A):
-  def map[B](f: A => B): MyIO[B]       = MyIO(() => f(unsafeRun()))
-  def flatMap[B](f: A => MyIO[B]): MyIO[B] =
-    MyIO(() => f(unsafeRun()).unsafeRun())
+import cats.effect.*
+import cats.syntax.all.*
+import org.http4s.*
+import org.http4s.dsl.io.*
+import org.http4s.implicits.*
+object Http4sServer {
+  val service = HttpRoutes.of[IO] {
+    case _ =>
+      IO(Response(Status.Ok))
+  }
 
-object MyIO:
-  def delay[A](thunk: => A): MyIO[A]   = MyIO(() => thunk)
-
-@main def runMyOwnIO(args: String*): Unit =
-  println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/CatsIO/MyOwnIO.scala created at time 1:13PM")
-
-  val program: MyIO[Unit] =
-    for
-      _ <- MyIO.delay(println("hello"))
-      _ <- MyIO.delay(println("world"))
-    yield ()
-
-  program.unsafeRun()
-
-  MyIO.delay(println("hello")).flatMap(e1 => MyIO.delay(println("world")).map(e2=>())).unsafeRun()
+  @main def runhttp4s(): Unit =
+    println("hi")
+}

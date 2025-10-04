@@ -5,25 +5,20 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
 ////////////////////////////////////////////////////////////////////////////////
 
-package CatsIO
+package CatsIO.Concepts
 
-import CatsIO.Helpers.{bold, green}
-import cats.MonadError
-import cats.instances.either.*
+import CatsIO.Helpers.Aid4Debugging.printStackContentEagerly
+import cats.Eval
 import cats.effect.{ExitCode, IO, IOApp}
-import cats.syntax.all.*
 
-object CleaningTheMessFromErrors extends IOApp:
-  def CheckTheGuess[F[_]](guess: Int): MonadError[F, Throwable] ?=> F[Int] =
-    if(guess >= 100) guess.pure[F]
-    else new Exception("Guess must be greater than or equal to 100").raiseError[F, Int]
+object FactorialEval extends IOApp:
+  def factorialEval(x: BigInt): Eval[BigInt] = if(x == 0) {
+    Eval.now(1)
+  } else {
+    printStackContentEagerly()
+    Eval.defer(factorialEval(x-1).map(_ * x))
+  }
 
+  def factorial(x:BigInt):BigInt = factorialEval(x).value
   override def run(args: List[String]): IO[ExitCode] =
-    val program = for {
-      result <- CheckTheGuess(3)
-    } yield result
-
-    import Helpers.red
-    program match
-      case Left(msg) => IO.println(msg.getMessage.red.bold).as(ExitCode.Error)
-      case Right(guess) => IO.println(s"Correct number ${guess*2}".green).as(ExitCode.Success)
+    IO.println(factorial(100000)).as(ExitCode.Success)
