@@ -45,6 +45,7 @@ val scalaFxVersion = "22.0.0-R33"
 val spoonVersion = "11.1.0"
 val scalaMetaVersion = "4.13.1.1"
 val record4sVersion = "0.13.0"
+val pureConfigVersion = "0.17.9"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots")
   .withAllowInsecureProtocol(true)
@@ -148,7 +149,8 @@ lazy val root = (project in file("."))
         "org.scalameta" %% "scalameta" % scalaMetaVersion,
         "org.scala-lang" %% "scala3-tasty-inspector" % scalaVersion.value,
         "fr.inria.gforge.spoon" % "spoon-core" % spoonVersion,
-        "com.github.tarao" %% "record4s" % record4sVersion
+        "com.github.tarao" %% "record4s" % record4sVersion,
+       "com.github.pureconfig" %% "pureconfig-core" % pureConfigVersion
      ),
      homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
      licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),
