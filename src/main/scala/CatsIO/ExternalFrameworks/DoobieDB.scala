@@ -1,4 +1,3 @@
-
 ////////////////////////////////////////////////////////////////////////////////
 // Copyright (c) 2025 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -39,10 +38,11 @@ object DoobieDB extends IOApp:
   private def prop(key: String, default: => String = ""): String =
     sys.props.getOrElse(key, default)
 
-  private val driver = prop("db.driver", "com.clickhouse.jdbc.ClickHouseDriver")
-  private val url = prop("db.url", "jdbc:clickhouse:http://localhost:8123/demo")
-  private val user = prop("db.user", "default")
-  private val pass = prop("db.pass")
+  //specify -Ddb.user=default -Ddb.pass=foxdatwins in VM options
+  private val driver: String = prop("db.driver", "com.clickhouse.jdbc.ClickHouseDriver")
+  private val url: String = prop("db.url", "jdbc:clickhouse:http://localhost:8123/demo")
+  private val user: String = prop("db.user", "default")
+  private val pass: String = prop("db.pass")
 
   println(s"driver = $driver, url = $url, user = $user, pass = $pass")
   private val jdbcProps: Properties = {
@@ -53,8 +53,8 @@ object DoobieDB extends IOApp:
   }
 
   val xa: Transactor[IO] = Transactor.fromDriverManager[IO](
-      "com.clickhouse.jdbc.ClickHouseDriver",
-      "jdbc:clickhouse:http://localhost:8123/demo",
+      driver,
+      url,
       jdbcProps,
       None
     ).copy(strategy0 = Strategy(FC.unit, FC.unit, FC.unit, FC.unit))
