@@ -47,6 +47,8 @@ val scalaMetaVersion = "4.13.1.1"
 val record4sVersion = "0.13.0"
 val pureConfigVersion = "0.17.9"
 val H2DatabaseVersion = "2.4.240"
+val doobieVersion = "1.0.0-RC8"
+val clickhouseJdbcVersion = "0.9.2"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots")
   .withAllowInsecureProtocol(true)
@@ -153,7 +155,14 @@ lazy val root = (project in file("."))
         "com.github.tarao" %% "record4s" % record4sVersion,
        "com.github.pureconfig" %% "pureconfig-core" % pureConfigVersion,
        "com.github.pureconfig" %% "pureconfig-generic-scala3" % pureConfigVersion,
-       "com.h2database" % "h2" % H2DatabaseVersion
+       "com.h2database" % "h2" % H2DatabaseVersion,
+       "org.tpolecat" %% "doobie-core"      % doobieVersion,
+       "org.tpolecat" %% "doobie-h2"        % doobieVersion,          // H2 driver 1.4.200 + type mappings.
+       "org.tpolecat" %% "doobie-hikari"    % doobieVersion,          // HikariCP transactor.
+       "org.tpolecat" %% "doobie-postgres"  % doobieVersion,          // Postgres driver 42.7.5 + type mappings.
+       "org.tpolecat" %% "doobie-specs2"    % doobieVersion % "test", // Specs2 support for typechecking statements.
+       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % "test",  // ScalaTest support for typechecking statements.
+       "com.clickhouse" % "clickhouse-jdbc" % clickhouseJdbcVersion
      ),
      homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
      licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),
