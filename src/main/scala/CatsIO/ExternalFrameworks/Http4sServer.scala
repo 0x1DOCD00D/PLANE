@@ -14,6 +14,7 @@ import org.http4s.implicits.*
 import cats.effect.{ExitCode, IO, IOApp}
 import org.http4s.ember.server.EmberServerBuilder
 import CatsIO.Helpers.{bold, green}
+import cats.data.Kleisli
 
 import scala.util.{Failure, Success, Try}
 
@@ -29,7 +30,7 @@ object Http4sServer extends IOApp:
     _ <- fib.join
   } yield ()
 
-  val httpApp = HttpRoutes.of[IO] {
+  val httpApp: Kleisli[IO, Request[IO], Response[IO]] = HttpRoutes.of[IO] {
     case GET -> Root / "hello" / name =>
       println(s"Received request with name: $name".green.bold)
       Ok(s"Hello, $name!")

@@ -1,4 +1,3 @@
-
 ////////////////////////////////////////////////////////////////////////////////
 // Copyright (c) 2025 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,7 +13,7 @@ import cats.effect.*
 import cats.syntax.all.*
 import com.comcast.ip4s.{ipv4, port}
 import org.http4s.*
-import org.http4s.dsl.Http4sDsl
+import org.http4s.dsl.{Http4sDsl, RequestDslBinCompat}
 import org.http4s.implicits.*
 import org.http4s.ember.server.EmberServerBuilder
 
@@ -32,7 +31,7 @@ object HelloWithPoisonPill extends IOApp:
     _ <- fib.join
   } yield ()
 
-  val dsl = Http4sDsl[IO];
+  val dsl: Http4sDsl[IO] & RequestDslBinCompat = Http4sDsl[IO];
 
   import dsl.*
 
