@@ -50,6 +50,7 @@ val doobieVersion = "1.0.0-RC8"
 val clickhouseJdbcVersion = "0.9.2"
 val http4sVersion = "0.23.32"
 val circeVersion = "0.14.15"
+val log4catsVersion = "2.7.1"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots")
   .withAllowInsecureProtocol(true)
@@ -170,7 +171,9 @@ lazy val root = (project in file("."))
        "io.circe" %% "circe-core" % circeVersion,
        "io.circe" %% "circe-generic" % circeVersion,
        "io.circe" %% "circe-parser" % circeVersion,
-       "io.circe" %% "circe-literal" % circeVersion
+       "io.circe" %% "circe-literal" % circeVersion,
+       "org.typelevel" %% "log4cats-core"    % log4catsVersion,  // Only if you want to Support Any Backend
+       "org.typelevel" %% "log4cats-slf4j"   % log4catsVersion  // Direct Slf4j Support - Recommended
      ),
      homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
      licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),
