@@ -12,7 +12,7 @@ import scala.util.{Failure, Success, Try}
 import org.http4s.dsl.impl.*
 import org.http4s.{HttpApp, HttpRoutes, ParseFailure, QueryParamDecoder}
 import cats.syntax.all.*
-import org.http4s.dsl.Http4sDsl
+import org.http4s.dsl.{Http4sDsl, RequestDslBinCompat}
 
 import java.time.Year
 import scala.util.Try
@@ -31,7 +31,7 @@ object QueryParamDecoder extends IOApp:
     _ <- fib.join
   } yield ()
 
-  val dsl = Http4sDsl[IO];
+  val dsl: Http4sDsl[IO] & RequestDslBinCompat = Http4sDsl[IO]
 
   import dsl.*
 

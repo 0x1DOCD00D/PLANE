@@ -31,7 +31,7 @@ object HelloWithPoisonPill extends IOApp:
     _ <- fib.join
   } yield ()
 
-  val dsl: Http4sDsl[IO] & RequestDslBinCompat = Http4sDsl[IO];
+  val dsl: Http4sDsl[IO] & RequestDslBinCompat = Http4sDsl[IO]
 
   import dsl.*
 
