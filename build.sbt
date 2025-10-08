@@ -30,7 +30,6 @@ val codecVersion = "1.15"
 val xmlVersion = "2.0.1"
 val scalaReflectVersion = "2.13.8"
 val scalaCompilerVersion = "2.13.8"
-val https4sVersion = "0.23.6"
 val monocleVersion = "3.1.0"
 val scalaZversion = "7.3.8"
 val stanfordNlpVersion = "4.5.7"
@@ -49,6 +48,8 @@ val pureConfigVersion = "0.17.9"
 val H2DatabaseVersion = "2.4.240"
 val doobieVersion = "1.0.0-RC8"
 val clickhouseJdbcVersion = "0.9.2"
+val http4sVersion = "0.23.32"
+val circeVersion = "0.14.15"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots")
   .withAllowInsecureProtocol(true)
@@ -126,10 +127,6 @@ lazy val root = (project in file("."))
         "org.scala-lang" %% "scala3-staging" % scalaVersion.value,
         "org.scala-lang" %% "scala3-compiler" % scalaVersion.value,
         "org.scala-lang.modules" % "scala-parallel-collections_3" % "1.1.0",
-        "org.http4s" %% "http4s-ember-server" % https4sVersion,
-        "org.http4s" %% "http4s-ember-client" % https4sVersion,
-        "org.http4s" %% "http4s-circe" % https4sVersion,
-        "org.http4s" %% "http4s-dsl" % https4sVersion,
         "com.typesafe.akka" %% "akka-remote" % akkaVersion,
         "dev.optics" %% "monocle-core" % monocleVersion,
         "dev.optics" %% "monocle-macro" % monocleVersion,
@@ -162,7 +159,17 @@ lazy val root = (project in file("."))
        "org.tpolecat" %% "doobie-postgres"  % doobieVersion,          // Postgres driver 42.7.5 + type mappings.
        "org.tpolecat" %% "doobie-specs2"    % doobieVersion % "test", // Specs2 support for typechecking statements.
        "org.tpolecat" %% "doobie-scalatest" % doobieVersion % "test",  // ScalaTest support for typechecking statements.
-       "com.clickhouse" % "clickhouse-jdbc" % clickhouseJdbcVersion
+       "com.clickhouse" % "clickhouse-jdbc" % clickhouseJdbcVersion,
+       "org.http4s" %% "http4s-ember-client" % http4sVersion,
+       "org.http4s" %% "http4s-ember-server" % http4sVersion,
+       "org.http4s" %% "http4s-dsl"          % http4sVersion,
+       "org.http4s" %% "http4s-core"         % http4sVersion,
+       "org.http4s" %% "http4s-client"       % http4sVersion,
+       "org.http4s" %% "http4s-server"       % http4sVersion,
+       "io.circe" %% "circe-core" % circeVersion,
+       "io.circe" %% "circe-generic" % circeVersion,
+       "io.circe" %% "circe-parser" % circeVersion,
+       "io.circe" %% "circe-literal" % circeVersion
      ),
      homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
      licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),
