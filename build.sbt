@@ -51,6 +51,8 @@ val clickhouseJdbcVersion = "0.9.2"
 val http4sVersion = "0.23.32"
 val circeVersion = "0.14.15"
 val log4catsVersion = "2.7.1"
+val neo4jVersion = "6.8.0"
+val anthropicVersion = "2.8.1"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots")
   .withAllowInsecureProtocol(true)
@@ -142,6 +144,7 @@ lazy val root = (project in file("."))
         "org.deeplearning4j" % "deeplearning4j-nlp" % deepLearning4jVersion,
         "org.nd4j" % "nd4j-native" % "1.0.0-M2.1",
         "io.github.ollama4j" % "ollama4j" % "1.0.84",
+        "com.anthropic" % "anthropic-java" % anthropicVersion,
         "org.tensorflow" % "tensorflow" % "1.15.0",
         "org.scala-lang" %% "scala3-compiler" % scalaVersion.value,
         "org.typelevel" % "shapeless3-deriving_3" % ShapelessVersion,
@@ -161,6 +164,7 @@ lazy val root = (project in file("."))
        "org.tpolecat" %% "doobie-specs2"    % doobieVersion % "test", // Specs2 support for typechecking statements.
        "org.tpolecat" %% "doobie-scalatest" % doobieVersion % "test",  // ScalaTest support for typechecking statements.
        "com.clickhouse" % "clickhouse-jdbc" % clickhouseJdbcVersion,
+       "org.neo4j"       % "neo4j-jdbc-full-bundle" % neo4jVersion,
        "org.http4s" %% "http4s-ember-client" % http4sVersion,
        "org.http4s" %% "http4s-ember-server" % http4sVersion,
        "org.http4s" %% "http4s-dsl"          % http4sVersion,
