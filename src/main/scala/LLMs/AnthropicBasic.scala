@@ -24,7 +24,7 @@ object AnthropicBasic extends IOApp:
   private def extractText(msg: Message): String =
     msg.content().asScala.flatMap(cb => Option(cb.text())).mkString("\n")
 
-  def AnthropicBasic_Program = for {
+  def AnthropicBasic_Program: IO[String] = for {
     fib <- IO(println("/Users/drmark/IdeaProjects/PLANE/src/main/scala/LLMs/AnthropicBasic.scala")).start
     _ <- IO(println("AnthropicBasic_Program starting"))
     _ <- IO(println(s"ANTHROPIC_API_KEY: ${sys.env.get("ANTHROPIC_API_KEY")}"))
