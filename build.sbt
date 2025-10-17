@@ -1,3 +1,4 @@
+import sbt.Compile
 import sbt.Keys.scalaVersion
 
 ThisBuild / organization := "com.lsc"
@@ -53,6 +54,7 @@ val circeVersion = "0.14.15"
 val log4catsVersion = "2.7.1"
 val neo4jVersion = "6.8.0"
 val anthropicVersion = "2.8.1"
+val blackNiniaJepVersion = "4.2.2"
 
 resolvers += ("Apache Snapshots" at "http://repository.apache.org/content/repositories/snapshots")
   .withAllowInsecureProtocol(true)
@@ -63,8 +65,12 @@ Global / resolvers += "scala-integration" at
 resolvers += "Akka library repository".at("https://repo.akka.io/maven")
 resolvers += "Typesafe Repo" at "https://repo.typesafe.com/typesafe/releases/"
 
-//noinspection SpellCheckingInspe
-// ction
+val jepDir  = "/Users/drmark/jepenv/lib/python3.11/site-packages/jep"
+val pyBase  = "/usr/local/opt/python@3.11/Frameworks/Python.framework/Versions/3.11" // or /Library/Frameworks/Python.framework/Versions/3.11
+val stdlib  = s"$pyBase/lib/python3.11"
+val dynload = s"$pyBase/lib/python3.11/lib-dynload"
+val sitePkgs= "/Users/drmark/jepenv/lib/python3.11/site-packages"
+
 lazy val root = (project in file("."))
   .settings(
      name := "PLANE",
@@ -80,8 +86,19 @@ lazy val root = (project in file("."))
         "-source:3.3",
         "-experimental"
      ),
-     scalacOptions += "-language:experimental.macros",
-     javaOptions += "--add-opens=java.base/java.lang=ALL-UNNAMED",
+    scalacOptions += "-language:experimental.macros",
+      Compile / run / javaOptions ++= Seq(
+        s"-Djava.library.path=$jepDir",                       // where libjep.{dylib,jnilib} lives
+        s"-Djep.library.path=$jepDir/libjep.jnilib",          // exact file (or libjep.dylib)
+        s"-Dpython.home=$pyBase",                             // BASE Python (not the venv)
+        s"-Djep.include.path=$stdlib:${dynload}:${sitePkgs}", // put stdlib+dynload+venv on sys.path
+        "--add-opens=java.base/java.lang=ALL-UNNAMED"         // harmless, sometimes helps native loads
+      ),
+      Compile / run / envVars ++= Map(
+        "DYLD_LIBRARY_PATH" -> jepDir, // native lookup on macOS
+        "PYTHONHOME"        -> pyBase
+      ),
+     Compile / run / fork := true,
      description := "Programming Language ANalyses Experimentation",
      Compile / run / fork := true,
      Compile / run / javaOptions += "--enable-preview",
@@ -177,7 +194,8 @@ lazy val root = (project in file("."))
        "io.circe" %% "circe-parser" % circeVersion,
        "io.circe" %% "circe-literal" % circeVersion,
        "org.typelevel" %% "log4cats-core"    % log4catsVersion,  // Only if you want to Support Any Backend
-       "org.typelevel" %% "log4cats-slf4j"   % log4catsVersion  // Direct Slf4j Support - Recommended
+       "org.typelevel" %% "log4cats-slf4j"   % log4catsVersion,  // Direct Slf4j Support - Recommended
+       "black.ninia" % "jep" % blackNiniaJepVersion
      ),
      homepage := Option(url("https://github.com/0x1DOCD00D/PLANE")),
      licenses := Seq("PLANE License" -> url("https://github.com/0x1DOCD00D/PLANE/LICENSE")),
