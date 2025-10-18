@@ -91,7 +91,7 @@ lazy val root = (project in file("."))
         s"-Djava.library.path=$jepDir",                       // where libjep.{dylib,jnilib} lives
         s"-Djep.library.path=$jepDir/libjep.jnilib",          // exact file (or libjep.dylib)
         s"-Dpython.home=$pyBase",                             // BASE Python (not the venv)
-        s"-Djep.include.path=$stdlib:${dynload}:${sitePkgs}", // put stdlib+dynload+venv on sys.path
+        s"-Djep.include.path=$stdlib:$dynload:$sitePkgs", // put stdlib+dynload+venv on sys.path
         "--add-opens=java.base/java.lang=ALL-UNNAMED"         // harmless, sometimes helps native loads
       ),
       Compile / run / envVars ++= Map(

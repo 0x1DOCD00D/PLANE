@@ -32,19 +32,15 @@ object AnthropicBasic extends IOApp:
     _ <- IO(println("key len: " + sys.env.get("ANTHROPIC_API_KEY").map(_.length)))
     _ <- IO(println("sysprop present: " + Option(System.getProperty("anthropic.apiKey")).isDefined))
     _ <- IO(println("base url env: " + sys.env.get("ANTHROPIC_BASE_URL")))
-    client <- IO.delay(AnthropicOkHttpClient.fromEnv(): AnthropicClient)
-    params <- IO.delay(
+    client: AnthropicClient <- IO.delay(AnthropicOkHttpClient.fromEnv(): AnthropicClient)
+    params: MessageCreateParams <- IO.delay(
       MessageCreateParams.builder()
-        .model("claude-3-5-sonnet-20241022") // the ID you verified via curl
+        .model("claude-3-5-sonnet-20241022")
         .maxTokens(64L)
-        .addUserMessage("How do professors treat one another?")
+        .addUserMessage("How many biological sexes exist in nature?")
         .build()
     )
-
-    // blocking network call -> wrap in IO.blocking
-    msg <- IO.blocking(client.messages().create(params))
-
-    // extract text blocks into a single string
+    msg: Message <- IO.blocking(client.messages().create(params))
     text <- IO.delay(extractText(msg))
     l1 = log(s"time: 10/12/25:", fib.toString)
     _ <- fib.join
