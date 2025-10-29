@@ -84,7 +84,8 @@ lazy val root = (project in file("."))
         "-feature",
         "-language:implicitConversions",
         "-source:3.3",
-        "-experimental"
+        "-experimental",
+        "-nowarn"
      ),
     scalacOptions += "-language:experimental.macros",
       Compile / run / javaOptions ++= Seq(
