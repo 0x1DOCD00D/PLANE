@@ -1,5 +1,6 @@
 package FPIntro
 
+import language.experimental.captureChecking
 import caps.*
 
 trait State[A] extends SharedCapability:
