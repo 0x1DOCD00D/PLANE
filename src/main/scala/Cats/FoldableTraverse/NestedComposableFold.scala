@@ -40,9 +40,17 @@ object NestedComposableFold:
     Generality: with Foldable you can swap Vector for NonEmptyList, Chain, custom trees, etc., and the same code keeps working.
     Laws & reuse: you get all Foldable combinators for free on the composed structure.
   * */
-  val points: Int = (Foldable[List] compose Foldable[Vector]).foldMap(backlog)(_.points) // 16
+  // Option 1: Use summon to get instances explicitly
+  import scala.compiletime.summon
+  val points: Int = summon[Foldable[List]].compose(summon[Foldable[Vector]]).foldMap(backlog)(_.points) // 16
+  
+  // Option 2: Original syntax (should work if implicits are in scope)
+  // val points: Int = (Foldable[List] compose Foldable[Vector]).foldMap(backlog)(_.points)
+  
+  // Option 3: Manual composition without compose method
+  // val points: Int = backlog.flatMap(_.map(_.points)).sum
 
-  def totalPoints[F[_] : Foldable, G[_] : Foldable](xs: F[G[Story]]): Int =
+  def totalPoints[F[_], G[_]](xs: F[G[Story]])(using Foldable[F], Foldable[G]): Int =
     Foldable[F].compose[G].foldMap(xs)(_.points)
   val total: Int = totalPoints(backlog)
 
@@ -54,7 +62,7 @@ object NestedComposableFold:
     def empty = Stats(0, 0)
     def combine(a: Stats, b: Stats) = Stats(a.sum + b.sum, a.count + b.count)
 
-  def stats[F[_] : Foldable, G[_] : Foldable](xs: F[G[Story]]): Stats =
+  def stats[F[_], G[_]](xs: F[G[Story]])(using Foldable[F], Foldable[G]): Stats =
     Foldable[F].compose[G].foldMap(xs)(s => Stats(s.points, 1))
 
   val s: Stats = stats(backlog) // Stats(16, 3)
