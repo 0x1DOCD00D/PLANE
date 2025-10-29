@@ -83,7 +83,7 @@ lazy val root = (project in file("."))
         "-deprecation",
         "-feature",
         "-language:implicitConversions",
-        "-source:3.4-migration",  // Migration mode: supports both old and new syntax
+        "-source:3.6",           // Scala 3.6 mode with new context bounds syntax
         "-experimental",
         "-nowarn"
      ),
