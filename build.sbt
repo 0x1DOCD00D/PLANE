@@ -83,8 +83,9 @@ lazy val root = (project in file("."))
         "-deprecation",
         "-feature",
         "-language:implicitConversions",
-        "-source:3.3",
+        "-source:3.6",           // Updated for better capture checking support
         "-experimental",
+        "-Ycc",                  // Enable capture checking
         "-nowarn"
      ),
     scalacOptions += "-language:experimental.macros",
