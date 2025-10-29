@@ -83,7 +83,7 @@ lazy val root = (project in file("."))
         "-deprecation",
         "-feature",
         "-language:implicitConversions",
-        "-source:3.6",           // Updated for better capture checking support
+        "-source:3.3",
         "-experimental",
         "-nowarn"
      ),
