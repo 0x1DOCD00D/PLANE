@@ -40,10 +40,15 @@ object NestedComposableFold:
     Generality: with Foldable you can swap Vector for NonEmptyList, Chain, custom trees, etc., and the same code keeps working.
     Laws & reuse: you get all Foldable combinators for free on the composed structure.
   * */
-  val points: Int = (Foldable[List] compose Foldable[Vector]).foldMap(backlog)(_.points) // 16
 
-  def totalPoints[F[_] : Foldable, G[_] : Foldable](xs: F[G[Story]]): Int =
+  def totalPoints[F[_], G[_]](xs: F[G[Story]])(using Foldable[F], Foldable[G]): Int =
     Foldable[F].compose[G].foldMap(xs)(_.points)
+
+  def stats[F[_], G[_]](xs: F[G[Story]])(using Foldable[F], Foldable[G]): Stats =
+    Foldable[F].compose[G].foldMap(xs)(s => Stats(s.points, 1))
+  
+  val points: Int = backlog.flatMap(_.map(_.points)).sum
+  
   val total: Int = totalPoints(backlog)
 
   import cats._, cats.implicits._
@@ -53,9 +58,6 @@ object NestedComposableFold:
   given Monoid[Stats] with
     def empty = Stats(0, 0)
     def combine(a: Stats, b: Stats) = Stats(a.sum + b.sum, a.count + b.count)
-
-  def stats[F[_] : Foldable, G[_] : Foldable](xs: F[G[Story]]): Stats =
-    Foldable[F].compose[G].foldMap(xs)(s => Stats(s.points, 1))
 
   val s: Stats = stats(backlog) // Stats(16, 3)
   val avg: Double = if s.count == 0 then 0.0 else s.sum.toDouble / s.count

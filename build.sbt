@@ -83,10 +83,15 @@ lazy val root = (project in file("."))
         "-deprecation",
         "-feature",
         "-language:implicitConversions",
-        "-source:3.3",
+        "-source:3.6",
+        "-Xno-enrich-error-messages", // raw error / last repeated op
+        "-Vimplicits",                // log given/implicit searches
+        "-Vtype-diffs",                // show inferred type differences
         "-experimental",
-        "-nowarn"
+        "-nowarn",
+        "-rewrite"
      ),
+
     scalacOptions += "-language:experimental.macros",
       Compile / run / javaOptions ++= Seq(
         s"-Djava.library.path=$jepDir",                       // where libjep.{dylib,jnilib} lives

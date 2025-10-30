@@ -9,28 +9,56 @@ package scala3Features
 import scala.annotation.tailrec
 
 object TypeMatchExperiments:
+
   trait SomeOtherType[S]:
     val value: S
 
+  // Type-level mapping from input type T to output type
   type SomeMatchingType[T] = T match
     case None.type   => None.type
     case Some[p]     => SomeOtherType[p]
     case String      => Option[Int]
     case Array[p]    => SomeMatchingType[Option[p]]
     case Iterable[p] => SomeMatchingType[Option[p]]
-    case p *: _      => SomeMatchingType[Option[p]]
+    case (p *: t)    => SomeMatchingType[Option[p]]
     case Any         => List[Nothing]
 
-  def produceSomeOtherTypeValue[Q](p: Q): SomeOtherType[Q] = new SomeOtherType[Q] { val value = p }
+  def produceSomeOtherTypeValue[Q](p: Q): SomeOtherType[Q] =
+    new SomeOtherType[Q] { val value = p }
 
-  @tailrec def behavior[TypeVar](parm: TypeVar): SomeMatchingType[TypeVar] = parm match
-    case x: None.type   => None
-    case x: Some[?]     => produceSomeOtherTypeValue(x.get)
-    case x: String      => Some(x.length)
-    case x: Array[_]    => behavior(x.headOption)
-    case x: Iterable[_] => behavior(x.headOption)
-    case x: (_ *: _)    => behavior(Option(x.head))
-    case x: Any         => List[Nothing]()
+  // NOTE: tailrec on a generic method sometimes fails; remove @tailrec if the
+  // compiler complains. The logic itself is properly tail-recursive.
+  @tailrec
+  def behavior[A](parm: A): SomeMatchingType[A] =
+    parm match
+      case _: None.type =>
+        None
+
+      case x: Some[t] =>
+        // A = Some[t] => SomeMatchingType[A] = SomeOtherType[t]
+        produceSomeOtherTypeValue[t](x.get)
+
+      case s: String =>
+        // A = String  => SomeMatchingType[A] = Option[Int]
+        Some(s.length)
+
+      case arr: Array[t] =>
+        // A = Array[t] => SomeMatchingType[A] = SomeMatchingType[Option[t]]
+        behavior[Option[t]](arr.headOption)
+
+      case it: Iterable[t] =>
+        // A = Iterable[t] => SomeMatchingType[A] = SomeMatchingType[Option[t]]
+        behavior[Option[t]](it.headOption)
+
+      case tup: (h *: t) =>
+        // Narrow to the exact tuple type (h *: t) so .head has type h (not Tuple.Head[A & (h *: t)])
+        val exact: (h *: t) = tup
+        val hd: h = exact.head
+        behavior[Option[h]](Option(hd))
+
+      case _ =>
+        // A = Any fallback => List[Nothing]
+        List.empty[Nothing]
 
   @main def runTypeMatchExperiments(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/scala3Features/TypeMatchExperiments.scala created at time 9:56AM")
