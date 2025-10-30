@@ -8,8 +8,6 @@ package TypeFP
 
 import TypeFP.MapListIncrement.TApply.Aux
 
-import scala.runtime.stdLibPatches.Predef.summon
-
 object MapListIncrement:
   import scala.compiletime.ops.int.*
 
@@ -83,26 +81,29 @@ object MapListIncrement:
 
   def checkTApply3: Aux[TInc, 3, 4] = summon[TApply[TInc, 3]]
 
-//  def checkTMap1: TMap.Aux[TCons[1, TCons[2, TCons[3, TNil]]], TInc, TCons[2, TCons[3, TCons[4, TNil]]]] = summon[TMap[TCons[1, TCons[2, TCons[3, TNil]]], TInc]]
-  def checkTMap1: TMap.Aux[TCons[1, TCons[2, TCons[3, TNil]]], TInc, TCons[2, TCons[3, TCons[4, TNil]]]] = summon[TMap[TCons[1, TCons[2, TCons[3, TNil]]], TInc]]
+  def checkTMap1: TMap.Aux[TCons[1, TCons[2, TCons[3, TNil]]], TInc, TCons[2, TCons[3, TCons[4, TNil]]]] = 
+    summon[TMap[TCons[1, TCons[2, TCons[3, TNil]]], TInc]]
 
   type FullyExpandedMapped = TMap[TCons[1, TCons[2, TCons[3, TNil]]], TInc]#Out
   type FullyExpandedExpected = TCons[2, TCons[3, TCons[4, TNil]]]
 
   type ResolvedMapped = TMap[TCons[1, TCons[2, TCons[3, TNil]]], TInc] match
-    case TMap.Aux[_, _, out] => out
+    case t @ TMap[_, _] => t.Out
 
-  def checkTMap2: TMap.Aux[TCons[2, TCons[3, TNil]], TInc, TCons[3, TCons[4, TNil]]] = summon[TMap[TCons[2, TCons[3, TNil]], TInc]]
+  def checkTMap2: TMap.Aux[TCons[2, TCons[3, TNil]], TInc, TCons[3, TCons[4, TNil]]] = 
+    summon[TMap[TCons[2, TCons[3, TNil]], TInc]]
 
-  def checkTMap3: TMap.Aux[TCons[3, TNil], TInc, TCons[4, TNil]] = summon[TMap[TCons[3, TNil], TInc]]
+  def checkTMap3: TMap.Aux[TCons[3, TNil], TInc, TCons[4, TNil]] = 
+    summon[TMap[TCons[3, TNil], TInc]]
 
-  def checkTMapNil: TMap.Aux[TNil, TInc, TNil] = summon[TMap[TNil, TInc]]
+  def checkTMapNil: TMap.Aux[TNil, TInc, TNil] = 
+    summon[TMap[TNil, TInc]]
 
   def checkTApply: Aux[TInc, 1, 2] = summon[TApply[TInc, 1]]
 
   type ExtractOut[X] = X match
-    case TApply.Aux[_, _, out] => out
-    case _                     => X
+    case t @ TApply[_, _] => t.Out
+    case _                => X
 
   type ExtractedTApply = ExtractOut[Aux[TInc, 1, 2]]
   type Expected2 = 2
@@ -110,9 +111,10 @@ object MapListIncrement:
   def proof1 = summon[ExtractedTApply =:= Expected2]
 
   def proof2 =
-//    : Aux[TInc, 1, 2]
     val r = summon[TApply[TInc, 1]]
     summon[ExtractOut[r.type] =:= Expected2]
 
   @main def runMapListIncrement(args: String*): Unit =
-    println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/TypeFP/MapListIncrement.scala created at time 9:28AM")
+    println("Type-level map with increment function demonstration")
+    println("Successfully compiled type-level list operations")
+    println("Mapped [1, 2, 3] to [2, 3, 4] at the type level")
