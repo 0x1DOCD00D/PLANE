@@ -90,7 +90,7 @@ object MapListIncrement:
   type FullyExpandedExpected = TCons[2, TCons[3, TCons[4, TNil]]]
 
   type ResolvedMapped = TMap[TCons[1, TCons[2, TCons[3, TNil]]], TInc] match
-    case t @ TMap[_, _] => t.Out
+    case t @ TMap[l, f] => t.Out
 
   def checkTMap2: TMap.Aux[TCons[2, TCons[3, TNil]], TInc, TCons[3, TCons[4, TNil]]] = summon[TMap[TCons[2, TCons[3, TNil]], TInc]]
 
@@ -101,7 +101,7 @@ object MapListIncrement:
   def checkTApply: Aux[TInc, 1, 2] = summon[TApply[TInc, 1]]
 
   type ExtractOut[X] = X match
-    case t @ TApply[_, _] => t.Out
+    case t @ TApply[f, x] => t.Out
     case _                => X
 
   type ExtractedTApply = ExtractOut[Aux[TInc, 1, 2]]
