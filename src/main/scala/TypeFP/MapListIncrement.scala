@@ -30,7 +30,7 @@ object MapListIncrement:
   type Expected = TCons[2, TCons[3, TCons[4, TNil]]]
 
   // Compile-time proof (compiles iff the mapping is correct)
-  def proof: (Mapped =:= Expected) = summon
+  def proof: Mapped =:= Expected = summon
 
   @main def runMapListIncrement(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/TypeFP/MapListIncrement.scala created at time 9:28AM")

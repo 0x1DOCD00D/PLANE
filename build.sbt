@@ -8,7 +8,7 @@ ThisBuild / version ~= { base =>
 }
 
 
-ThisBuild / scalaVersion := "3.7.1"
+ThisBuild / scalaVersion := "3.7.3"
 
 val logbackVersion = "1.5.7"
 val typeSafeConfigVersion = "1.4.2"
@@ -91,6 +91,10 @@ lazy val root = (project in file("."))
         "-nowarn",
         "-rewrite"
      ),
+    ThisBuild / scalacOptions ++= Seq(
+      "-Yrecursion", "2000"          // (default ~500); only while debugging
+    ),
+    ThisBuild / scalacOptions += "-J-Xss900m",   // bigger JVM stack for the compiler thread
 
     scalacOptions += "-language:experimental.macros",
       Compile / run / javaOptions ++= Seq(

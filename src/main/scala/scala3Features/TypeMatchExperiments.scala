@@ -20,11 +20,11 @@ object TypeMatchExperiments:
     case String      => Option[Int]
     case Array[p]    => SomeMatchingType[Option[p]]
     case Iterable[p] => SomeMatchingType[Option[p]]
-    case (p *: t)    => SomeMatchingType[Option[p]]
+    case p *: t    => SomeMatchingType[Option[p]]
     case Any         => List[Nothing]
 
   def produceSomeOtherTypeValue[Q](p: Q): SomeOtherType[Q] =
-    new SomeOtherType[Q] { val value = p }
+    new SomeOtherType[Q] { val value: Q = p }
 
   // NOTE: tailrec on a generic method sometimes fails; remove @tailrec if the
   // compiler complains. The logic itself is properly tail-recursive.
@@ -52,7 +52,7 @@ object TypeMatchExperiments:
 
       case tup: (h *: t) =>
         // Narrow to the exact tuple type (h *: t) so .head has type h (not Tuple.Head[A & (h *: t)])
-        val exact: (h *: t) = tup
+        val exact: h *: t = tup
         val hd: h = exact.head
         behavior[Option[h]](Option(hd))
 
