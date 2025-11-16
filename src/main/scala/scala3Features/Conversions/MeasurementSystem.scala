@@ -164,7 +164,7 @@ object TextComparison:
     val withoutMarkdown = md.value
       .replaceAll("\\*\\*([^*]+)\\*\\*", "$1") // bold
       .replaceAll("\\*([^*]+)\\*", "$1")       // italic
-      .replaceAll("\\[([^]]+)\\]\\([^)]+\\)", "$1") // links
+      .replaceAll("\\[([^]]+)]\\([^)]+\\)", "$1") // links
     NormalizedText(withoutMarkdown.toLowerCase.trim.replaceAll("\\s+", " "))
 
   // Extension methods for text comparison
@@ -203,9 +203,9 @@ object TextComparison:
     val height2 = Inches(72.0)
     val height3 = Meters(2.0)
 
-    println(s"Distance between ${height1} and ${height2}: ${height1.distanceTo(height2)}")
-    println(s"Distance between ${height1} and ${height3}: ${height1.distanceTo(height3)}")
-    println(s"Is ${Kilometers(0.002)} longer than ${height1}? ${Kilometers(0.002).isLongerThan(height1)}")
+    println(s"Distance between $height1 and $height2: ${height1.distanceTo(height2)}")
+    println(s"Distance between $height1 and $height3: ${height1.distanceTo(height3)}")
+    println(s"Is ${Kilometers(0.002)} longer than $height1? ${Kilometers(0.002).isLongerThan(height1)}")
     println(s"Scaling ${Feet(10)} by 2.5: ${Feet(10).scale(2.5)}")
     println()
 
