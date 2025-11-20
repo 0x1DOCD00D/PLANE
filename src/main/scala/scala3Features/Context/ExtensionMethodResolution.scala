@@ -74,11 +74,11 @@ but none of the attempts shown below succeeded:
     val result1: String = breaks[Int, String](3, 5, "Hello")
     // 3 * 5 = 8 (using A[Int]), then 8 x "Hello" = "HelloHelloHelloHelloHelloHelloHelloHello"
     println(result1)
-    
+
     val result2: Int = breaks[String, Int]("Hi", "There", 10)
     // "Hi" * "There" = "HiThere" (using A[String]), then "HiThere".length * 10 = 70
     println(result2)
-    
+
     val result3 = breaks(3, 5, "World") // Scala infers [Int, String]
     println(result3)
 
