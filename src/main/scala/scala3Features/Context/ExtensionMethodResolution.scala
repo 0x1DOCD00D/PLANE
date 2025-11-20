@@ -64,7 +64,7 @@ but none of the attempts shown below succeeded:
     extension (a: String) def x(b: Int): Int = a.length * b
 
   // The fixed function
-  def breaks[TA: A, TB: [TB] =>> B[TA, TB]](a: TA, a2: TA, b: TB): TB =
+  def breaks[TA: A, TB: [TBx] =>> B[TA, TBx]](a: TA, a2: TA, b: TB): TB =
     val combined = a * a2 // Uses A's * method
     combined x b // Uses B's x method
 
