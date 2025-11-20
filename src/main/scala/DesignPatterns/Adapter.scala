@@ -20,22 +20,22 @@ object Adapter extends App {
   //to the method SomeCoreMethod
   trait Adapter {
     this: Adaptee =>
-    def NewMethod1 = SomeCoreMethod(this.getClass.getName)
+    def NewMethod1(): Unit = SomeCoreMethod(this.getClass.getName)
 
-    def NewMethod2 = SomeCoreMethod(this.getClass.getPackageName)
+    def NewMethod2(): Unit = SomeCoreMethod(this.getClass.getPackageName)
   }
 
   //then we mix the trait with the adaptee and voila! - everything is ready
   val objectWithAdaptee = new Adaptee with Adapter
-  objectWithAdaptee.NewMethod1
+  objectWithAdaptee.NewMethod1()
   //but the original method is still available
   objectWithAdaptee.SomeCoreMethod("bummer!")
 
   //the other way to use an adapter is to use it as a new interface
   trait AdapterAbstract {
-    def NewMethod1: Unit
+    def NewMethod1(): Unit
 
-    def NewMethod2: Unit
+    def NewMethod2(): Unit
   }
 
   //whereby a class implements this new interface and uses the class Adaptee internally
@@ -43,25 +43,25 @@ object Adapter extends App {
   class Adapted extends AdapterAbstract {
     private val adapteeObject = new Adaptee
 
-    override def NewMethod1: Unit = adapteeObject.SomeCoreMethod(this.getClass.getName)
+    override def NewMethod1(): Unit = adapteeObject.SomeCoreMethod(this.getClass.getName)
 
-    override def NewMethod2: Unit = adapteeObject.SomeCoreMethod(this.getClass.getPackageName)
+    override def NewMethod2(): Unit = adapteeObject.SomeCoreMethod(this.getClass.getPackageName)
   }
 
-  (new Adapted).NewMethod1
+  (new Adapted).NewMethod1()
 
   //finally, the adapter conversion can be done implicitly
   implicit class AutomaticAdapter(adaptee: Adaptee) {
-    def NewMethod1 = adaptee.SomeCoreMethod(this.getClass.getName)
+    def NewMethod1(): Unit = adaptee.SomeCoreMethod(this.getClass.getName)
 
-    def NewMethod2 = adaptee.SomeCoreMethod(this.getClass.getPackageName)
+    def NewMethod2(): Unit = adaptee.SomeCoreMethod(this.getClass.getPackageName)
   }
 
   extension (adaptee: Adaptee)
     def anotherMethod = adaptee.SomeCoreMethod(this.getClass.getName)
 
   //AutomaticAdapter((new Adaptee)).NewMethod
-  (new Adaptee).NewMethod1
-  (new Adaptee).NewMethod2
+  (new Adaptee).NewMethod1()
+  (new Adaptee).NewMethod2()
   (new Adaptee).anotherMethod
 }
