@@ -7,7 +7,7 @@
 package DesignPatterns
 
 //the pattern Adapter is used to change the interface of some Adaptee
-object AdapterPattern extends App {
+object Adapter extends App {
 
   //the client makes calls to methods NewMethod1 and NewMethod2 that take no parameters
   //however, the class Adaptee does not provide these methods and other clients keep
