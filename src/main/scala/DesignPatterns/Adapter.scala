@@ -58,10 +58,10 @@ object Adapter extends App {
   }
 
   extension (adaptee: Adaptee)
-    def anotherMethod = adaptee.SomeCoreMethod(this.getClass.getName)
+    def anotherMethod(): Unit = adaptee.SomeCoreMethod(this.getClass.getName)
 
   //AutomaticAdapter((new Adaptee)).NewMethod
   (new Adaptee).NewMethod1()
   (new Adaptee).NewMethod2()
-  (new Adaptee).anotherMethod
+  (new Adaptee).anotherMethod()
 }
