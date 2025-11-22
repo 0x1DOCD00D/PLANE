@@ -5,39 +5,35 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 package CatsIO.AsyncComputations
-
 import cats.effect.{ExitCode, IO, IOApp}
 
+import java.util.concurrent.CompletableFuture
+import java.util.function.BiFunction
 import scala.util.{Failure, Success, Try}
+import cats.effect.*
+import cats.implicits.*
+import CatsIO.Helpers.Aid4Debugging.*
+import CatsIO.Helpers.{blue, bold, green, red}
 
-object AsyncCallbackWrap extends IOApp:
-  def legacyCompute(x: Int, cb: Either[Throwable, Int] => Unit): () => Unit =
-    val t = new Thread(() =>
-      try
-        Thread.sleep(150)
-        if x == 0 then cb(Left(new IllegalArgumentException("x=0")))
-        else cb(Right(x * 2))
-      catch
-        case e: Throwable => cb(Left(e))
-    )
-    t.setDaemon(true)
-    t.start()
-    () => t.interrupt() // cancel handle
+import scala.concurrent.duration.DurationInt
 
-  def computeIO(x: Int): IO[Int] =
-    IO.async { cb =>
+object AsyncTemplate extends IOApp:
+  def callAsync(): IO[Int] =
+    IO.async { (ioCallback: Either[Throwable, Int] => Unit) =>
       IO {
-        val cancel = legacyCompute(x, cb)
         Some(IO {
-          println(s"[cancel] legacyCompute($x)")
-          cancel()
+          ioCallback(Right(42))
         })
+//        None
       }
     }
 
-  def run(args: List[String]): IO[ExitCode] =
+  override def run(args: List[String]): IO[ExitCode] =
     for
-      a <- computeIO(21)
-      _ <- IO.println(s"got: $a")
-      _ <- computeIO(0).attempt.flatMap(r => IO.println(s"error path: $r"))
+      _ <- IO.println("tick".green).debugInfo()
+      _ <- IO.sleep(200.millis).debugInfo()
+      res <- callAsync().start
+      _ <- res.cancel.debugInfo()
+      _ <- IO.println(res)
+      _ <- IO.println("tock".green).debugInfo()
     yield ExitCode.Success
