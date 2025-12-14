@@ -6,6 +6,8 @@
 
 package scala3Features.NewTypes
 
+import scala.collection.WithFilter
+
 //https://users.scala-lang.org/t/desugaring-of-for-with-pattern-match-and-if-guard/12147
 
 object PatternMatchWithIfGuard:
@@ -17,17 +19,30 @@ object PatternMatchWithIfGuard:
     def b: Boolean
   }
 
-  def f(): Seq[B] = {
-    val s = Seq[A]()
+  def f(): WithFilter[B, Seq] = {
+    val s = Seq[A](new B {
+      def a: Boolean = true
+      def b: Boolean = true
+    }, new B {
+      def a: Boolean = true
+      def b: Boolean = false
+    }, new A {
+      def a: Boolean = false
+    })
 
     val as = for (case x: A <- s if x.a) yield x // this compiles, the result is Seq[A]
     val bs = for (case x: B <- s) yield x // this compiles, the result is Seq[B]
     for (case x: B <- s) yield x.b // this compiles
 //    for (case x: B <- s if x.b) yield x // this gives an error: Found B => B, Required A => B
     s.collect { case x: B if x.b => x }
-    (for (case x: B <- s) yield x).filter(_.b)
+    (for case x: B <- s yield x).withFilter(_.b)
   }
 
   @main def runPatternMatchWithIfGuard(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/scala3Features/NewTypes/PatternMatchWithIfGuard.scala created at time 5:43PM")
-    f()
+    val res = f().flatMap(a => {
+      println(a.b);
+      println(a.a)
+      Seq(a)}
+    )
+    println(s"res = $res")
