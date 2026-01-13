@@ -50,6 +50,7 @@ val H2DatabaseVersion = "2.4.240"
 val doobieVersion = "1.0.0-RC8"
 val clickhouseJdbcVersion = "0.9.2"
 val http4sVersion = "0.23.32"
+val yamlVersion = "3.0.1"
 val circeVersion = "0.14.15"
 val log4catsVersion = "2.7.1"
 val neo4jVersion = "6.8.0"
@@ -199,6 +200,7 @@ lazy val root = (project in file("."))
        "org.http4s" %% "http4s-client"       % http4sVersion,
        "org.http4s" %% "http4s-server"       % http4sVersion,
        "org.http4s" %% "http4s-circe"        % http4sVersion,
+       "org.snakeyaml" % "snakeyaml-engine" % yamlVersion,
        "io.circe" %% "circe-core" % circeVersion,
        "io.circe" %% "circe-generic" % circeVersion,
        "io.circe" %% "circe-parser" % circeVersion,
