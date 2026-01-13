@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2025 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
+// Copyright (c) 2026 Mark Grechanik and Lone Star Consulting, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
 ////////////////////////////////////////////////////////////////////////////////
@@ -52,15 +52,15 @@ object PureconfigBasics extends IOApp:
     _ <- fib.join
   } yield ()
 
-  def loadFEither[F[_] : MonadThrow, A: ConfigReader : ClassTag]: ConfigSource ?=> F[A] =
+  def loadFEither[F[_] : MonadThrow, A: {ConfigReader, ClassTag}]: ConfigSource ?=> F[A] =
     MonadThrow[F].fromEither(
       summon[ConfigSource].load[A].leftMap(errs => ConfigReaderException(errs): Throwable)
     )
 
-  def loadF[F[_] : MonadThrow, A: ConfigReader : ClassTag]: ConfigSource ?=> F[A] =
+  def loadF[F[_] : MonadThrow, A: {ConfigReader, ClassTag}]: ConfigSource ?=> F[A] =
     MonadThrow[F].catchNonFatal(summon[ConfigSource].loadOrThrow[A])
 
-  def loadFThrow[F[_] : MonadThrow, A: ConfigReader : ClassTag]: ConfigSource ?=> F[A] =
+  def loadFThrow[F[_] : MonadThrow, A: {ConfigReader, ClassTag}]: ConfigSource ?=> F[A] =
     MonadThrow[F].catchNonFatal(summon[ConfigSource].loadOrThrow[A])
 
   final case class ConnectionParams(
@@ -76,7 +76,7 @@ object PureconfigBasics extends IOApp:
     given ConfigReader[ConnectionParams] = deriveReader
 
   final case class MySql(
-                          url: String = "jdbc:mysql://localhost:3306/board",
+                          Url: String, //= "jdbc:mysql://localhost:3306/board",
                           user: String = "root",
                           driver: String = "com.mysql.cj.jdbc.Driver",
                           connectionParams: ConnectionParams = ConnectionParams()
@@ -90,9 +90,8 @@ object PureconfigBasics extends IOApp:
   //val cfg1: IO[MySql] = loadFEither[IO, MySql]
 
   override def run(args: List[String]): IO[ExitCode] =
-
-      ConfigSource.default.at("MySql").load[MySql] match
+    ConfigSource.default.at("MySql").load[MySql] match
         case Left(value) => println(s"Failed to load config: $value".red.bold)
         case Right(value) => println(s"Loaded config: $value".green.bold)
 
-      PureconfigBasics_Program.as(ExitCode.Success)
+    PureconfigBasics_Program.as(ExitCode.Success)
