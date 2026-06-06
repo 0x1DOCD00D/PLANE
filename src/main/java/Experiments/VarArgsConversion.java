@@ -7,9 +7,11 @@
 package Experiments;
 
 class VarArgsConversion {
-    static void g(Long x)    { System.out.println("never"); }
-//    static void g(Integer x)    { System.out.println("boxed"); }
-    static void g(int... xs)    { System.out.println("varargs"); }
+    static void g(long x)    { System.out.println("long"); }
+    static void g(Long x)    { System.out.println("Long Object"); }
+    static void g(int x)    { System.out.println("int"); }
+    static void g(Integer x)    { System.out.println("Integer"); }
+    static void g(int... xs)    { System.out.println("int varargs"); }
     public static void main(String[] args) {
         g(7);
     }
