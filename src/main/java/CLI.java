@@ -34,6 +34,7 @@ public class CLI {
         return getCLINumber(sc);
     }
     public static void main(String[] args) {
+        
         System.out.println(new CLI().getCLI(1));
     }
 }

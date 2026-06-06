@@ -33,7 +33,7 @@ public class MethodLookupJDKBug {
             MethodHandle mh3 = MethodHandles.lookup().findVirtual(AB.class, "m", MethodType.methodType(Iterable.class, List.class));
             MethodHandle mh4 = MethodHandles.lookup().findVirtual(AA.class, "m", MethodType.methodType(Iterable.class, List.class));
         } catch (NoSuchMethodException e) {
-            System.out.println("NoSuchMethodException for A.m(List<String>)");
+            System.out.println("NoSuchMethodException for Car.m(List<String>)");
         } catch (IllegalAccessException e) {
             System.out.println("Illegal access exception: " + e.getMessage());
         }
