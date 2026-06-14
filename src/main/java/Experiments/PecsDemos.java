@@ -78,8 +78,8 @@ public class PecsDemos {
         List<Number> nums = new ArrayList<>();
         List<Object> objs = new ArrayList<>();
         fillWithZeros(ints, 2);
-        fillWithZeros(nums, 2);   // Integer fits into a List<Number>
-        fillWithZeros(objs, 2);   // ...and into a List<Object>
+        fillWithZeros(nums, 3);   // Integer fits into a List<Number>
+        fillWithZeros(objs, 5);   // ...and into a List<Object>
         System.out.println("  " + ints + " " + nums + " " + objs + "\n");
     }
 
@@ -88,8 +88,8 @@ public class PecsDemos {
     //    src produces T's (extends); dst consumes T's (super).
     // ─────────────────────────────────────────────────────────────────────────
     static <T> void copy(List<? extends T> src, List<? super T> dst) {
-        
-        for (T t : src) dst.add(t);
+
+        dst.addAll(src);
     }
 
     static void demo04_copyBoth() {
@@ -110,7 +110,7 @@ public class PecsDemos {
         // producer.add(4.0);   // won't compile
         // The compiler can't prove the real element type (Integer? Double?),
         // so it refuses EVERY add (except null). But reading is always safe:
-        Number first = producer.get(0);     // a Number is guaranteed
+        Number first = producer.getFirst();     // a Number is guaranteed
         System.out.println("  can read as Number (" + first + "), cannot add\n");
     }
 
@@ -122,7 +122,7 @@ public class PecsDemos {
         List<? super Integer> consumer = new ArrayList<Number>();
         consumer.add(42);                   // writing an Integer is safe
         // Integer x = consumer.get(0);     // element could be Number or Object
-        Object x = consumer.get(0);         // Object is the only guarantee
+        Object x = consumer.getFirst();         // Object is the only guarantee
         System.out.println("  wrote Integer, read back as Object: " + x + "\n");
     }
 
@@ -178,7 +178,7 @@ public class PecsDemos {
     }
 
     static <T extends Comparable<? super T>> T maxNatural(List<? extends T> list) {
-        T best = list.get(0);
+        T best = list.getFirst();
         for (T t : list) if (t.compareTo(best) > 0) best = t;
         return best;
     }
@@ -266,7 +266,7 @@ public class PecsDemos {
     // ─────────────────────────────────────────────────────────────────────────
     static <T> void rotateInPlace(List<T> list) {   // not ? extends, not ? super — exact T
         if (list.isEmpty()) return;
-        T first = list.remove(0);   // READS a T out  (a ? super list couldn't yield a T)
+        T first = list.removeFirst();   // READS a T out  (a ? super list couldn't yield a T)
         list.add(first);            // WRITES a T back (a ? extends list couldn't accept one)
     }
 
