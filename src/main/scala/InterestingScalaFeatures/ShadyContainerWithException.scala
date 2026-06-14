@@ -31,7 +31,7 @@ object ShadyContainerWithException :
   }
 
   def main(args: Array[String]): Unit = {
-    //  new MyContainer().compare(new MyContainer)
+    new MyContainer().compare(new MyContainer)
     new ShadyContainer().compare(new MyContainer)
 
   }

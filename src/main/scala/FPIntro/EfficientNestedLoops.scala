@@ -11,14 +11,14 @@ package FPIntro
 import scala.util.Random
 
 object EfficientNestedLoops:
-  val lstOfValsFunc = (n:Int)=>List.range(0, n*n)
-  val lstOfProbsFunc = (n:Int)=>List.range(0, n*n).map(_=>(Random.nextDouble())).map(_< 0.3d).zipWithIndex.filter(_._1).map(v=>(v._2/n, v._2%n))
+  val lstOfValsFunc: Int => List[Int] = (n:Int)=>List.range(0, n*n)
+  val lstOfProbsFunc: Int => List[(Int, Int)] = (n:Int)=>List.range(0, n*n).map(_=> Random.nextDouble()).map(_< 0.3d).zipWithIndex.filter(_._1).map(v=>(v._2/n, v._2%n))
 
   @main def runEfficientNestedLoops(args: String*): Unit =
     val N = 10
     val nodesLength = N*N
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/FPIntro/EfficientNestedLoops.scala created at time 10:06 AM")
-    val lst = lstOfValsFunc(N).zipWithIndex.filter(v=>(v._1%5==0)).map(v=>((v._2/N), v._2%(N)))
+    val lst = lstOfValsFunc(N).zipWithIndex.filter(v=> v._1%5==0).map(v=>(v._2/N, v._2% N))
     println(lst.mkString(","))
 
 //    (0,0),(5,5),(10,10),(15,15),(20,20),(25,25),(30,30),(35,35),(40,40),(45,45),(50,50),(55,55),(60,60),(65,65),(70,70),(75,75),(80,80),(85,85),(90,90),(95,95)

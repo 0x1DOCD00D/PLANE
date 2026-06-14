@@ -1,16 +1,18 @@
 /*
+ * Copyright (c) 2020-2026 Dr. Mark Grechanik and Lone Star Consulting, Inc.
  *
- *  * Copyright (c) 2020 Mark Grechanik. All rights reserved.
- *  *
- *  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ * Created or updated on: 2026-06-14 11:30
+ *  
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
  *
+ * All rights reserved. This software, source code, documentation, designs, algorithms, analyses, and related materials are the exclusive property of Dr. Mark Grechanik and Lone Star Consulting, Inc. No rights are granted to copy, modify, distribute, sublicense, publish, disclose, reverse engineer, or create derivative works from this material except by prior written authorization from Dr. Mark Grechanik or Lone Star Consulting, Inc.
  */
 
 package DesignPatterns
 
-object VisitorPattern extends App {
+object VisitorPattern:
 
   //we assume a certain hierarchy of types where they have the same behavior
   //expressed in the method accept that takes one parameter of the type Visitor
@@ -56,11 +58,12 @@ object VisitorPattern extends App {
     }
   }
 
-  //we create a list of objects
-  val listOfChildren = List(new Child1, new Child2, new SomeParent {})
-  //and for each of these objects the method accept is invoked and the visitor is passed
-  //to perform its job on the object and then we just added some operations to the pipeline
-  if (listOfChildren.map(e => e.accept(visitor)).
-    filter(_ == true).isEmpty) println("empty")
-  else println("not empty")
-}
+  def main(args: Array[String]): Unit = {
+    //we create a list of objects
+    val listOfChildren = List(new Child1, new Child2, new SomeParent {})
+    //and for each of these objects the method accept is invoked and the visitor is passed
+    //to perform its job on the object and then we just added some operations to the pipeline
+    if (listOfChildren.map(e => e.accept(visitor)).
+      filter(_ == true).isEmpty) println("empty")
+    else println("not empty")
+  }
