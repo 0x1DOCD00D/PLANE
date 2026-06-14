@@ -51,7 +51,7 @@ object VisitorPattern:
 
   //the visitor object is parameterized by the parent type and it can apply to all of the
   //children objects of the parent type
-  val visitor = new Visitor[SomeParent] {
+  val visitor: Visitor[SomeParent] = new Visitor[SomeParent] {
     override def visit(obj: SomeParent): Boolean = {
       println(obj.id)
       obj.id % 2 == 0
@@ -63,7 +63,6 @@ object VisitorPattern:
     val listOfChildren = List(new Child1, new Child2, new SomeParent {})
     //and for each of these objects the method accept is invoked and the visitor is passed
     //to perform its job on the object and then we just added some operations to the pipeline
-    if (listOfChildren.map(e => e.accept(visitor)).
-      filter(_ == true).isEmpty) println("empty")
+    if (!listOfChildren.map(e => e.accept(visitor)).exists(_ == true)) println("empty")
     else println("not empty")
   }
