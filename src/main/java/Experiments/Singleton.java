@@ -8,4 +8,10 @@ public class Singleton {
         }
         return instance; }
      private Singleton() { }
+
+    public static void main(String[] args) {
+        var s1 = Singleton.getInstance();
+        var s2 = Singleton.getInstance();
+        System.out.println(s1 == s2);
+    }
 }
