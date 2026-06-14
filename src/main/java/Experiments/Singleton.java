@@ -17,9 +17,8 @@ public enum Singleton {
 
     public static void main(String[] args) {
         var s1 = Singleton.INSTANCE;
-        var s2 = Singleton.INSTANCE;
 
-        System.out.println(s1 == s2);
+        System.out.println(s1 == Singleton.INSTANCE);
         s1.doWork();
     }
 }
