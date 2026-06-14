@@ -20,7 +20,7 @@ class PimpMyLibrary:
 
 object PimpMyLibrary:
     final class SomeClass(val o: PimpMyLibrary#Sometype) extends AnyVal:
-      def SomeMethod: Unit =
+      def SomeMethod(): Unit =
         println(s"Called for $o")
 
     given Conversion[PimpMyLibrary#Sometype, SomeClass] with
@@ -28,11 +28,11 @@ object PimpMyLibrary:
         new SomeClass(o)
         
     extension (o: Student) {
-      def SomeMethod2 = println(s"Called for $o")
+      def SomeMethod2(): Unit = println(s"Called for $o")
     }
 
     class Student
   
     val student = new Student
   
-    student.SomeMethod
+    student.SomeMethod()
