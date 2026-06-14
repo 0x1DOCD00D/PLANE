@@ -13,11 +13,11 @@ import DesignPatterns.BuilderPatterns.{Object2Build, SomeObj1}
 object BuilderPatterns {
 
   // the simplest implementation of the pattern Builder is with the case class
-  case class Object2Build(p1: Int, val p2: SomeObj1, val p3: Tuple2[Float, List[String]]) {
+  case class Object2Build(p1: Int, p2: SomeObj1, p3: Tuple2[Float, List[String]]) {
     // we may add constraints to make sure that the object is initialized properly
     require(p1 > 0)
-    require(!p2.p1.isEmpty)
-    require(p3 != null && !p3._2.isEmpty)
+    require(p2.p1.nonEmpty)
+    require(p3 != null && p3._2.nonEmpty)
 
   }
 
@@ -64,11 +64,12 @@ object NowWeWantToCheckIfAllValuesAreProvided {
 
 }
 
-object RunIt extends App {
+object RunIt:
 
   import NowWeWantToCheckIfAllValuesAreProvided.*
 
-  val obj = new ObjectBuilder[Nothing].setP1(2).setP2(SomeObj1("Stuff")).setP3((1.2f, List("Howdy"))).build
-  // val objWrong1 = new ObjectBuilder[SetValue].setP1(2).setP2(SomeObj1("Stuff")).setP3((1.2f,List("Howdy"))).build
-  // val objWrong2 = new ObjectBuilder[Nothing].setP2(SomeObj1("Stuff")).setP3((1.2f,List("Howdy"))).build
-}
+  def main(args: Array[String]): Unit = {
+    val obj = new ObjectBuilder[Nothing].setP1(2).setP2(SomeObj1("Stuff")).setP3((1.2f, List("Howdy"))).build
+    // val objWrong1 = new ObjectBuilder[SetValue].setP1(2).setP2(SomeObj1("Stuff")).setP3((1.2f,List("Howdy"))).build
+    // val objWrong2 = new ObjectBuilder[Nothing].setP2(SomeObj1("Stuff")).setP3((1.2f,List("Howdy"))).build
+  }
