@@ -12,9 +12,9 @@ import DesignPatterns.BuilderPatterns.{Object2Build, SomeObj1}
 
 object BuilderPatterns {
 
-  //the simplest implementation of the pattern Builder is with the case class
+  // the simplest implementation of the pattern Builder is with the case class
   case class Object2Build(p1: Int, val p2: SomeObj1, val p3: Tuple2[Float, List[String]]) {
-    //we may add constraints to make sure that the object is initialized properly
+    // we may add constraints to make sure that the object is initialized properly
     require(p1 > 0)
     require(!p2.p1.isEmpty)
     require(p3 != null && !p3._2.isEmpty)
@@ -38,12 +38,12 @@ object NowWeWantToCheckIfAllValuesAreProvided {
 
   sealed trait SetP3 extends SetValue
 
-  class ObjectBuilder[SetV <: SetValue] private(var p1: Int, var p2: SomeObj1, var p3: Tuple2[Float, List[String]]) {
+  class ObjectBuilder[SetV <: SetValue] private (var p1: Int, var p2: SomeObj1, var p3: Tuple2[Float, List[String]]) {
     def this() = this(p2 = SomeObj1(p1 = "Stuff"), p1 = 1, p3 = (1.2f, List("Howdy")))
 
     protected def this(ob: ObjectBuilder[?]) = this(ob.p1, ob.p2, ob.p3)
 
-    //sealed abstract class =:=[From, To] extends (From <:< To) with Serializable
+    // sealed abstract class =:=[From, To] extends (From <:< To) with Serializable
     def setP1(pp1: Int)(implicit ev: SetV =:= Nothing): ObjectBuilder[SetP1] = {
       p1 = pp1
       new ObjectBuilder[SetP1](this)
@@ -66,9 +66,9 @@ object NowWeWantToCheckIfAllValuesAreProvided {
 
 object RunIt extends App {
 
-  import NowWeWantToCheckIfAllValuesAreProvided._
+  import NowWeWantToCheckIfAllValuesAreProvided.*
 
   val obj = new ObjectBuilder[Nothing].setP1(2).setP2(SomeObj1("Stuff")).setP3((1.2f, List("Howdy"))).build
-  //val objWrong1 = new ObjectBuilder[SetValue].setP1(2).setP2(SomeObj1("Stuff")).setP3((1.2f,List("Howdy"))).build
-  //val objWrong2 = new ObjectBuilder[Nothing].setP2(SomeObj1("Stuff")).setP3((1.2f,List("Howdy"))).build
+  // val objWrong1 = new ObjectBuilder[SetValue].setP1(2).setP2(SomeObj1("Stuff")).setP3((1.2f,List("Howdy"))).build
+  // val objWrong2 = new ObjectBuilder[Nothing].setP2(SomeObj1("Stuff")).setP3((1.2f,List("Howdy"))).build
 }

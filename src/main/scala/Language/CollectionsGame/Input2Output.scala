@@ -20,6 +20,6 @@ object Input2Output:
       .continually(readLine())
       .foreach { line =>
         println(s"got: $line")
-        if line == "exit now!" then break
+        if line == "exit now!" then break()
       }
     }

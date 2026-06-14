@@ -6,6 +6,7 @@ package CatsIO.Trampolining
 class NaiveIO[+A](private val effect: () => A):
   def flatMap[B](f: A => NaiveIO[B]): NaiveIO[B] =
     new NaiveIO(() => f(effect()).run())
+//    f(effect())
 
   def run(): A = effect()
 

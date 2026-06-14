@@ -12,7 +12,7 @@ import scala.util.Random
 
 object EfficientNestedLoops:
   val lstOfValsFunc = (n:Int)=>List.range(0, n*n)
-  val lstOfProbsFunc = (n:Int)=>List.range(0, n*n).map(_=>(Random.nextDouble)).map(_< 0.3d).zipWithIndex.filter(_._1).map(v=>(v._2/n, v._2%n))
+  val lstOfProbsFunc = (n:Int)=>List.range(0, n*n).map(_=>(Random.nextDouble())).map(_< 0.3d).zipWithIndex.filter(_._1).map(v=>(v._2/n, v._2%n))
 
   @main def runEfficientNestedLoops(args: String*): Unit =
     val N = 10

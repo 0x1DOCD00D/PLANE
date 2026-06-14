@@ -22,6 +22,10 @@ object PimpMyLibrary extends App {
   implicit class SomeClass(val o: PimpMyLibrary#Sometype) extends AnyVal {
     def SomeMethod = println(s"Called for $o")
   }
+  
+  extension (o: Student) {
+    def SomeMethod2 = println(s"Called for $o")
+  }
 
   class Student
 

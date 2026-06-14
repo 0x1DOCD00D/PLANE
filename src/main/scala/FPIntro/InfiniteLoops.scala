@@ -22,7 +22,7 @@ object InfiniteLoops:
         while (true) {
           val status = summon[Service].take()
           println(status)
-          if (!status) break
+          if (!status) break()
         }
       }
     }

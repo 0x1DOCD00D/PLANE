@@ -12,16 +12,16 @@ package DesignPatterns
 
 object MagnetPattern:
   def f(p:List[Int]): Int = 1
-/*
-Double definition:
-def f(p: List[Int]): Nothing in object MagnetPattern at line 14 and
-def f(p: List[String]): Nothing in object MagnetPattern at line 15
-have the same type after erasure.
-
-Consider adding a @targetName annotation to one of the conflicting definitions
-for disambiguation.
-  def f(p:List[String]) = ???
-*/
+  /*
+  Double definition:
+  def f(p: List[Int]): Nothing in object MagnetPattern at line 14 and
+  def f(p: List[String]): Nothing in object MagnetPattern at line 15
+  have the same type after erasure.
+  
+  Consider adding a @targetName annotation to one of the conflicting definitions
+  for disambiguation.
+    def f(p:List[String]) = ???
+  */
 
 // This wrapper data types allows us to hold different results
 // and avoid the problem with method overloading

@@ -6,21 +6,12 @@
 
 package ReflectionExperiments
 
-import scala.reflect.runtime.universe
-
 object BasicReflection:
 
   import scala.quoted.*
 
-  given staging.Compiler = staging.Compiler.make(getClass.getClassLoader)
-
-  staging.run('{ println("Hello, staging compiler!") })
-
-  import scala.tools.reflect.ToolBox
-
-  val tb: ToolBox[universe.type] = scala.reflect.runtime.universe
-    .runtimeMirror(getClass.getClassLoader)
-    .mkToolBox()
-  tb.eval(tb.parse("""println("Hello, scala 2 reflection!")"""))
   @main def runBasicReflection(args: String*): Unit =
+    given staging.Compiler = staging.Compiler.make(getClass.getClassLoader)
+    staging.run('{ println("Hello, staging compiler!") })
+    
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/ReflectionExperiments/BasicReflection.scala created at time 12:44 PM")

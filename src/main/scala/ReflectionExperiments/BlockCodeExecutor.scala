@@ -8,18 +8,52 @@ package ReflectionExperiments
 
 object BlockCodeExecutor:
 
-  import scala.reflect.runtime.universe._
-  import scala.tools.reflect.ToolBox
+  import dotty.tools.dotc.Driver
+  import java.io.File
+  import java.net.URLClassLoader
+  import java.nio.file.Files
+  import java.lang.reflect.InvocationTargetException
+
+  // Classpath of the running process, so generated code can see
+  // LazyRuntimeEval and anything else already on the app classpath.
+  private def currentClasspath: String =
+    System.getProperty("java.class.path")
+
+  // One full compile + isolated ClassLoader per line, mirroring how a
+  // ToolBox compiled each eval independently.
+  private def compileAndRun(line: String, idx: Int): Any =
+    val className = s"Generated$idx"
+    val outDir    = Files.createTempDirectory(s"blockeval$idx").toFile
+    val srcFile   = File.createTempFile(className, ".scala")
+
+    val src =
+      s"""object $className {
+         |  def run(): Any = {
+         |    $line
+         |  }
+         |}
+         |""".stripMargin
+    Files.write(srcFile.toPath, src.getBytes)
+
+    val report = new Driver().process(Array(
+      "-d", outDir.getAbsolutePath,
+      "-classpath", currentClasspath,
+      srcFile.getAbsolutePath
+    ))
+    if report.hasErrors then
+      throw new RuntimeException(s"Compilation failed for: $line")
+
+    // Per-generation ClassLoader isolation.
+    val loader = new URLClassLoader(Array(outDir.toURI.toURL), getClass.getClassLoader)
+    val module = loader.loadClass(s"$className$$").getField("MODULE$").get(null)
+    try module.getClass.getMethod("run").invoke(module)
+    catch case e: InvocationTargetException => throw e.getCause
 
   def evaluateBlock[T](code: List[String]): List[T] =
-    val mirror = runtimeMirror(getClass.getClassLoader)
-    val toolbox = mirror.mkToolBox()
-
-    code.map { line =>
+    code.zipWithIndex.map { case (line, idx) =>
       try
         println(s"Executing line: $line")
-        val tree = toolbox.parse(line)
-        toolbox.eval(tree).asInstanceOf[T]
+        compileAndRun(line, idx).asInstanceOf[T]
       catch
         case ex: Throwable =>
           println(s"Exception occurred: ${ex.getMessage}")

@@ -38,7 +38,7 @@ object Aid4Debugging:
       })
       for {
       someValue <- io
-      t = (Thread.currentThread().getName, Thread.currentThread().threadId())
+      t = (Thread.currentThread().getName, Thread.currentThread())
       _ = println(s"Thread [${t._1}, ${t._2}] ".blue.bold + s" ${someValue.toString}".red)
 
     } yield someValue

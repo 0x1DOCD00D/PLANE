@@ -8,41 +8,11 @@ package FPIntro
 
 //https://users.scala-lang.org/t/capture-checking-being-confusing-again/12083
 
-/*
- as of 10/30/25 this file uses experimental Scala 3 capture checking features, but this project's compiler
- isn't configured to handle them. When the compiler tries to process this file, it crashes with a StackOverflowError.
- Since capture checking was intentionally removed from your build configuration, the solution is to remove this file entirely.
 import scala.language.experimental.captureChecking
 import scala.caps.*
 
 object SharedCapExperiment:
   trait State[A] extends SharedCapability:
-    def get: A
-    def set(a: A): Unit
-
-  def get[A]: State[A] ?-> A = s ?=> s.get
-  def set[A](a: A): State[A] ?-> Unit = s ?=> s.set(a)
-
-  trait Rand extends SharedCapability:
-    def range(min: Int, max: Int): Int
-
-  object rand:
-    // note: make the capability `s` available with `s ?=>`
-    def fromState: (s: State[Long]) ?-> Rand^{s} =
-      s ?=> new Rand:
-        override def range(min: Int, max: Int) =
-          val seed = get[Long]
-          val nextSeed = seed + 1
-          set(nextSeed)
-          // trivial example: ignore bounds for now
-          seed.toInt
-
-* */
-import scala.language.experimental.captureChecking
-import scala.caps.*
-
-object SharedCapExperiment:
-  trait State[A] extends Sharable:
     def get: A
     def set(a: A): Unit
 
@@ -57,30 +27,33 @@ object SharedCapExperiment:
     def fromState: (s: State[Long]) ?-> Rand^{s} =
       s ?=> new Rand:
         override def range(min: Int, max: Int): Int =
-          val seed = get[Long]
+          // FIX 1: the expected type Long forces the context function to be
+          // applied here, resolving the given State[Long] (which is s).
+          // Without the annotation, seed would be inferred as the *function*
+          // State[Long] ?-> Long, and `seed + 1` would not type-check.
+          val seed: Long = get[Long]
           val nextSeed = seed + 1
-          set(nextSeed)
+          // FIX 2: apply explicitly so the effect actually runs. In bare
+          // statement position there's no expected type to trigger application,
+          // so the context-function value gets built and discarded instead of
+          // run, and the seed would never advance.
+          set(nextSeed)(using s)
           seed.toInt
-
 
   @main def runSharedCapExperiment(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/FPIntro/SharedCapExperiment.scala created at time 4:27PM")
     val s: State[Long] = new State[Long]:
       private var x = 42L
-
       def get: Long = x
-
       def set(a: Long): Unit = x = a
 
     // Build a Rand that captures the capability s
-    val rng: Rand^{s} = Rand.fromState(using s) // type inferred: Rand^{s}
+    val rng: Rand^{s} = Rand.fromState(using s)
 
-    // Use it a few times
-    println(rng.range(0, 10)) // e.g. 2  (42 % 10)
-    println(rng.range(0, 10)) // e.g. 3  (43 % 10)
-    println(rng.range(0, 10)) // e.g. 4  (44 % 10)
+    println(rng.range(0, 10)) // 42
+    println(rng.range(0, 10)) // 43
+    println(rng.range(0, 10)) // 44
 
-    // You can also inspect the raw state directly via the capability
-    val currentSeed = get[Long](using s)
-    println(s"raw seed now = $currentSeed") // should be 45 here
-
+    // Inspect the raw state directly via the capability
+    val currentSeed: Long = get[Long](using s)
+    println(s"raw seed now = $currentSeed") // raw seed now = 45

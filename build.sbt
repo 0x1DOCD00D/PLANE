@@ -8,7 +8,7 @@ ThisBuild / version ~= { base =>
 }
 
 
-ThisBuild / scalaVersion := "3.7.3"
+ThisBuild / scalaVersion := "3.8.4"
 
 val logbackVersion = "1.5.7"
 val typeSafeConfigVersion = "1.4.2"
@@ -99,6 +99,7 @@ lazy val root = (project in file("."))
 
     scalacOptions += "-language:experimental.macros",
       Compile / run / javaOptions ++= Seq(
+        "--release", "21",
         s"-Djava.library.path=$jepDir",                       // where libjep.{dylib,jnilib} lives
         s"-Djep.library.path=$jepDir/libjep.jnilib",          // exact file (or libjep.dylib)
         s"-Dpython.home=$pyBase",                             // BASE Python (not the venv)
@@ -153,10 +154,10 @@ lazy val root = (project in file("."))
         "commons-codec" % "commons-codec" % codecVersion,
         "org.scala-lang.modules" %% "scala-xml" % xmlVersion,
         "org.yaml" % "snakeyaml" % snakeYamlVersion,
-        "org.scala-lang" % "scala-reflect" % scalaReflectVersion,
-        "org.scala-lang" % "scala-compiler" % scalaCompilerVersion,
+        "org.scala-lang" %% "scala3-library" % "3.8.4",
         "org.scala-lang" %% "scala3-staging" % scalaVersion.value,
         "org.scala-lang" %% "scala3-compiler" % scalaVersion.value,
+        "org.scala-lang" %% "scala3-repl" % scalaVersion.value,
         "org.scala-lang.modules" % "scala-parallel-collections_3" % "1.1.0",
         "com.typesafe.akka" %% "akka-remote" % akkaVersion,
         "dev.optics" %% "monocle-core" % monocleVersion,
@@ -178,7 +179,7 @@ lazy val root = (project in file("."))
         "org.typelevel" % "shapeless3-deriving_3" % ShapelessVersion,
         "eu.timepit" %% "refined" % "0.11.2",
         "org.scalafx" %% "scalafx" % scalaFxVersion,
-        "org.scalameta" %% "scalameta" % scalaMetaVersion,
+        "org.scalameta" %% "scalameta" % scalaMetaVersion exclude("com.lihaoyi", "sourcecode_2.13") exclude("com.lihaoyi", "fansi_2.13") exclude("com.lihaoyi", "fastparse_2.13"),
         "org.scala-lang" %% "scala3-tasty-inspector" % scalaVersion.value,
         "fr.inria.gforge.spoon" % "spoon-core" % spoonVersion,
         "com.github.tarao" %% "record4s" % record4sVersion,

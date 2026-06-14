@@ -1,6 +1,5 @@
 package AST
 
-import AST.AstFromCodeSnippet.traverseTree
 import dotty.tools.dotc.ast.tpd.{Apply, Block, Ident, Literal, ValDef}
 import dotty.tools.dotc.core.Contexts.Context
 import dotty.tools.dotc.ast.untpd

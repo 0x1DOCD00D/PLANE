@@ -8,47 +8,27 @@
 
 package Language
 
-object WhatIsInCaseClass extends App {
-  import scala.reflect.runtime.universe.*
-  import scala.reflect.runtime.{currentMirror, universe as ru}
+object WhatIsInCaseClass:
 
-  def ccToMap(cc: Product) = {
-    val f = cc.getClass.getDeclaredFields
+  def ccToMap(cc: Product): Map[String, Any] =
+    val fields = cc.getClass.getDeclaredFields
     println(cc.getClass.getName)
-    f.map(f => {
+    fields.map { f =>
       f.setAccessible(true)
       println(s"Parameter: ${f.getName}, ${f.getAnnotatedType.getType.getTypeName}, ${f.get(cc)}")
       (f.getName, f.get(cc))
-    }
-    ).toMap
-  }
+    }.toMap
 
-  def getTypeTag[T: TypeTag] = typeTag[T].tpe.members.filter(_.isTerm).map(_.asTerm).filter(_.isVal).map(f => (f.name, f.info)).toList
-
-  def getFields[T: TypeTag](cc: T) = cc.getClass.getDeclaredFields.map(f => (f.getName, f.getClass.getName)).toList
+  def getFields[T](cc: T): List[(String, String)] =
+    cc.getClass.getDeclaredFields.map(f => (f.getName, f.getType.getName)).toList
 
   case class ParameterObject(stringType: String, optionType: Option[String])
-
-  //  println(getTypeTag[ParameterObject])
-
   case class Person(name: String, age: ParameterObject)
   case object SinglePerson
+
   val name: String = "namename"
 
-  ccToMap(Person("John", ParameterObject("string", Some("option"))))
-  ccToMap(SinglePerson)
-//  ccToMap(name.asInstanceOf[Product])
-/*
-
-  def getTypeTag[T: ru.TypeTag] = ru.typeTag[T].tpe.members.filter(_.isTerm).map(_.asTerm).filter(_.isVal).map(f=>(f.name, f.info)).toList
-  def getFields[T: ru.TypeTag](cc:T) = cc.getClass.getDeclaredFields.map(f=>(f.getName,f.getClass.getName)).toList
-
-  case class ParameterObject(stringType: String, optionType: Option[String])
-
-  println(getTypeTag[ParameterObject])
-
-  case class Person(name: String, age: Int)
-  println(getTypeTag[Person])
-  println(getFields[Person](Person("John", 30)))
-*/
-}
+  @main def runWhatIsInCaseClass(args: String*): Unit =
+    ccToMap(Person("John", ParameterObject("string", Some("option"))))
+    ccToMap(SinglePerson)
+    println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/Language/WhatIsInCaseClass.scala created at time 10:35 AM")

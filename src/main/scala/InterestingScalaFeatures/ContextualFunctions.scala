@@ -48,7 +48,7 @@ object ContextualFunctions:
 
   @main def runContextualFunctions(args: String*): Unit =
     println("File /Users/drmark/IdeaProjects/PLANE/src/main/scala/InterestingScalaFeatures/ContextualFunctions.scala created at time 11:59AM")
-    given Int = 5
+    given x:Int = 5
     println(f("test f", Some(x + 5)))
     println(greet)
     println(feed)

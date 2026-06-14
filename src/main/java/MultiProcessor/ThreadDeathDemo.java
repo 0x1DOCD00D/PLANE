@@ -13,7 +13,11 @@ import sun.misc.Unsafe;
 import java.lang.reflect.Field;
 
 public class ThreadDeathDemo {
-
+    static final class StackUnwind extends Error {
+        StackUnwind() {
+            super(null, null, /* enableSuppression */ false, /* writableStackTrace */ false);
+        }
+    }
     // Helper: obtain the singleton Unsafe instance via reflection
     private static Unsafe untrustedUnsafe() {
         try {
@@ -34,11 +38,8 @@ public class ThreadDeathDemo {
                 while (true) {
                     if( progress++ > 10_000_000) {
                         Unsafe u = untrustedUnsafe();
-                        System.out.println("Injector thread throwing ThreadDeath into victim…");
-                        u.throwException(new ThreadDeath() {
-                            // Optional: override to make stack traces clearer
-                            public synchronized Throwable fillInStackTrace() { return this; }
-                        });                    }
+                        System.out.println("Injector thread throwing StackUnwind into victim…");
+                        u.throwException(new StackUnwind());                    }
                 }
             } finally {
                 System.out.println("victim finally block executed");

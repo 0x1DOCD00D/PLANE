@@ -8,30 +8,30 @@
 
 package InterestingScalaFeatures
 
-import scala.reflect.runtime.universe.{TypeTag, typeTag}
+import scala.reflect.ClassTag
 
-
-object MarkOrder extends App {
+object MarkOrder :
 
   trait Container[T <: Container[T]] extends Ordered[T] {
-    def getType[T:TypeTag](obj: T) = typeTag[T].tpe
+    def getType[U: ClassTag](obj: U): ClassTag[U] = summon[ClassTag[U]]
   }
 
   class MyContainer extends Container[MyContainer] {
-
     override def compare(that: MyContainer): Int = {
-//      if( !(getType(that) =:= getType(this)) )throw new Exception("type mismatch")
+      if (getType(that) != getType(this)) throw new Exception("type mismatch")
       0
     }
   }
 
   class ShadyContainer extends Container[MyContainer] {
-    override def compare(that: MyContainer): Int ={
-//      if( !(getType(that) =:= getType(this)) )throw new Exception("type mismatch")
+    override def compare(that: MyContainer): Int = {
+      if (getType(that) != getType(this)) throw new Exception("type mismatch")
       0
     }
   }
 
-  //  new MyContainer().compare(new MyContainer)
-  new ShadyContainer().compare(new MyContainer)
-}
+  def main(args: Array[String]): Unit = {
+    //  new MyContainer().compare(new MyContainer)
+    new ShadyContainer().compare(new MyContainer)
+
+  }
