@@ -10,7 +10,7 @@ package InterestingScalaFeatures
 
 import scala.reflect.ClassTag
 
-object MarkOrder :
+object ShadyContainerWithException :
 
   trait Container[T <: Container[T]] extends Ordered[T] {
     def getType[U: ClassTag](obj: U): ClassTag[U] = summon[ClassTag[U]]
