@@ -26,13 +26,13 @@ object PimpMyLibrary:
     given Conversion[PimpMyLibrary#Sometype, SomeClass] with
       def apply(o: PimpMyLibrary#Sometype): SomeClass =
         new SomeClass(o)
-
+        
     extension (o: Student) {
       def SomeMethod2 = println(s"Called for $o")
     }
 
     class Student
-
+  
     val student = new Student
-
+  
     student.SomeMethod
