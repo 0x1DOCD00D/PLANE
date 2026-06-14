@@ -32,7 +32,7 @@ object ContextualFunctions:
   def useMultiplier(using Int): Int = multiplyByFactor
 
 //  turning up the heat
-  def f(a: String, g: Option[(x: Int) ?=> Int] = None) = g match
+  def f(a: String, g: Option[(x: Int) ?=> Int] = None): String = g match
     case Some(p) => p.toString
     case None    => a
 
