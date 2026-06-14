@@ -10,27 +10,29 @@
 
 package DesignPatterns
 
-//we define a companion class
-class PimpMyLibrary {
+//https://docs.scala-lang.org/sips/value-classes.html
+
+import scala.Conversion
+import scala.language.implicitConversions
+
+class PimpMyLibrary:
   type Sometype = DesignPatterns.PimpMyLibrary.Student
-}
 
-object PimpMyLibrary extends App {
+object PimpMyLibrary:
+    final class SomeClass(val o: PimpMyLibrary#Sometype) extends AnyVal:
+      def SomeMethod: Unit =
+        println(s"Called for $o")
 
-  //https://docs.scala-lang.org/sips/value-classes.html
+    given Conversion[PimpMyLibrary#Sometype, SomeClass] with
+      def apply(o: PimpMyLibrary#Sometype): SomeClass =
+        new SomeClass(o)
 
-  implicit class SomeClass(val o: PimpMyLibrary#Sometype) extends AnyVal {
-    def SomeMethod = println(s"Called for $o")
-  }
-  
-  extension (o: Student) {
-    def SomeMethod2 = println(s"Called for $o")
-  }
+    extension (o: Student) {
+      def SomeMethod2 = println(s"Called for $o")
+    }
 
-  class Student
+    class Student
 
-  val student = new Student
+    val student = new Student
 
-  student.SomeMethod
-
-}
+    student.SomeMethod
