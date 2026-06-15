@@ -61,6 +61,6 @@ object VisitorPattern:
     val listOfChildren = List(new Child1, new Child2, new SomeParent {})
     //and for each of these objects the method accept is invoked and the visitor is passed
     //to perform its job on the object and then we just added some operations to the pipeline
-    if (!listOfChildren.map(e => e.accept(visitor)).contains(true)) println("empty")
+    if (!listOfChildren.exists(e => e.accept(visitor))) println("empty")
     else println("not empty")
   }
